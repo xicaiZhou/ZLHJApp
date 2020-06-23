@@ -1,0 +1,14 @@
+@font-face {
+  font-family: 'my-icon';
+  src: url('./iconfont.ttf') format('truetype');
+}
+
+.my-icon {
+  font-family: 'my-icon';
+  font-style: normal;
+}
+.my-icon-rili:before {
+  content: "\e75b";
+  font-size: 30px;
+}
+
