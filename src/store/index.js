@@ -4,12 +4,16 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
-        userId:''
+        token:'',
+        userInfo:{},
+        carModel:{},
+        cars:{}
     },
     mutations:{
         updateParam(state,param){
-            state.userId = param['userId']
-        }
+            state.userInfo = param["userInfo"];
+            state.token = param["token"];
+        },
     },
     getters:{
 

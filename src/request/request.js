@@ -11,11 +11,12 @@ const request = axios.create({})
 request.defaults.baseURL = process.env.API_HOST;
 request.defaults.headers.post['Content-Type'] = 'application/json';
 request.defaults.timeout = 30000;
-request.defaults.withCredentials = true;//Send cross-domain request credentials
-
+request.defaults.withCredentials = true;
+// axios.defaults.headers.common['token'] = 
 /** request interceptor*/
 request.interceptors.request.use(
     config => {
+		config.headers.common["token"] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTkzNDMzOTg0LCJpYXQiOjE1OTMzOTc5ODQsImp0aSI6ImQxYjFjNmQ4NDAzZDQzMjE5MGM2M2ExMzE4Y2Q0ODFmIiwidXNlcm5hbWUiOiJhZG1pbiJ9.aUn_y0nRftubNdTzSEaESjxShP2IsCImLwb7xmToyFU';
         return config
     },
     error => {
@@ -32,7 +33,7 @@ request.interceptors.response.use(
      */
     response => {
 
-      if(response.data.state === 'Y' || response.data.resCode == 200){
+      if(response.data.code == 200){
         return response;
       }else{
         Toast({

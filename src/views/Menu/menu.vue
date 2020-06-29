@@ -1,0 +1,107 @@
+<template>
+  <div>
+    <div class="title">新车正审材料提交</div>
+    <div class="listItem" v-for="(item,index) in listData" :key="index" @click="toDetail(item)">
+      <div class="itemL">
+        <van-icon name="https://b.yzcdn.cn/vant/icon-demo-1126.png" size="20" />
+        <div style="margin-left:4px">{{item.name}}</div>
+      </div>
+      <div class="itemR">
+        <van-icon name="info-o" size="20" />
+        <div style="margin-left:10px">{{item.state==1?'未开始':'进行中'}}</div>
+      </div>
+    </div>
+    <div class="tips">提交审核后，审核人员会根据您提交的材料反馈审核结果，请耐心等待！</div>
+    <div class="subBtn">
+      <van-button
+        style="width:100%;background:#ff9900;border:none"
+        block
+        type="info"
+        @click="toSub"
+      >提交正审</van-button>
+    </div>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      listData: [
+        {
+          name: "经销商信息",
+          state: 1
+        },
+        {
+          name: "融资业务信息",
+          state: 1
+        },
+        {
+          name: "承租人信息",
+          state: 1
+        },
+        {
+          name: "担保人信息",
+          state: 2
+        },
+        {
+          name: "文件上传",
+          state: 1
+        }
+      ]
+    };
+  },
+  methods: {
+    toDetail(val) {},
+    toSub() {}
+  },
+  mounted() {}
+};
+</script>
+<style scoped>
+.title {
+  width: 90%;
+  padding: 10px 5%;
+  font-size: 16px;
+  margin-top: 20px;
+}
+.listItem {
+  background: #f0f0f0;
+  border: 1px solid #ebedf0;
+  width: 86%;
+  margin: 0 auto;
+  height: 50px;
+  line-height: 50px;
+  font-size: 14px;
+  padding: 0 2%;
+  box-shadow: 0px 5px 5px #ebedf0;
+  margin-top: 15px;
+
+}
+.itemL {
+  width: 50%;
+  float: left;
+  display: flex;
+  align-items: center;
+}
+.itemR {
+  width: 30%;
+  float: right;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 12px;
+}
+.tips {
+  font-size: 12px;
+  padding: 0 12%;
+  text-align: center;
+  margin-top: 30px;
+}
+.subBtn {
+  position: fixed;
+  bottom: 20px;
+  width: 90%;
+  left: 5%;
+}
+</style>

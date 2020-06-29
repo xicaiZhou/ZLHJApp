@@ -1,3 +1,5 @@
+import { List } from "vant"
+
 export function getTime (dateStr) {
   // 兼容mac
   if (!dateStr) return
@@ -179,3 +181,15 @@ export function YmdGetDate() {
   var d = new Date(tYear, tMonth, tDay);
   return d;
 }
+export function getYearList(param) {
+  let myDate = new Date();
+  let nowYear = myDate.getFullYear();
+  let min = nowYear - param;
+  var temp = new Array();
+  while (param >= 0){
+    temp.push(min++);
+    param--;
+  }
+  return temp
+}
+

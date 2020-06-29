@@ -7,6 +7,7 @@
       <van-button style="margin-top:25px" round block type="info" @click="one">初筛结果查询</van-button>
       <van-button style="margin-top:25px" round block type="info" @click="two">pdf列表</van-button>
       <van-button style="margin-top:25px" round block type="info" @click="three">network</van-button>
+      <van-button style="margin-top:25px" round block type="info" @click="four">车辆信息</van-button>
 
     </div>
   </div>
@@ -36,6 +37,9 @@ export default {
    },
    three(){
      this.$router.push({path:"network"})
+   },
+      four(){
+     this.$router.push({path:"carInfo"})
    }
   }
 };

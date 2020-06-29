@@ -105,6 +105,13 @@
         </div>
       </van-popup>
     </div> 
+    
+     <van-tabbar route v-model="active" @change="onChange">
+      <van-tabbar-item replace to="/main" icon="home-o">首页</van-tabbar-item>
+      <van-tabbar-item replace to="/search" icon="search">查询</van-tabbar-item>
+      <van-tabbar-item replace to="/mine" icon="friends-o">我的</van-tabbar-item>
+    </van-tabbar>
+  </div>
   </div>
 </template>
 
@@ -116,6 +123,7 @@ export default {
   data () {
     return {
       title:'',
+      active:1,
       refreshing:false,
       finished: false,
       filterDetail: [],
@@ -402,4 +410,5 @@ export default {
     margin-top:10px;
     width: 70%;
   }
+
 </style>

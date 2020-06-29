@@ -11,7 +11,7 @@ const path = require('path')
 // test Environment  准生产
 // var baseUrl = 'http://192.168.90.100'
 //备用环境
-var baseUrl = 'http://192.168.88.62:8080'
+var baseUrl = 'http://192.168.88.94:8888'
 
 module.exports = {
   dev: {
