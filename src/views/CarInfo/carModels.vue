@@ -84,7 +84,6 @@ export default {
       yearList: [],
       filterDetail: [],
       loading: false,
-      loading: false,
       pIndex: 0,
       state: 1,
       indexList: [], //索引数组
@@ -166,9 +165,10 @@ export default {
       this.popupShow = false;
       this.pIndex = 1;
       this.filterDetail = [];
-    //   this.getData();
+      this.getData();
     
     this.finished = false;
+    this.loading = true;
  
     },
     //刷新
