@@ -42,25 +42,25 @@ export default {
   font-size: 14px;
   line-height: 24px;
   color: #323233;
-  padding: 10px 16px;
+  padding: 10px 8px 10px 16px;
 }
 .zlhjRadio_title {
   width: 90px;
 }
 .zlhjRadio_body {
   display: flex;
-  width: calc(100% - 100px);
+  width: calc(100% - 90px);
   justify-content: flex-end;
 }
 .zlhjRadio_body_item {
   font-size: 12px;
   text-align: center;
   line-height: 27px;
-  padding: 0 8px;
+  padding: 0 9px;
   height: 27px;
   background-color: #cccccc;
   color: #fff;
-  margin-right: 10px;
+  margin-right: 8px;
 }
 .zlhjRadio_body_item_selected {
   font-size: 12px;
@@ -84,5 +84,11 @@ export default {
   color: #000;
   height: 40px;
   line-height: 50px;
+}
+.headerAndBtn{
+  width: 100%;
+  height: 40%;
+  display: flex;
+  justify-content: space-between;
 }
 </style>
