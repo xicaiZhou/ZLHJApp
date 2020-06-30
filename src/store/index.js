@@ -7,7 +7,9 @@ const store = new Vuex.Store({
         token:'',
         userInfo:{},
         carModel:{},
-        cars:{}
+        cars:{},
+        exhibition:{},
+        carInfo:{}
     },
     mutations:{
         updateParam(state,param){

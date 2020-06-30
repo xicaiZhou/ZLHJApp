@@ -102,3 +102,11 @@ export const dateFormat = (dateStr, fmt = 'yyyy-MM-dd hh:mm') => {
     }
     return fmt
   }
+
+  export const dataYear = (dateStr) =>{
+    if (!dateStr) return
+    let old = new Date(dateStr).getTime()
+    let now = new Date().getTime()
+    console.log((now - old) / (365*24*60*60*1000).toFixed(2))
+    return Math.floor((now - old) / (365*24*60*60*1000) * 100)/100
+  }

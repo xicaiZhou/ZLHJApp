@@ -23,6 +23,13 @@
           @click="selectCars"
         />
         <van-field
+          style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+          v-model="carModelName"
+          label="车系选择:"
+          placeholder="请选择车系"
+          @click="selectCars"
+        />
+        <van-field
           readonly
           clickable
           is-link
@@ -60,7 +67,7 @@
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index">
+          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index" @click="carInfoSelect(item)">
             <div class="searchBox">{{item.name}}</div>
             <div style="width:20%; text-align:right;">{{item.year}}</div>
           </div>
@@ -89,7 +96,8 @@ export default {
       indexList: [], //索引数组
       year: "",
       carModel: {},
-      cars: {}
+      cars: {},
+      carModelName:''
     };
   },
   mounted() {
@@ -117,6 +125,10 @@ export default {
   methods: {
     showCarModelSearch() {
       this.popupShow = true;
+    },
+    carInfoSelect(item){
+        this.$store.state.carInfo = item;
+        this.$router.back();
     },
     selectYear(value) {
       this.year = value;
@@ -181,7 +193,7 @@ export default {
     },
     //自动加载更多
     onLoad() {
-        console.log("自动加载更多")
+     console.log("自动加载更多")
       this.pIndex += 1;
       this.getData();
     },
@@ -196,7 +208,7 @@ export default {
         forbidClick: true,
         loadingType: "spinner"
       });
-      var params = Object.assign({ pageIndex: this.pIndex }, { pageSize: 10 });
+      var params = Object.assign({brandId:this.carModel.id},{seriesId:this.cars.id},{year:this.year},{carModel:this.carModelName},{ pageIndex: this.pIndex }, { pageSize: 10 });
       console.log(params);
       CarModelSearch(params).then(res => {
         toast.clear();
@@ -220,6 +232,7 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
+      from.meta.keepAlive = false;
     if (to.path == "/carInfo") {
       to.meta.keepAlive = true;
     } else {

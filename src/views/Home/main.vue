@@ -4,7 +4,7 @@
       <span>录单</span>
 
       <van-grid clickable>
-        <van-grid-item icon="coupon-o" text="录单" to="/carInfo"/>
+        <van-grid-item icon="coupon-o" text="录单" to="/menu"/>
         <van-grid-item icon="search" text="查询" to="/search"/>
       </van-grid>
     </div>

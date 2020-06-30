@@ -12,7 +12,7 @@ export function network(param){
 export function CarModelList(param){
     return request({
         method:'get',
-        url: param.bandName == "" ? '/api/carElement/getCarBandList/all' : '/api/carElement/getCarBandList/{bandName}',
+        url: param.bandName == "" ? '/api/carElement/getCarBandList/all' : '/api/carElement/getCarBandList/'+ param.bandName,
         data:param
     })
 }

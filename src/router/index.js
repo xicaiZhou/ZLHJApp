@@ -20,6 +20,9 @@ import mine from '@/views/Mine/mine.vue'
 import carModelList from '@/views/carInfo/carModelList'
 // 车系列表
 import carsList from '@/views/carInfo/carsList'
+
+// 融资业务信息
+import business from '@/views/BusinessInfo/businessInfo'
 Vue.use(Router)
 
 export default new Router({
@@ -109,6 +112,15 @@ export default new Router({
       path:'/carsList',
       name:'carsList',
       component:carsList,
+      meta:{
+        keepAlive:false,
+        title: '车系列表'
+      }
+    },
+    {
+      path:'/business',
+      name:'business',
+      component:business,
       meta:{
         keepAlive:false,
         title: '车系列表'

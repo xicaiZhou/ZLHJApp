@@ -16,7 +16,7 @@ request.defaults.withCredentials = true;
 /** request interceptor*/
 request.interceptors.request.use(
     config => {
-		config.headers.common["token"] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTkzNDMzOTg0LCJpYXQiOjE1OTMzOTc5ODQsImp0aSI6ImQxYjFjNmQ4NDAzZDQzMjE5MGM2M2ExMzE4Y2Q0ODFmIiwidXNlcm5hbWUiOiJhZG1pbiJ9.aUn_y0nRftubNdTzSEaESjxShP2IsCImLwb7xmToyFU';
+		config.headers.common["token"] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTkzNTIwNDM1LCJpYXQiOjE1OTM0ODQ0MzUsImp0aSI6IjIxYTMyZTEwZjliODRlMmVhZGY0Mjk5Y2I3YTA5MGQzIiwidXNlcm5hbWUiOiJhZG1pbiJ9.6VUT0Tq7dxZqNIDejMxyUrCY4k6vse83oUF_86Agdr8';
         return config
     },
     error => {

@@ -3,18 +3,86 @@
     <keep-alive>
       <router-view v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-      <router-view v-if="!$route.meta.keepAlive"></router-view>
+    <router-view v-if="!$route.meta.keepAlive"></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'App'
-}
+  name: "App"
+};
 </script>
 
 <style>
-  .systemAppColor{
-    background: #00ff00;
-  }
+.systemAppColor {
+  background: #00ff00;
+}
+.van-field__body input {
+  text-align: right;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  font-size: 12px;
+}
+.subBtn {
+  position: fixed;
+  bottom: 0px;
+  width: 100%;
+  background:#fff;
+}
+.subBtn_body {
+  width: 90%;
+  margin: auto;
+  margin-bottom: 20px ;
+  background: #ff9900;
+  border: none;
+}
+.zlhjRadio {
+  display: flex;
+  font-size: 14px;
+  line-height: 24px;
+  color: #323233;
+  padding: 10px 16px;
+}
+.zlhjRadio_title {
+  width: 90px;
+}
+.zlhjRadio_body {
+  display: flex;
+  width: calc(100% - 100px);
+  justify-content: flex-end;
+}
+.zlhjRadio_body_item {
+  font-size: 12px;
+  text-align: center;
+  line-height: 27px;
+  padding: 0 8px;
+  height: 27px;
+  background-color: #cccccc;
+  color: #fff;
+  margin-right: 10px;
+}
+.zlhjRadio_body_item_selected {
+  font-size: 12px;
+  text-align: center;
+  line-height: 27px;
+  padding: 0 8px;
+  height: 27px;
+  background-color: #ff9900;
+  color: #fff;
+  margin-right: 10px;
+}
+.zlhjRadioLine {
+  padding-left: 10px;
+  background-color: #f7f7f7;
+  height: 1px;
+}
+.header {
+  padding: 0 16px;
+  font-size: 17px;
+  font-weight: bold;
+  color: #000;
+  height: 40px;
+  line-height: 50px;
+}
 </style>

@@ -52,7 +52,17 @@ export default {
     };
   },
   methods: {
-    toDetail(val) {},
+    toDetail(val) {
+      if(val.name === "经销商信息"){
+        this.$router.push({
+          path:'/carInfo'
+        })
+      }else if(val.name === "融资业务信息"){
+        this.$router.push({
+          path:'/business'
+        })
+      }
+    },
     toSub() {}
   },
   mounted() {}

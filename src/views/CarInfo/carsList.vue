@@ -2,9 +2,7 @@
   <div>
     <div class="contentBox">
       <div v-for="(item,index) in filterDetail" :key="index">
-        <template v-if="item.initial == indexItem">
           <div class="searchContent" @click="carSelected(item)">{{item.name}}</div>
-        </template>
       </div>
     </div>
   </div>
@@ -38,12 +36,12 @@ export default {
       this.loanMainName = "";
       this.managerName = "";
       this.filterDetail = [];
-      this.pIndex = 1;
+      
       this.getData();
     },
     toSearch() {
       this.popupShow = false;
-      this.pIndex = 1;
+      
       this.filterDetail = [];
       this.getData();
     },

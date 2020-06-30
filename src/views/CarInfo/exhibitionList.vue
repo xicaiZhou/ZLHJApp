@@ -31,7 +31,7 @@
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div class="searchContent"  v-for="(item,index) in filterDetail" :key="index" @click="carSelected(item)">
+          <div class="searchContent"  v-for="(item,index) in filterDetail" :key="index" @click="exhibitionSelected(item)">
             <div class="searchBox">
               {{item.name}}
             </div>
@@ -70,8 +70,9 @@ export default {
       console.log("zoule");
       this.popupShow = true;
     },
-    carSelected(item){
-      
+    exhibitionSelected(item){
+      this.$store.state.exhibition = item;
+      this.$router.back();
     },
     //展示放大镜
     showSearchIcon() {
