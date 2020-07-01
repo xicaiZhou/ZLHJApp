@@ -1,13 +1,22 @@
 import request from './request'
 
 // 选择经销商
-export function network(param){
+export function ExhibitionLIst(param){
     return request({
         method:'post',
         url:'/api/dealer/getPageList',
         data:param
     })
 }
+export function CarInfo(param){
+    return request({
+        method:'get',
+        url:'/api/loan/info/' + param.loanNumber,
+        data:param
+    })
+}
+
+
 // 车辆品牌列表
 export function CarModelList(param){
     return request({

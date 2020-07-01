@@ -6,7 +6,6 @@
       <h4 style="color:red">临时功能展示，上线后无此界面</h4>
       <van-button style="margin-top:25px" round block type="info" @click="one">初筛结果查询</van-button>
       <van-button style="margin-top:25px" round block type="info" @click="two">pdf列表</van-button>
-      <van-button style="margin-top:25px" round block type="info" @click="three">network</van-button>
       <van-button style="margin-top:25px" round block type="info" @click="four">demo</van-button>
 
     </div>
@@ -35,9 +34,7 @@ export default {
          path:'manualList'
       })
    },
-   three(){
-     this.$router.push({path:"network"})
-   },
+
       four(){
      this.$router.push({path:"main"})
    }

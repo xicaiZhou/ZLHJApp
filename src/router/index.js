@@ -23,6 +23,9 @@ import carsList from '@/views/carInfo/carsList'
 
 // 融资业务信息
 import business from '@/views/BusinessInfo/businessInfo'
+
+// 个人信息
+import userInfo from '@/views/UserInfo/userInfo'
 Vue.use(Router)
 
 export default new Router({
@@ -125,6 +128,15 @@ export default new Router({
         keepAlive:false,
         title: '车系列表'
       }
-    }
+    },
+    {
+      path:'/userInfo',
+      name:'userInfo',
+      component:userInfo,
+      meta:{
+        keepAlive:false,
+        title: '个人信息'
+      }
+    },
   ]
 })

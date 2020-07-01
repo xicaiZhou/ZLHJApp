@@ -18,15 +18,15 @@
           is-link
           style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
           v-model="cars.name"
-          label="车系选择:"
+          label="车系选:"
           placeholder="请选择车系"
           @click="selectCars"
         />
         <van-field
           style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
           v-model="carModelName"
-          label="车系选择:"
-          placeholder="请选择车系"
+          label="车型模糊:"
+          placeholder="请填写车型"
           @click="selectCars"
         />
         <van-field

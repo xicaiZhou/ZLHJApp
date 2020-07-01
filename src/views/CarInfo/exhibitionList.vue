@@ -44,8 +44,7 @@
 </template>
 
 <script>
-import { network } from "../../request/api";
-
+import {ExhibitionLIst} from '../../request/api'
 export default {
   data() {
     return {
@@ -136,7 +135,7 @@ export default {
         { pageSize: 10 }
       );
       console.log(params);
-      network(params).then(res => {
+      ExhibitionLIst(params).then(res => {
         toast.clear();
         let num = res.data.data.total;
         let list = res.data.data["records"];

@@ -56,7 +56,7 @@ export default {
   font-size: 12px;
   text-align: center;
   line-height: 27px;
-  padding: 0 9px;
+  padding: 0 8px;
   height: 27px;
   background-color: #cccccc;
   color: #fff;
@@ -70,7 +70,7 @@ export default {
   height: 27px;
   background-color: #ff9900;
   color: #fff;
-  margin-right: 10px;
+  margin-right: 8px;
 }
 .zlhjRadioLine {
   padding-left: 10px;

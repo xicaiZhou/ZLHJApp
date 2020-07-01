@@ -41,7 +41,7 @@
           <van-field
             readonly
             label="车系:"
-            v-model="loginSysUserVo.carsName"
+            v-model="loginSysUserVo.seriesName"
             name
             placeholder="请填写车系"
           />
@@ -145,7 +145,7 @@
           <van-field
             readonly
             label="车系:"
-            v-model="loginSysUserVo.carsName"
+            v-model="loginSysUserVo.seriesName"
             name
             placeholder="请填写车系"
           />
@@ -278,7 +278,7 @@
           <van-field
             readonly
             label="车系:"
-            v-model="loginSysUserVo.carsName"
+            v-model="loginSysUserVo.seriesName"
             name
             placeholder="请填写车系"
           />
@@ -403,6 +403,7 @@
 </template>
 
 <script>
+import {CarInfo} from "../../request/api"
 import { dateFormat, dataYear } from "../../utils/formatter";
 export default {
   data() {
@@ -413,18 +414,18 @@ export default {
       maxDate: new Date(),
       radio: 1,
       showBusiness: false,
-      businessList: ["新车", "二手车", "车抵贷"],
+      businessList: ["车抵贷", "二手车", "新车"],
       loginSysUserVo: {
         loanNumber: "", //申请编号
         businessType: "2", //业务类型 1-车抵贷，2-二手车,3-新车
         businessTypeName: "", //自己加的 界面初始化和手动修改业务类型时需要手动修改
         dealerId: "", //经销商ID
         dealerName: "", //经销商名称
+        seriesId:'', //车系ID
+        seriesName:'', // 车系名字
         modelId: "", //车型ID
         modelName: "", //品牌车型
-        carsId: "", //自己加的 车系Id
-        carsName: "", //自己加的 车系名字
-        year: "", //自己加的 年份
+        year: "", // 年份
         otherModel: "", //自定义车型
         vin: "", //车架号
         engineNumber: "", //发动机号
@@ -444,18 +445,6 @@ export default {
         licenseType: "", //车牌类型 1:私牌 2:公牌
         importFlag: "", //进口标志 1:进口 2:非进口
         hasDrivingLicense: "", //是否有驾照 1:有 2:没有
-        businessModel: "", //业务模式 1-银行贷款，2-租金贷
-        leaseType: "", //租赁模式 1-直租，2-回租
-        hasGps: "", //是否安装GPS 1-是，2-否
-        isCs: "", //是否产险推荐 1-是，2-否
-        isJjk: "", // 是否聚家客推荐 1-是，2-否
-        totalAmount: "", //融资总额
-        downPaymentAmount: "", //首付金额
-        amount: "", //融资金额
-        term: "", //融资期限
-        repaymentMethod: "", //还款方式 1-等额本息，2-等额本金，3-等本等息
-        useMethod: "", //融资用途 数据字典-贷款用途
-        rate: "" //融资成数
       }
     };
   },
@@ -475,8 +464,8 @@ export default {
         this.loginSysUserVo.modelId = newValue.id;
         this.loginSysUserVo.modelName = newValue.name;
         this.loginSysUserVo.guidancePrice = newValue.guidancePrice;
-        this.loginSysUserVo.carsId = newValue.seriesId;
-        this.loginSysUserVo.carsName = newValue.seriesName;
+        this.loginSysUserVo.seriesId = newValue.seriesId;
+        this.loginSysUserVo.seriesName = newValue.seriesName;
         this.loginSysUserVo.year = newValue.year;
       }
     }

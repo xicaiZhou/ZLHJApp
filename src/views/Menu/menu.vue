@@ -37,7 +37,7 @@ export default {
           state: 1
         },
         {
-          name: "承租人信息",
+          name: "个人信息",
           state: 1
         },
         {
@@ -60,6 +60,10 @@ export default {
       }else if(val.name === "融资业务信息"){
         this.$router.push({
           path:'/business'
+        })
+      }else if(val.name === "个人信息"){
+        this.$router.push({
+          path:'/userInfo'
         })
       }
     },
