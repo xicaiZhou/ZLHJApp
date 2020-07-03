@@ -8,6 +8,7 @@ export function ExhibitionLIst(param){
         data:param
     })
 }
+// 根据loanNumber获取车辆信息数据
 export function CarInfo(param){
     return request({
         method:'get',
@@ -15,7 +16,14 @@ export function CarInfo(param){
         data:param
     })
 }
-
+// 根据loanNumber获取业务信息数据
+export function BusinessInfo(param){
+    return request({
+        method:'get',
+        url:'/api/loan/loanDetail/info/' + param.loanNumber,
+        data:param
+    })
+}
 
 // 车辆品牌列表
 export function CarModelList(param){
@@ -42,20 +50,47 @@ export function CarsList(param){
         data:param
     })
 }
-//初筛结果查询
-export function screenResultInfo(param) {
+
+
+
+//  =========================人员信息========================
+  // 获取人员列表
+export function userList(param){
     return request({
-        method: 'post',
-        url:'/zlhj_interface/screenLoan/screenResultInfo',
+        method:"get",
+        url:'/api/customerInfo/getLoanCustomerList/' + param.loanId,
         data:param
     })
 }
-
-//初筛拒绝原因
-export function RefuseCause(param){
+// 添加人员信息
+export function addUser(param){
     return request({
         method:'post',
-        url:'/zlhj_interface/screenLoan/queryScreeningRefuseCause',
+        url:'/api/customerInfo/add',
+        data:param
+    })
+}
+// 删除人员信息
+export function delUser(param){
+    return request({
+        method:'post',
+        url:'/api/customerInfo/delete/'+param.customerId,
+        data:param
+    })
+}
+// 获取人员详情信息
+export function userDetailInfo(param){
+    return request({
+        method:'get',
+        url:"api/customerInfo/info/" + param.customerId,
+        data:param
+    })
+}
+// 更新人员信息
+export function updateUser(param) {
+    return request({
+        method:'post',
+        url:'/api/customerInfo/update',
         data:param
     })
 }

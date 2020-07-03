@@ -12,11 +12,10 @@ request.defaults.baseURL = process.env.API_HOST;
 request.defaults.headers.post['Content-Type'] = 'application/json';
 request.defaults.timeout = 30000;
 request.defaults.withCredentials = true;
-// axios.defaults.headers.common['token'] = 
 /** request interceptor*/
 request.interceptors.request.use(
     config => {
-		config.headers.common["token"] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTkzNTIwNDM1LCJpYXQiOjE1OTM0ODQ0MzUsImp0aSI6IjIxYTMyZTEwZjliODRlMmVhZGY0Mjk5Y2I3YTA5MGQzIiwidXNlcm5hbWUiOiJhZG1pbiJ9.6VUT0Tq7dxZqNIDejMxyUrCY4k6vse83oUF_86Agdr8';
+		config.headers.common["token"] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTkzNzc5MTMyLCJpYXQiOjE1OTM3NDMxMzIsImp0aSI6IjkyN2E5MGNlNWVkNzQwMjBhYTZjYmQ5OTg2MzgzMDQ2IiwidXNlcm5hbWUiOiJhZG1pbiJ9.PFa6zDwHxRYJojvjxxCBUCn58_IKH56TX_BXxRYnpKs';
         return config
     },
     error => {

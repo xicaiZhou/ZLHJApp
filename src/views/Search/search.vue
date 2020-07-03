@@ -117,7 +117,6 @@
 
 <script>
 import { getUrlParam } from "../../utils/common.js";
-import { screenResultInfo, RefuseCause } from "../../request/api";
 import { mGetDate, doHandleDate, YmdGetDate } from "../../utils/date.js";
 export default {
   data () {

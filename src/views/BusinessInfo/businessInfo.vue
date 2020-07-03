@@ -294,6 +294,7 @@
 </template>
 
 <script>
+import {BusinessInfo} from '../../request/api'
 export default {
   data() {
     return {
@@ -366,6 +367,13 @@ export default {
     toSub() {
       this.$router.back();
     }
+  },
+  mounted(){
+      var params = Object.assign({loanNumber:"20200701144824242"});
+      console.log(params);
+      BusinessInfo(params).then(res=>{
+          console.log(res);
+      })
   }
 };
 </script>
