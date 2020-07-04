@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height:100%; margin-bottom: 60px;">
     <div>
       <div>
         <div class="header">基本信息</div>
@@ -295,13 +295,183 @@
         />
         <van-field label="详细地址:" v-model="customerHouseProperty.roomAddress" placeholder="请填写详细地址" />
 
-        <van-field
-          label="面积(m²):"
-          v-model="customerHouseProperty.roomAreas"
-          placeholder="请填写房产面积"
-        />
+        <van-field label="面积(m²):" v-model="customerHouseProperty.roomAreas" placeholder="请填写房产面积" />
         <van-field label="房产编号:" v-model="customerHouseProperty.roomNum" placeholder="请填写房产编号" />
       </div>
+      <div>
+        <div class="header">工作信息</div>
+        <div>
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title">是否有工作：</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="customerJob.isWork = '1'"
+                :class="customerJob.isWork == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >有</div>
+              <div
+                @click="customerJob.isWork = '2'"
+                :class="customerJob.isWork == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >无</div>
+            </div>
+          </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
+        </div>
+        <div v-show="customerJob.isWork == 1">
+          <van-field required label="工作单位:" v-model="customerJob.company" placeholder="请填写工作单位" />
+          <van-field
+            required
+            label="单位电话:"
+            v-model="customerJob.companyPhone"
+            placeholder="请填写单位电话"
+          />
+          <van-field
+            required
+            label="分机号:"
+            v-model="customerJob.companyExtension"
+            placeholder="请填写分机号"
+          />
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="单位地址:"
+            v-model="companyAddress"
+            placeholder="请选择单位地址"
+            @click="showCompanyAddress = true"
+          />
+          <van-field label="详细地址:" v-model="customerJob.companyAddress" placeholder="请填写详细地址" />
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="单位性质:"
+            v-model="customerJob.companyType"
+            placeholder="请选择单位性质"
+            @click="showCompanyType = true"
+          />
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="职务:"
+            v-model="customerJob.position"
+            placeholder="请选择职务"
+            @click="showPosition = true"
+          />
+        </div>
+      </div>
+      <div>
+        <div class="header">配偶信息</div>
+        <van-field
+          required
+          label="姓名:"
+          v-model="customerSpouseInfo.spouseName"
+          placeholder="请填写配偶姓名"
+        />
+        <van-field
+          required
+          label="手机号:"
+          v-model="customerSpouseInfo.spousePhone"
+          placeholder="请填写配偶手机号"
+        />
+
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="证件类型:"
+          v-model="customerSpouseInfo.spouseIdType"
+          placeholder="请选择配偶证件类型"
+          @click="showSpouseIdType = true"
+        />
+        <van-field
+          required
+          label="证件号码:"
+          v-model="customerSpouseInfo.spouseIdNum"
+          placeholder="请填写配偶证件号码"
+        />
+      </div>
+      <div>
+        <div class="header">其他联系方式</div>
+        <van-field
+          required
+          label="邮箱(对账单邮箱地址):"
+          v-model="customerContact.statementEmail"
+          placeholder="请填写邮箱"
+        />
+        <div>
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title">是否需要对账单：</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="customerContact.isNeedStatement = '1'"
+                :class="customerContact.isNeedStatement == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >是</div>
+              <div
+                @click="customerContact.isNeedStatement = '2'"
+                :class="customerContact.isNeedStatement == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >否</div>
+            </div>
+          </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
+        </div>
+        <van-field
+          v-show="customerContact.isNeedStatement == 1"
+          label="委托收件人:"
+          v-model="customerContact.entrustedRecipient"
+          placeholder="请填写委托收件人"
+        />
+        <van-field label="手机一:" v-model="customerHouseProperty.roomNum" placeholder="请填写手机号" />
+        <van-field label="手机二:" v-model="customerHouseProperty.roomNum" placeholder="请填写手机号" />
+        <van-field label="固话一:" v-model="customerHouseProperty.roomNum" placeholder="请填写固话" />
+        <van-field label="固话二:" v-model="customerHouseProperty.roomNum" placeholder="请填写固话" />
+      </div>
+      <div>
+        <div class="header">其他联系方式</div>
+        <div v-for="(item,index) in customerContactPersonList" :key="index" @click="toDetail(item)">
+          <van-field
+            required
+            label="联系人姓名:"
+            v-model="item.contactPersonName"
+            placeholder="请填写联系人姓名"
+          />
+          <van-field
+            required
+            label="联系人手机号:"
+            v-model="item.contactPersonPhone"
+            placeholder="请填写联系人手机号"
+          />
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">与承租人关系：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="item.relation = '1'"
+                  :class="item.relation == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >亲属</div>
+                <div
+                  @click="item.relation = '2'"
+                  :class="item.relation == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >朋友</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="subBtn">
+      <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
     <!-- pop -->
     <div></div>
@@ -328,18 +498,11 @@ export default {
       showRoomType: false,
       showRoomNature: false,
       showRoomAddress: false,
-      idCardAddress:
-        customerInfo.idCardProvince +
-        customerInfo.idCardCity +
-        customerInfo.idCardArea,
-      liveAddress:
-        customerHouseProperty.liveProvince +
-        customerHouseProperty.liveCity +
-        customerHouseProperty.liveArea,
-      roomAddress:
-        customerHouseProperty.roomProvince +
-        customerHouseProperty.roomCity +
-        customerHouseProperty.roomArea,
+      showCompanyAddress: false,
+      showCompanyType: false, // 单位性质
+      showPosition: false,
+      showSpouseIdType: false,
+
       customerInfo: {
         customerId: "", // 客户id
         customerName: "", // 客户姓名/企业名称
@@ -494,8 +657,38 @@ export default {
         createdTime: "", //创建时间
         updateBy: "", //更新人
         updateTime: "" //更新时间
-      }
+      },
+      idCardAddress: "",
+      liveAddress:"",
+      roomAddress:"",
+      companyAddress:""
     };
+  },
+  mounted() {
+    this.setAddress();
+  },
+  methods: {
+    toSub() {
+      this.$router.back();
+    },
+    setAddress() {
+      this.idCardAddress =
+        this.customerInfo.idCardProvince +
+        this.customerInfo.idCardCity +
+        this.customerInfo.idCardArea;
+      this.liveAddress =
+        this.customerHouseProperty.liveProvince +
+        this.customerHouseProperty.liveCity +
+        this.customerHouseProperty.liveArea;
+      this.roomAddress =
+        this.customerHouseProperty.roomProvince +
+        this.customerHouseProperty.roomCity +
+        this.customerHouseProperty.roomArea;
+        this.companyAddress =
+        this.customerJob.companyProvince +
+        this.customerJob.companyCity +
+        this.customerJob.companyArea
+    }
   }
 };
 </script>

@@ -47,7 +47,7 @@
                 <div>(父母)</div>
               </div>
               <div class="itemR">
-                <div style>法人</div>
+                <div style="color:#ff9900">{{item.licenseType == "1" ? "自然人" : "企业"}}</div>
                 <van-icon
                   v-if="item.saveFlag == 1"
                   color="#0066FF"
@@ -165,16 +165,24 @@ export default {
       addName: "",
       showAddDanbao: false,
       showRole: false,
-      mainListData: [{ customerName: "主借人", state: "1",saveFlag:"1"}],
+      mainListData: [{ customerName: "主借人", state: "1",saveFlag:"1",licenseType:'1'}],
       danbaoListData: [
-        { customerName: "担保人1", state: "1" },
-        { customerName: "担保人2", state: "1" },
-        { customerName: "担保人3", state: "1" }
+        { customerName: "担保人1", state: "1", licenseType:'1' },
+        { customerName: "担保人2", state: "1", licenseType:'2'},
+        { customerName: "担保人3", state: "1", licenseType:'2' }
       ]
     };
   },
   methods: {
-    toDetail() {},
+    toDetail(item) {
+      if (item.licenseType == "1"){
+        this.$router.push({
+          path:'/userInfoDetail'
+        })
+      }else{
+
+      }
+    },
     addUser(){
 
     },

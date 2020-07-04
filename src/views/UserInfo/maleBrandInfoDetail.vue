@@ -127,7 +127,7 @@ export default {
       //     customerId: "", //客户id
       //     contactPersonName: "", //联系人姓名
       //     contactPersonPhone: "", //联系人手机号
-      //     relation: "", //与承租人关系（1、亲属；2、朋友）
+      //     relation: "", //与承租ƒ人关系（1、亲属；2、朋友）
       //     createdBy: "", //创建人
       //     createdTime: "", //创建时间
       //     updateBy: "", //更新人

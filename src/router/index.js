@@ -26,6 +26,8 @@ import business from '@/views/BusinessInfo/businessInfo'
 
 // 个人信息
 import userInfo from '@/views/UserInfo/userInfo'
+// 对私人员详情信息
+import userInfoDetail from '@/views/UserInfo/userInfoDetail'
 Vue.use(Router)
 
 export default new Router({
@@ -136,6 +138,14 @@ export default new Router({
       meta:{
         keepAlive:false,
         title: '个人信息'
+      }
+    },{
+      path:'/userInfoDetail',
+      name:'userInfoDetail',
+      component:userInfoDetail,
+      meta:{
+        keepAlive:false,
+        title: '个人详细信息'
       }
     },
   ]
