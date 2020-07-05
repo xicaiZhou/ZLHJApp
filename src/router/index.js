@@ -16,6 +16,12 @@ import carModels from '@/views/carInfo/carModels.vue'
 import search from '@/views/Search/search.vue'
 // 个人中心
 import mine from '@/views/Mine/mine.vue'
+// 设置
+import setup from '@/views/Mine/setup'
+// 修改密码获取手机验证码
+import getphonecode from '@/views/Mine/getphonecode'
+// 修改密码
+import setnewpassword from '@/views/Mine/setnewpassword'
 // 车辆品牌
 import carModelList from '@/views/carInfo/carModelList'
 // 车系列表
@@ -37,6 +43,7 @@ import productList from '@/views/Product/productList'
 
 // 文件上传
 import uploadFile from '@/views/UploadFile/uploadFile'
+
 Vue.use(Router)
 
 export default new Router({
@@ -75,6 +82,33 @@ export default new Router({
       meta:{
         keepAlive:false,
         title: '我的'
+      }
+    },
+    {
+      path: '/setup',
+      name: 'setup',
+      component: setup,
+      meta:{
+        keepAlive:false,
+        title: '设置'
+      }
+    },
+    {
+      path: '/getphonecode',
+      name: 'getphonecode',
+      component: getphonecode,
+      meta:{
+        keepAlive:false,
+        title: '安全验证'
+      }
+    },
+    {
+      path: '/setnewpassword',
+      name: 'setnewpassword',
+      component: setnewpassword,
+      meta:{
+        keepAlive:false,
+        title: '修改密码'
       }
     },
     {
@@ -183,7 +217,8 @@ export default new Router({
         keepAlive:false,
         title: '产品列表'
       }
-    },{
+    },
+    {
       path:'/uploadFile',
       name:'uploadFile',
       component:uploadFile,
