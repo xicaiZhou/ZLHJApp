@@ -1,9 +1,155 @@
 <template>
-  
+  <div style="height:100%; margin-bottom: 60px;">
+    <div>
+      <div>
+        <div class="header">基本信息</div>
+        <van-field
+          required
+          label="申请企业名称:"
+          v-model="customerInfo.customerName"
+          placeholder="请填写企业名称"
+        />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="与承租人关系:"
+          v-model="customerInfo.relation"
+          placeholder="请选择与承租人关系"
+          @click="showRelation = true"
+        />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="证件类型:"
+          v-model="customerInfo.idType"
+          placeholder="请选择证件类型"
+          @click="showIdType = true"
+        />
+        <van-field required label="证件号码:" v-model="customerInfo.idNum" placeholder="请填写证件号码" />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="营业执照地址:"
+          v-model="idCardAddress"
+          placeholder="请选择营业执照地址"
+          @click="showIdCardAddress = true"
+        />
+        <van-field
+          required
+          label="详细地址:"
+          v-model="customerInfo.idCardAddress"
+          placeholder="请填写详细地址"
+        />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="经营地址:"
+          v-model="idCardAddress"
+          placeholder="请选择经营地址"
+          @click="showIdCardAddress = true"
+        />
+        <van-field
+          required
+          label="详细地址:"
+          v-model="customerInfo.idCardAddress"
+          placeholder="请填写详细地址"
+        />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="企业性质:"
+          v-model="idCardAddress"
+          placeholder="请选择企业性质"
+          @click="showIdCardAddress = true"
+        />
+        <van-field
+          required
+          label="企业联系电话:"
+          v-model="customerInfo.idCardAddress"
+          placeholder="请填写企业联系电话"
+        />
+      </div>
+      <div>
+        <div class="header">企业人员信息</div>
+        <van-field
+          required
+          label="法定代表人:"
+          v-model="customerCompany.legalRepresentative"
+          placeholder="请填写法定代表人"
+        />
+        <van-field
+          required
+          label="联系方式:"
+          v-model="customerCompany.legalRepresentativePhone"
+          placeholder="请填写联系方式"
+        />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="证件类型:"
+          v-model="customerCompany.representativeIdType"
+          placeholder="请选择证件类型"
+          @click="showIdType = true"
+        />
+        <van-field
+          required
+          label="证件号码:"
+          v-model="customerCompany.representativeIdNum"
+          placeholder="请填写证件号码"
+        />
+        <van-field
+          required
+          label="实际用车人:"
+          v-model="customerCompany.actualCarOwner"
+          placeholder="请填写实际用车人"
+        />
+        <van-field
+          required
+          label="联系方式:"
+          v-model="customerCompany.ownerPhone"
+          placeholder="请填写联系方式"
+        />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="证件类型:"
+          v-model="customerCompany.ownerIdType"
+          placeholder="请选择证件类型"
+          @click="showIdType = true"
+        />
+        <van-field
+          required
+          label="证件号码:"
+          v-model="customerCompany.ownerIdNum"
+          placeholder="请填写证件号码"
+        />
+      </div>
+    </div>
+    <div class="subBtn">
+      <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
+    </div>
+    
+
+
+  </div>
 </template>
 
 <script>
-import {userDetailInfo, updateUser} from '../../request/api'
+import { userDetailInfo, updateUser } from "../../request/api";
 export default {
   data() {
     return {
@@ -127,7 +273,7 @@ export default {
       //     customerId: "", //客户id
       //     contactPersonName: "", //联系人姓名
       //     contactPersonPhone: "", //联系人手机号
-      //     relation: "", //与承租ƒ人关系（1、亲属；2、朋友）
+      //     relation: "", //与承租人关系（1、亲属；2、朋友）
       //     createdBy: "", //创建人
       //     createdTime: "", //创建时间
       //     updateBy: "", //更新人
@@ -153,20 +299,25 @@ export default {
       customerSpouseInfo: {
         id: 0, //逻辑主键
         customerId: 0, //客户id
-        spouseName: "", //配偶姓名	
-        spousePhone: "", //配偶手机号	
-        spouseIdType: "", //证件类型	
-        spouseIdNum: "", //证件号码	
+        spouseName: "", //配偶姓名
+        spousePhone: "", //配偶手机号
+        spouseIdType: "", //证件类型
+        spouseIdNum: "", //证件号码
         createdBy: "", //创建人
         createdTime: "", //创建时间
         updateBy: "", //更新人
         updateTime: "" //更新时间
       }
     };
-  }
-}
+  },
+  methods: {
+    toSub() {
+      this.$router.back();
+    }
+  },
+  mounted() {}
+};
 </script>
 
 <style>
-
 </style>

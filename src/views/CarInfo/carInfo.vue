@@ -518,7 +518,7 @@ export default {
   mounted() {},
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
-    from.meta.keepAlive = false;
+    to.meta.keepAlive = false;
     next();
   }
 };

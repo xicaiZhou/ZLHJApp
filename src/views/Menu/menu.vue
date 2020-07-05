@@ -41,7 +41,7 @@ export default {
           state: 1
         },
         {
-          name: "担保人信息",
+          name: "产品选择",
           state: 2
         },
         {
@@ -53,18 +53,26 @@ export default {
   },
   methods: {
     toDetail(val) {
-      if(val.name === "经销商信息"){
+      if (val.name === "经销商信息") {
         this.$router.push({
-          path:'/carInfo'
-        })
-      }else if(val.name === "融资业务信息"){
+          path: "/carInfo"
+        });
+      } else if (val.name === "融资业务信息") {
         this.$router.push({
-          path:'/business'
-        })
-      }else if(val.name === "个人信息"){
+          path: "/business"
+        });
+      } else if (val.name === "个人信息") {
         this.$router.push({
-          path:'/userInfo'
-        })
+          path: "/userInfo"
+        });
+      } else if (val.name === "产品选择") {
+        this.$router.push({
+          path: "/selectProduct"
+        });
+      } else if (val.name === "文件上传") {
+        this.$router.push({
+          path: "/uploadFile"
+        });
       }
     },
     toSub() {}
@@ -90,7 +98,6 @@ export default {
   padding: 0 2%;
   box-shadow: 0px 5px 5px #ebedf0;
   margin-top: 15px;
-
 }
 .itemL {
   width: 50%;

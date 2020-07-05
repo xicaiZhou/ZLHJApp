@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="height:100%; margin-bottom: 60px;">
     <div>
       <div style="margin-top:20px">
         <div class="headerAndBtn">
@@ -79,7 +79,7 @@
               clickable
               is-link
               required
-              style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+              style="≈ margin-top:10px"
               label="客户角色:"
               placeholder="请选择"
               v-model="addUserInfo.customerRoleValue"
@@ -136,6 +136,9 @@
         </div>
       </van-popup>
     </div>
+    <div class="subBtn">
+      <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
+    </div>
   </div>
 </template>
 
@@ -182,6 +185,9 @@ export default {
       }else{
 
       }
+    },
+     toSub() {
+      this.$router.back();
     },
     addUser(){
 

@@ -28,6 +28,15 @@ import business from '@/views/BusinessInfo/businessInfo'
 import userInfo from '@/views/UserInfo/userInfo'
 // 对私人员详情信息
 import userInfoDetail from '@/views/UserInfo/userInfoDetail'
+// 对公人员详情
+import maleBrandInfoDetail from '@/views/UserInfo/maleBrandInfoDetail'
+
+// 选择产品
+import selectProduct from '@/views/Product/selectProduct'
+import productList from '@/views/Product/productList'
+
+// 文件上传
+import uploadFile from '@/views/UploadFile/uploadFile'
 Vue.use(Router)
 
 export default new Router({
@@ -139,7 +148,8 @@ export default new Router({
         keepAlive:false,
         title: '个人信息'
       }
-    },{
+    },
+    {
       path:'/userInfoDetail',
       name:'userInfoDetail',
       component:userInfoDetail,
@@ -148,5 +158,40 @@ export default new Router({
         title: '个人详细信息'
       }
     },
+    {
+      path:'/maleBrandInfoDetail',
+      name:'maleBrandInfoDetail',
+      component:maleBrandInfoDetail,
+      meta:{
+        keepAlive:false,
+        title: '个人详细信息'
+      }
+    },
+    {
+      path:'/selectProduct',
+      name:'selectProduct',
+      component:selectProduct,
+      meta:{
+        keepAlive:true,
+        title: '选择产品'
+      }
+    },{
+      path:'/productList',
+      name:'productList',
+      component:productList,
+      meta:{
+        keepAlive:false,
+        title: '产品列表'
+      }
+    },{
+      path:'/uploadFile',
+      name:'uploadFile',
+      component:uploadFile,
+      meta:{
+        keepAlive:false,
+        title: '文件上传'
+      }
+    },
+
   ]
 })

@@ -249,12 +249,12 @@ export default {
         this.finished = false;
         this.loading = true;
       }
-      const toast = this.$toast.loading({
-        duration: 0,
-        message: '加载中...',
-        forbidClick: true,
-        loadingType: 'spinner',
-      });
+      // const toast = this.$toast.loading({
+      //   duration: 0,
+      //   message: '加载中...',
+      //   forbidClick: true,
+      //   loadingType: 'spinner',
+      // });
       var params = Object.assign(
           {userId:this.$store.state.userId},
           {startTime:startTime},
