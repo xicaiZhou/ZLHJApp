@@ -17,6 +17,10 @@ export default {
 .systemAppColor {
   background: #00ff00;
 }
+.readOnly{
+  pointer-events: none;
+  background-color: #F7F7F7;
+}
 .van-field__body input {
   text-align: right;
   overflow: hidden;
@@ -28,12 +32,12 @@ export default {
   position: fixed;
   bottom: 0px;
   width: 100%;
-  background:#fff;
+  background: #fff;
 }
 .subBtn_body {
   width: 90%;
   margin: auto;
-  margin-bottom: 20px ;
+  margin-bottom: 20px;
   background: #ff9900;
   border: none;
 }
@@ -44,8 +48,18 @@ export default {
   color: #323233;
   padding: 10px 8px 10px 16px;
 }
-.zlhjRadio_title {
+.zlhjRadio_title{
+   width: 90px;
+}
+.zlhjRadio_title_norequired{
   width: 90px;
+}
+.zlhjRadio_title::before {
+  position: absolute;
+  left: 8px;
+  color: #ee0a24;
+  font-size: 14px;
+  content: "*";
 }
 .zlhjRadio_body {
   display: flex;
@@ -85,7 +99,7 @@ export default {
   height: 40px;
   line-height: 50px;
 }
-.headerAndBtn{
+.headerAndBtn {
   width: 100%;
   height: 40%;
   display: flex;

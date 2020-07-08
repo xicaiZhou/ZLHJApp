@@ -16,7 +16,7 @@
           readonly
           clickable
           label="与承租人关系:"
-          v-model="customerInfo.relation"
+          v-model="customerInfo.relationValue"
           placeholder="请选择与承租人关系"
           @click="showSelectPop(1)"
         />
@@ -26,7 +26,7 @@
           readonly
           clickable
           label="证件类型:"
-          v-model="customerInfo.idType"
+          v-model="customerInfo.idTypeValue"
           placeholder="请选择证件类型"
           @click="showSelectPop(2)"
         />
@@ -55,7 +55,7 @@
           readonly
           clickable
           label="婚姻状况:"
-          v-model="customerInfo.isMarry"
+          v-model="customerInfo.isMarryValue"
           placeholder="请选择婚姻状况"
           @click="showSelectPop(3)"
         />
@@ -76,7 +76,7 @@
           readonly
           clickable
           label="职业类型:"
-          v-model="customerInfo.showOccupationType"
+          v-model="customerInfo.occupationTypeValue"
           placeholder="请选择职业类型"
           @click="showSelectPop(4)"
         />
@@ -86,7 +86,7 @@
           readonly
           clickable
           label="国籍:"
-          v-model="customerInfo.nationality"
+          v-model="customerInfo.nationalityValue"
           placeholder="请选择国籍"
           @click="showSelectPop(5)"
         />
@@ -160,7 +160,7 @@
           readonly
           clickable
           label="客户类型:"
-          v-model="customerInfo.customerNature"
+          v-model="customerInfo.customerNatureValue"
           placeholder="请选择客户类型"
           @click="showSelectPop(6)"
         />
@@ -170,7 +170,7 @@
           readonly
           clickable
           label="教育程度:"
-          v-model="customerInfo.educationLevel"
+          v-model="customerInfo.educationLevelValue"
           placeholder="请选择教育程度"
           @click="showSelectPop(7)"
         />
@@ -190,7 +190,7 @@
           readonly
           clickable
           label="居住状况:"
-          v-model="customerHouseProperty.liveType"
+          v-model="customerHouseProperty.liveTypeValue"
           placeholder="请选择居住状况"
           @click="showSelectPop(8)"
         />
@@ -248,16 +248,25 @@
             <div class="zlhjRadioLine"></div>
           </div>
         </div>
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="购车目的:"
-          v-model="customerAssets.buyCarPurpose"
-          placeholder="请选择购车目的"
-          @click="showSelectPop(9)"
-        />
+        <div>
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title">购车目的:</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="customerAssets.buyCarPurpose = '1'"
+                :class="customerAssets.buyCarPurpose == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >自用</div>
+              <div
+                @click="customerAssets.buyCarPurpose = '2'"
+                :class="customerAssets.buyCarPurpose == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >出租</div>
+            </div>
+          </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
+        </div>
+
         <van-field
           label="社保卡号:"
           v-model="customerAssets.socialSecurityNumber"
@@ -266,23 +275,32 @@
       </div>
       <div>
         <div class="header">房产信息</div>
-        <van-field
-          is-link
-          readonly
-          clickable
-          label="房产类别:"
-          v-model="customerHouseProperty.roomType"
-          placeholder="请选择房产类型"
-          @click="showSelectPop(10)"
-        />
+        <div>
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title_norequired">房产类别:</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="customerHouseProperty.roomType = '1'"
+                :class="customerHouseProperty.roomType == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >住房</div>
+              <div
+                @click="customerHouseProperty.roomType = '2'"
+                :class="customerHouseProperty.roomType == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >商用房</div>
+            </div>
+          </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
+        </div>
         <van-field
           is-link
           readonly
           clickable
           label="房产性质:"
-          v-model="customerHouseProperty.roomNature"
+          v-model="customerHouseProperty.roomNatureValue"
           placeholder="请选择房产性质"
-          @click="showSelectPop(11)"
+          @click="showSelectPop(9)"
         />
         <van-field
           is-link
@@ -349,9 +367,9 @@
             readonly
             clickable
             label="单位性质:"
-            v-model="customerJob.companyType"
+            v-model="customerJob.companyTypeValue"
             placeholder="请选择单位性质"
-            @click="showSelectPop(12)"
+            @click="showSelectPop(10)"
           />
           <van-field
             required
@@ -359,13 +377,13 @@
             readonly
             clickable
             label="职务:"
-            v-model="customerJob.position"
+            v-model="customerJob.positionValue"
             placeholder="请选择职务"
-            @click="showSelectPop(13)"
+            @click="showSelectPop(11)"
           />
         </div>
       </div>
-      <div>
+      <div v-show="this.customerInfo.isMarry == '2'">
         <div class="header">配偶信息</div>
         <van-field
           required
@@ -388,7 +406,7 @@
           label="证件类型:"
           v-model="customerSpouseInfo.spouseIdType"
           placeholder="请选择配偶证件类型"
-          @click="showSelectPop(14)"
+          @click="showSelectPop(12)"
         />
         <van-field
           required
@@ -407,7 +425,7 @@
         />
         <div>
           <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title">是否需要对账单：</span>
+            <span class="zlhjRadio_title_norequired">是否需要对账单：</span>
             <div class="zlhjRadio_body">
               <div
                 @click="customerContact.isNeedStatement = '1'"
@@ -508,6 +526,9 @@
 
 <script>
 import { userDetailInfo, updateUser } from "../../request/api";
+import { getKey, getValue } from "../../utils/utils";
+import { idNumInfo } from "../../utils/common";
+import {dateFormat} from '../../utils/formatter'
 export default {
   data() {
     return {
@@ -523,13 +544,15 @@ export default {
         customerName: "", // 客户姓名/企业名称
         beforeName: "", // 曾用名
         loanNumber: "", // 申请编号
-        customerRole: "", //角色(1-主借款人 2-配偶 3-担保人 4-共借人 6-共借人与配偶)
+        customerRole: "", //角色(1-承租人 2-担保人)
         customerType: "", //客户类型(1=自然人，2=法人)
-        relation: "", // 与承租人关系
+        relation: "", // 与承租人关系 1-本人 2-夫妻 3-父母 4-子女 5-兄弟姐妹 6-同事 7-其他
+        relationValue: "", //自己添加的
         sex: "", //客户性别
         idType: "", //证件类型
         idNum: "", // 证件号码
         isMarry: "", // 婚姻状况
+        isMarryValue: "", // 自己加的
         birthday: "", // 出生日期
         age: "", //年龄
         occupationType: "", // 职业类型
@@ -633,18 +656,6 @@ export default {
         updateBy: "", //更新人
         updateTime: "" //更新时间
       },
-      //    {
-      //     id: "", //逻辑主键
-      //     customerId: "", //客户id
-      //     contactPersonName: "", //联系人姓名
-      //     contactPersonPhone: "", //联系人手机号
-      //     relation: "", //与承租人关系（1、亲属；2、朋友）
-      //     createdBy: "", //创建人
-      //     createdTime: "", //创建时间
-      //     updateBy: "", //更新人
-      //     updateTime: "" //更新时间
-      //   },
-      customerContactPersonList: [],
       customerCompany: {
         id: 0, //逻辑主键
         customerId: 0, //客户id
@@ -673,6 +684,17 @@ export default {
         updateBy: "", //更新人
         updateTime: "" //更新时间
       },
+      customerContactPersonList: [], //    {
+      //     id: "", //逻辑主键
+      //     customerId: "", //客户id
+      //     contactPersonName: "", //联系人姓名
+      //     contactPersonPhone: "", //联系人手机号
+      //     relation: "", //与承租人关系（1、亲属；2、朋友）
+      //     createdBy: "", //创建人
+      //     createdTime: "", //创建时间
+      //     updateBy: "", //更新人
+      //     updateTime: "" //更新时间
+      //   },
       idCardAddress: "",
       liveAddress: "",
       roomAddress: "",
@@ -680,7 +702,81 @@ export default {
     };
   },
   mounted() {
-    this.setAddress();
+    console.log(this.$route.params.customerId);
+    userDetailInfo({ customerId: this.$route.params.customerId }).then(res => {
+      console.log(res);
+      if (res.data.data.customerInfo != null) {
+        this.customerInfo = res.data.data.customerInfo;
+        this.customerInfo.relationValue = getValue(
+          "1",
+          this.customerInfo.relation
+        );
+        if (this.customerInfo.idType == "1") {
+          this.customerInfo.sex = idNumInfo(this.customerInfo.idNum).sex;
+          this.customerInfo.age = idNumInfo(this.customerInfo.idNum).age;
+          this.customerInfo.birthday = idNumInfo(
+            this.customerInfo.idNum
+          ).birthday;
+        }
+        this.customerInfo.idTypeValue = getValue("2", this.customerInfo.idType);
+        this.customerInfo.isMarryValue = getValue(
+          "3",
+          this.customerInfo.isMarry
+        );
+        this.customerInfo.occupationTypeValue = getValue(
+          "4",
+          this.customerInfo.occupationType
+        );
+        this.customerInfo.nationalityValue = getValue(
+          "5",
+          this.customerInfo.nationalityValue
+        );
+        this.customerInfo.customerNatureValue = getValue(
+          "6",
+          this.customerInfo.customerNature
+        );
+        this.customerInfo.educationLevelValue = getValue(
+          "7",
+          this.customerInfo.educationLevel
+        );
+        this.customerHouseProperty.liveTypeValue = getValue(
+          "8",
+          this.customerInfo.liveTypeValue
+        );
+        this.customerHouseProperty.roomNatureValue = getValue(
+          "9",
+          this.customerInfo.roomNature
+        );
+        this.customerJob.companyTypeValue = getValue(
+          "10",
+          this.customerInfo.companyType
+        );
+        this.customerJob.positionValue = getValue(
+          "11",
+          this.customerInfo.position
+        );
+      }
+      if (res.data.data.customerHouseProperty != null) {
+        this.customerHouseProperty = res.data.data.customerHouseProperty;
+      }
+      if (res.data.data.customerAssets != null) {
+        this.customerAssets = res.data.data.customerAssets;
+      }
+      if (res.data.data.customerJob != null) {
+        this.customerJob = res.data.data.customerJob;
+      }
+      if (res.data.data.customerContact != null) {
+        this.customerContact = res.data.data.customerContact;
+      }
+      if (res.data.data.customerCompany != null) {
+        this.customerCompany = res.data.data.customerCompany;
+      }
+      if (res.data.data.customerSpouseInfo != null) {
+        this.customerSpouseInfo = res.data.data.customerSpouseInfo;
+      }
+      this.customerContactPersonList = res.data.data.customerContactPersonList;
+      this.setAddress();
+    });
   },
 
   methods: {
@@ -689,89 +785,89 @@ export default {
       switch (this.selectIndex) {
         case 1: {
           //与承租人关系:
-          // customerInfo.relation
+          this.customerInfo.relation = getKey(value, this.popList);
+          this.customerInfo.relationValue = value;
           break;
         }
         case 2: {
           //证件类型:
-          // customerInfo.idType
+          customerInfo.idType = getKey(value, this.popList);
+          this.customerInfo.idTypeValue = value;
           break;
         }
         case 3: {
-          // customerInfo.isMarry
           // 请选择婚姻状况
+          this.customerInfo.isMarry = getKey(value, this.popList);
+          this.customerInfo.isMarryValue = value;
+
           break;
         }
         case 4: {
           // label="职业类型:"
-          // v-model="customerInfo.showOccupationType"
+          this.customerInfo.occupationType = getKey(value, this.popList);
+          this.customerInfo.occupationTypeValue = value;
           break;
         }
         case 5: {
           // label="国籍:"
-          // v-model="customerInfo.nationality"
-
+          this.customerInfo.nationality = getKey(value, this.popList);
+          this.customerInfo.nationalityValue = value;
           break;
         }
         case 6: {
           // label="客户类型:"
-          // v-model="customerInfo.customerNature"
-
+          this.customerInfo.customerNature = getKey(value, this.popList);
+          this.customerInfo.customerNatureValue = value;
           break;
         }
         case 7: {
           // label="教育程度:"
-          // v-model="customerInfo.educationLevel"
+          this.customerInfo.educationLevel = getKey(value, this.popList);
+          this.customerInfo.educationLevelValue = value;
 
           break;
         }
         case 8: {
           //  label="居住状况:"
-          // v-model="customerHouseProperty.liveType"
-
+          this.customerHouseProperty.liveType = getKey(value, this.popList);
+          this.customerHouseProperty.liveTypeValue = value;
           break;
         }
         case 9: {
-          //  label="购车目的:"
-          // v-model="customerAssets.buyCarPurpose"
+          // label="房产性质:"
+          this.customerHouseProperty.roomNature = getKey(value, this.popList);
+          this.customerHouseProperty.roomNatureValue = value;
 
           break;
         }
         case 10: {
-          // label="房产类别:"
-          // v-model="customerHouseProperty.roomType"
-
+          //  label="单位性质:"
+          this.customerJob.companyType = getKey(value, this.popList);
+          this.customerJob.companyTypeValue = value;
           break;
         }
         case 11: {
-          // label="房产性质:"
-          // v-model="customerHouseProperty.roomNature"
-
+          // label="职务:"
+          this.customerJob.position = getKey(value, this.popList);
+          this.customerJob.positionValue = value;
           break;
         }
         case 12: {
-          //  label="单位性质:"
-          // v-model="customerJob.companyType"
-
-          break;
-        }
-        case 13: {
-          // label="职务:"
-          // v-model="customerJob.position"
-
-          break;
-        }
-        case 14: {
           // label="证件类型:"
-          // v-model="customerSpouseInfo.spouseIdType"
-
+          this.customerSpouseInfo.spouseIdType = getKey(value, this.popList);
+          this.customerSpouseInfo.spouseIdTypeValue = value;
           break;
         }
       }
     },
-    selectDate(value) {
+    selectDate(date) {
       this.showDatePop = false;
-      this.customerInfo.certificateEndDate = value;
+      console.log(date)
+      
+      this.customerInfo.certificateEndDate = dateFormat(
+        date,
+        "yyyy-MM-dd"
+      );;
     },
     showSelectAddressPop(state) {
       switch (state) {
@@ -788,99 +884,101 @@ export default {
       switch (state) {
         case 1: {
           //与承租人关系:
-          // customerInfo.relation
-          this.popList = [];
+          this.popList = [
+            "本人",
+            "夫妻",
+            "父母",
+            "子女",
+            "兄弟姐妹",
+            "同事",
+            "其他"
+          ];
           break;
         }
         case 2: {
           //证件类型:
-          // customerInfo.idType
-          this.popList = [];
-
+          this.popList = ["身份证", "社会统一信用代码"];
           break;
         }
         case 3: {
-          // customerInfo.isMarry
           // 请选择婚姻状况
-          this.popList = [];
-
+          this.popList = ["未婚", "已婚", "丧偶", "离婚"];
           break;
         }
         case 4: {
           // label="职业类型:"
-          // v-model="customerInfo.showOccupationType"
-          this.popList = [];
-
+          this.popList = ["标准受薪", "自雇人士", "自由职业"];
           break;
         }
         case 5: {
           // label="国籍:"
           // v-model="customerInfo.nationality"
-          this.popList = [];
-
+          this.popList = ["中华人民共和国"];
           break;
         }
         case 6: {
           // label="客户类型:"
           // v-model="customerInfo.customerNature"
-          this.popList = [];
-
+          this.popList = ["自然人", "企业"];
           break;
         }
         case 7: {
           // label="教育程度:"
           // v-model="customerInfo.educationLevel"
-          this.popList = [];
-
+          this.popList = [
+            "硕士及以上",
+            "本科",
+            "大专",
+            "高中/中专",
+            "初中及以下"
+          ];
           break;
         }
         case 8: {
           //  label="居住状况:"
           // v-model="customerHouseProperty.liveType"
-          this.popList = [];
-
+          this.popList = ["自购无按揭", "按揭", "亲属住房", "宅基地房", "租房"];
           break;
         }
         case 9: {
-          //  label="购车目的:"
-          // v-model="customerAssets.buyCarPurpose"
-          this.popList = [];
-
+          // label="房产性质:"
+          // v-model="customerHouseProperty.roomNature"
+          this.popList = ["自用", "出租", "空置"];
           break;
         }
         case 10: {
-          // label="房产类别:"
-          // v-model="customerHouseProperty.roomType"
-          this.popList = [];
-
+          //  label="单位性质:"
+          // v-model="customerJob.companyType"
+          this.popList = [
+            "政府机关/事业单位",
+            "国企",
+            "外资/合资",
+            "民营",
+            "个体",
+            "其他"
+          ];
           break;
         }
         case 11: {
-          // label="房产性质:"
-          // v-model="customerHouseProperty.roomNature"
-          this.popList = [];
-
+          // label="职务:"
+          // v-model="customerJob.position"
+          this.popList = [
+            "高层",
+            "中层",
+            "基层",
+            "一般员工",
+            "销售类员工",
+            "操作类员工",
+            "非正式员工",
+            "其他",
+            "无"
+          ];
           break;
         }
         case 12: {
-          //  label="单位性质:"
-          // v-model="customerJob.companyType"
-          this.popList = [];
-
-          break;
-        }
-        case 13: {
-          // label="职务:"
-          // v-model="customerJob.position"
-          this.popList = [];
-
-          break;
-        }
-        case 14: {
           // label="证件类型:"
           // v-model="customerSpouseInfo.spouseIdType"
-          this.popList = [];
-
+          this.popList = ["身份证"];
           break;
         }
       }

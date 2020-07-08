@@ -1,18 +1,12 @@
 <template>
   <div>
     <div class="bgView">
-       <van-image round style="margin-top:75px;margin-left:30px;" width="6rem" height="6rem" fit="contain" lazy-load src="https://img.yzcdn.cn/vant/cat.jpeg" />
+       <van-image round style="margin-top:50px;margin-left:30px;"
+        width="5rem" height="5rem"
+        src="https://img.yzcdn.cn/vant/cat.jpeg" />
        <div class="name">用户名</div>
     </div>
     <van-cell-group>
-      <van-field
-        v-model="value1"
-        label="车惠贷推广码"
-        left-icon="smile-o"
-        placeholder="12344"
-        disabled="true"
-        is-link
-      />
       <van-field
         v-model="value2"
         label="微信绑定"
@@ -60,7 +54,9 @@
 export default {
   data() {
     return {
-      active: 2
+      active: 2,
+      value2:'',
+      value1:''
     };
   },
   methods: {
@@ -68,6 +64,9 @@ export default {
       this.$router.push({
          path: "/setup"
       });
+    },
+    onChange(){
+
     }
   },
 };
@@ -75,16 +74,16 @@ export default {
 
 <style scoped>
 .bgView {
-  background: rgb(255, 145, 0);
+  background: #ff9900;
   display: flex;
-  height: 200px;
+  height: 150px;
   width: 100%;
 }
 .name {
   color: black;
   font: 30px;
   height: 30px;
-  margin-top: 110px;
+  margin-top: 90px;
   margin-left: 20px;
 }
 </style>

@@ -6,6 +6,8 @@ const store = new Vuex.Store({
     state:{
         token:'',
         loanId:'',
+        loanNumber:'20200707153020238',
+        // loanNumber:'20200703105318095',
         userInfo:{},
         carModel:{},
         cars:{},

@@ -16,11 +16,11 @@ export function CarInfo(param){
         data:param
     })
 }
-// 根据loanNumber获取业务信息数据
-export function BusinessInfo(param){
+
+export function SaveCarInfo(param){
     return request({
-        method:'get',
-        url:'/api/loan/loanDetail/info/' + param.loanNumber,
+        method:'post',
+        url:'/api/loan/add',
         data:param
     })
 }
@@ -51,8 +51,56 @@ export function CarsList(param){
     })
 }
 
+//  =========================融资信息========================
 
-
+// 根据loanNumber获取业务信息数据
+export function BusinessInfo(param){
+    return request({
+        method:'get',
+        url:'/api/loan/loanDetail/info/' + param.loanNumber,
+        data:param
+    })
+}
+// 费用列表
+export function CostList(param){
+    return request({
+        method:'get',
+        url: '/api/expenseDetail/getList/' + param.loanNumber,
+        data:param
+    })
+}
+// 计算所有费用
+export function CalculateCost(param){
+    return request({
+        method:'post',
+        url:'/api/loan/loanDetail/calculationLoanDetailAmount',
+        data:param
+    })
+}
+// 添加费用
+export function addCost(param){
+    return request({
+        method:'post',
+        url:'/api/expenseDetail/add',
+        data:param
+    })
+}
+// 删除费用
+export function delCost(param){
+    return request({
+        method:'post',
+        url:'/api/expenseDetail/delete/' + param.id,
+        data:param
+    })
+}
+// 保存业务信息
+export function saveBussinessInfo(param){
+    return request({
+        method:'post',
+        url:'/api/loan/loanDetail/add',
+        data:param
+    })
+}
 //  =========================人员信息========================
   // 获取人员列表
 export function userList(param){

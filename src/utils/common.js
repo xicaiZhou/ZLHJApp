@@ -12,6 +12,41 @@ export const idNumValidator = (val) =>{
     }
     return false;
 }
+export const idNumInfo = (val) =>{
+
+
+  console.log(val)
+
+  let year = ""
+  if(val.length==18){
+    year=val.substring(6,10)
+  }else if(val.length==15){
+    year="19"+val.substring(6,8)
+  }
+  let age = new Date().getFullYear() - parseInt(year)
+  console.log(age)
+
+
+  let birthday = ""
+  if(val.length==18){
+    birthday=val.substring(6,14)
+  }else if(val.length==15){
+    birthday="19"+val.substring(6,12)
+  }
+  let sex = ""
+  if(val.length==18){
+    sex=val.substring(16,17)
+  }else if(val.length==15){
+    sex=val.substring(14,15)
+  }
+
+  return {
+    age:age,
+    sex:parseInt(sex) % 2,
+    birthday:birthday
+  }
+
+}
 // 截取第一个？后链接后面的参数
 export const getUrlParamFirst = (key) =>{
     var url = window.location.href; //获取当前url
