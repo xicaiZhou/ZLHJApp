@@ -130,7 +130,7 @@ export function delUser(param){
 export function userDetailInfo(param){
     return request({
         method:'get',
-        url:"api/customerInfo/info/" + param.customerId,
+        url:"/api/customerInfo/info/" + param.customerId,
         data:param
     })
 }
@@ -140,5 +140,16 @@ export function updateUser(param) {
         method:'post',
         url:'/api/customerInfo/update',
         data:param
+    })
+}
+
+
+//  =========================其他数据========================
+// 1.省市区数据
+export function getAddress(){
+    return request({
+        method:'get',
+        url:"/api/provinceCityArea/list",
+        data:{}
     })
 }

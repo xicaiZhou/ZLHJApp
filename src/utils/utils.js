@@ -245,3 +245,12 @@ export function getKey(value,list){
     }
     
 }
+
+export function isEmpty(value){
+
+  if (value == null || value == ""){
+    return true
+  }
+  return false
+
+}

@@ -118,7 +118,12 @@
           placeholder="请选择证件到期日"
           @click="showSelectDatePop(1)"
         />
-        <van-field required label="发证机关:" v-model="customerInfo.age" placeholder="请填写年龄" />
+        <van-field
+          required
+          label="发证机关:"
+          v-model="customerInfo.certificationAuthority"
+          placeholder="请填写发证机关"
+        />
         <van-field
           required
           is-link
@@ -199,11 +204,11 @@
             <span class="zlhjRadio_title">现居地与身份证地址相同：</span>
             <div class="zlhjRadio_body">
               <div
-                @click="customerHouseProperty.whetherIdAddr = '1'"
+                @click="selectWhetherIdAddr('1')"
                 :class="customerHouseProperty.whetherIdAddr == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
               >是</div>
               <div
-                @click="customerHouseProperty.whetherIdAddr = '2'"
+                @click="selectWhetherIdAddr('2')"
                 :class="customerHouseProperty.whetherIdAddr == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
               >否</div>
             </div>
@@ -212,8 +217,25 @@
             <div class="zlhjRadioLine"></div>
           </div>
         </div>
+        <div v-show="customerHouseProperty.whetherIdAddr == '2'">
+          <van-field
+            is-link
+            required
+            readonly
+            clickable
+            label="现居住地地址:"
+            v-model="liveAddress"
+            placeholder="请选择现居住地地址"
+            @click="showSelectAddressPop(3)"
+          />
+          <van-field
+            required
+            label="详细地址:"
+            v-model="customerHouseProperty.liveAddress"
+            placeholder="请填写详细地址"
+          />
+        </div>
 
-        <van-field label="详细地址:" v-model="customerHouseProperty.liveAddress" placeholder="请填写详细地址" />
         <van-field label="固定电话:" v-model="customerHouseProperty.telephone" placeholder="请填写固定电话号码" />
       </div>
       <div>
@@ -309,7 +331,7 @@
           label="房产地址:"
           v-model="roomAddress"
           placeholder="请选择房产地址"
-          @click="showSelectAddressPop(2)"
+          @click="showSelectAddressPop(3)"
         />
         <van-field label="详细地址:" v-model="customerHouseProperty.roomAddress" placeholder="请填写详细地址" />
 
@@ -520,15 +542,29 @@
           @cancel="showDatePop = false"
         />
       </van-popup>
+      <van-popup
+        v-model="showAddressPop"
+        position="bottom"
+        :style="{ height: '300px', width: '100%'}"
+        get-container="body"
+      >
+        <van-area
+          @confirm="selectedAddress"
+          @cancel="showAddressPop = false"
+          title="选择地址"
+          :area-list="addressList"
+          :columns-placeholder="['请选择', '请选择', '请选择']"
+        />
+      </van-popup>
     </div>
   </div>
 </template>
 
 <script>
 import { userDetailInfo, updateUser } from "../../request/api";
-import { getKey, getValue } from "../../utils/utils";
+import { getKey, getValue, isEmpty } from "../../utils/utils";
 import { idNumInfo } from "../../utils/common";
-import {dateFormat} from '../../utils/formatter'
+import { dateFormat } from "../../utils/formatter";
 export default {
   data() {
     return {
@@ -539,6 +575,7 @@ export default {
       minDate: new Date(),
       showAddressPop: false,
       selectAddressIndex: 0,
+      addressList: this.$store.state.address,
       customerInfo: {
         customerId: "", // 客户id
         customerName: "", // 客户姓名/企业名称
@@ -684,17 +721,24 @@ export default {
         updateBy: "", //更新人
         updateTime: "" //更新时间
       },
-      customerContactPersonList: [], //    {
-      //     id: "", //逻辑主键
-      //     customerId: "", //客户id
-      //     contactPersonName: "", //联系人姓名
-      //     contactPersonPhone: "", //联系人手机号
-      //     relation: "", //与承租人关系（1、亲属；2、朋友）
-      //     createdBy: "", //创建人
-      //     createdTime: "", //创建时间
-      //     updateBy: "", //更新人
-      //     updateTime: "" //更新时间
-      //   },
+      customerContactPersonList: [
+        {
+          id: 0, //     id: "", //逻辑主键
+          contactPersonName: "", //联系人姓名
+          contactPersonPhone: "", //联系人手机号
+          relation: "", //与承租人关系（1、亲属；2、朋友）
+          updateBy: "", //更新人
+          updateTime: "" //更新时间
+        },
+        {
+          id: 0, //     id: "", //逻辑主键
+          contactPersonName: "", //联系人姓名
+          contactPersonPhone: "", //联系人手机号
+          relation: "", //与承租人关系（1、亲属；2、朋友）
+          updateBy: "", //更新人
+          updateTime: "" //更新时间
+        }
+      ], 
       idCardAddress: "",
       liveAddress: "",
       roomAddress: "",
@@ -778,8 +822,21 @@ export default {
       this.setAddress();
     });
   },
-
   methods: {
+    selectWhetherIdAddr(val) {
+      this.customerHouseProperty.whetherIdAddr = val;
+      if (val == "1") {
+        this.customerHouseProperty.liveProvince = this.customerInfo.idCardProvince;
+        this.customerHouseProperty.liveCity = this.customerInfo.idCardCity;
+        this.customerHouseProperty.liveArea = this.customerInfo.idCardArea;
+        this.customerHouseProperty.liveAddress = this.customerInfo.idCardAddress;
+      } else {
+        this.customerHouseProperty.liveProvince = "";
+        this.customerHouseProperty.liveCity = "";
+        this.customerHouseProperty.liveArea = "";
+        this.customerHouseProperty.liveAddress = "";
+      }
+    },
     selected(value) {
       this.showPop = false;
       switch (this.selectIndex) {
@@ -791,7 +848,7 @@ export default {
         }
         case 2: {
           //证件类型:
-          customerInfo.idType = getKey(value, this.popList);
+          this.customerInfo.idType = getKey(value, this.popList);
           this.customerInfo.idTypeValue = value;
           break;
         }
@@ -862,19 +919,54 @@ export default {
     },
     selectDate(date) {
       this.showDatePop = false;
-      console.log(date)
-      
-      this.customerInfo.certificateEndDate = dateFormat(
-        date,
-        "yyyy-MM-dd"
-      );;
+      console.log(date);
+
+      this.customerInfo.certificateEndDate = dateFormat(date, "yyyy-MM-dd");
     },
-    showSelectAddressPop(state) {
-      switch (state) {
+    selectedAddress(value) {
+      console.log(value);
+      switch (this.selectAddressIndex) {
         case 1: {
+          //身份证地址
+          this.idCardAddress = value[0].name + value[1].name + value[2].name;
+          this.customerInfo.idCardProvince = value[0].code;
+          this.customerInfo.idCardCity = value[1].code;
+          this.customerInfo.idCardArea = value[2].code;
+          if (this.customerHouseProperty.whetherIdAddr == "1") {
+            this.customerHouseProperty.liveProvince = this.customerInfo.idCardProvince;
+            this.customerHouseProperty.liveCity = this.customerInfo.idCardCity;
+            this.customerHouseProperty.liveArea = this.customerInfo.idCardArea;
+            this.customerHouseProperty.liveAddress = this.customerInfo.idCardAddress;
+          }
           break;
         }
+        case 2: {
+          // 居住地址
+          this.liveAddress = value[0].name + value[1].name + value[2].name;
+          this.customerHouseProperty.liveProvince = value[0].code;
+          this.customerHouseProperty.liveCity = value[1].code;
+          this.customerHouseProperty.liveArea = value[2].code;
+          break;
+        }
+        case 3: {
+          // 房产地址
+          this.roomAddress = value[0].name + value[1].name + value[2].name;
+          this.customerHouseProperty.roomProvince = value[0].code;
+          this.customerHouseProperty.roomCity = value[1].code;
+          this.customerHouseProperty.roomCity = value[2].code;
+        }
+        case 4: {
+          // 工作地址
+          this.companyAddress = value[0].name + value[1].name + value[2].name;
+          this.customerJob.companyProvince = value[0].code;
+          this.customerJob.companyCity = value[1].code;
+          this.customerJob.companyArea = value[2].code;
+        }
       }
+      this.showAddressPop = false;
+    },
+    showSelectAddressPop(state) {
+      this.selectAddressIndex = state;
       this.showAddressPop = true;
     },
     showSelectDatePop(state) {
@@ -919,7 +1011,8 @@ export default {
         case 6: {
           // label="客户类型:"
           // v-model="customerInfo.customerNature"
-          this.popList = ["自然人", "企业"];
+          // *****进到这个界面只能是自然人
+          this.popList = ["自然人"];
           break;
         }
         case 7: {
@@ -986,25 +1079,96 @@ export default {
       this.showPop = true;
     },
     toSub() {
+      if (
+        isEmpty(this.customerInfo.customerName) ||
+        isEmpty(this.customerInfo.customerRole) ||
+        isEmpty(this.customerInfo.idType) ||
+        isEmpty(this.customerInfo.idNum) ||
+        isEmpty(this.customerInfo.sex) ||
+        isEmpty(this.customerInfo.isMarry) ||
+        isEmpty(this.customerInfo.birthday) ||
+        isEmpty(this.customerInfo.age) ||
+        isEmpty(this.customerInfo.occupationType) ||
+        isEmpty(this.customerInfo.nationality) ||
+        isEmpty(this.customerInfo.isLongTerm) ||
+        isEmpty(this.customerInfo.certificateEndDate) ||
+        isEmpty(this.customerInfo.certificationAuthority) ||
+        isEmpty(this.customerInfo.idCardProvince) ||
+        isEmpty(this.customerInfo.idCardAddress) ||
+        isEmpty(this.customerInfo.phone) ||
+        isEmpty(this.customerInfo.isLocal) ||
+        isEmpty(this.customerInfo.customerNature) ||
+        isEmpty(this.customerInfo.educationLevel) ||
+        isEmpty(this.customerInfo.highestEducation) ||
+        isEmpty(this.customerInfo.highestEducation)
+      ) {
+        this.$toast.fail("请将’基本信息‘中必填项填写完整");
+        return;
+      }
+      if (
+        isEmpty(this.customerHouseProperty.liveType) ||
+        isEmpty(this.customerHouseProperty.whetherIdAddr) ||
+        isEmpty(this.customerHouseProperty.liveProvince) ||
+        isEmpty(this.customerHouseProperty.liveProvince)
+      ) {
+        this.$toast.fail("请将’居住信息‘中必填项填写完整");
+        return;
+      }
+      if (
+        isEmpty(this.customerAssets.familyMonthIncome) ||
+        isEmpty(this.customerAssets.familyMonthExpenditure) ||
+        isEmpty(this.customerAssets.firstBuyCar) ||
+        isEmpty(this.customerAssets.buyCarPurpose)
+      ) {
+        this.$toast.fail("请将’主要财产信息‘中必填项填写完整");
+        return;
+      }
+      if (
+        isEmpty(this.customerAssets.familyMonthIncome) ||
+        isEmpty(this.customerAssets.familyMonthExpenditure) ||
+        isEmpty(this.customerAssets.firstBuyCar) ||
+        isEmpty(this.customerAssets.buyCarPurpose)
+      ) {
+        this.$toast.fail("请将’主要财产信息‘中必填项填写完整");
+        return;
+      }
+      if (
+        isEmpty(this.customerAssets.familyMonthIncome) ||
+        isEmpty(this.customerAssets.familyMonthExpenditure) ||
+        isEmpty(this.customerAssets.firstBuyCar) ||
+        isEmpty(this.customerAssets.buyCarPurpose)
+      ) {
+        this.$toast.fail("请将’主要财产信息‘中必填项填写完整");
+        return;
+      }
+
       this.$router.back();
     },
     setAddress() {
-      this.idCardAddress =
-        this.customerInfo.idCardProvince +
-        this.customerInfo.idCardCity +
-        this.customerInfo.idCardArea;
-      this.liveAddress =
-        this.customerHouseProperty.liveProvince +
-        this.customerHouseProperty.liveCity +
-        this.customerHouseProperty.liveArea;
-      this.roomAddress =
-        this.customerHouseProperty.roomProvince +
-        this.customerHouseProperty.roomCity +
-        this.customerHouseProperty.roomArea;
-      this.companyAddress =
-        this.customerJob.companyProvince +
-        this.customerJob.companyCity +
-        this.customerJob.companyArea;
+      if (this.customerInfo.idCardProvince != null) {
+        this.idCardAddress =
+          this.customerInfo.idCardProvince +
+          this.customerInfo.idCardCity +
+          this.customerInfo.idCardArea;
+      }
+      if (this.customerHouseProperty.liveProvince != null) {
+        this.liveAddress =
+          this.customerHouseProperty.liveProvince +
+          this.customerHouseProperty.liveCity +
+          this.customerHouseProperty.liveArea;
+      }
+      if (this.customerHouseProperty.roomProvince != null) {
+        this.roomAddress =
+          this.customerHouseProperty.roomProvince +
+          this.customerHouseProperty.roomCity +
+          this.customerHouseProperty.roomArea;
+      }
+      if (this.customerJob.companyProvince != null) {
+        this.companyAddress =
+          this.customerJob.companyProvince +
+          this.customerJob.companyCity +
+          this.customerJob.companyArea;
+      }
     }
   }
 };

@@ -1,5 +1,5 @@
 <template>
-  <div v-wechat-title='title'>
+  <div>
     <van-popup v-model="popupShow" position="top">
       <div class="search_form">
         <van-form alidate-first>

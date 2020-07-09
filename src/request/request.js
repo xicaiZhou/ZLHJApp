@@ -2,6 +2,7 @@ import axios from 'axios';
 import router from '../router';
 import QS from 'qs'
 import {Toast} from 'vant';
+import store from '../store/index'
 
 /** 创建axios实例*/
 const request = axios.create({})
@@ -15,7 +16,7 @@ request.defaults.withCredentials = true;
 /** request interceptor*/
 request.interceptors.request.use(
     config => {
-		config.headers.common["token"] = 'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk0MjEwNTk4LCJpYXQiOjE1OTQxNzQ1OTgsImp0aSI6ImM3YTJhOGZmODNkNDQzOTg4Njk5N2RjMDdmZTJkNzUzIiwidXNlcm5hbWUiOiJhZG1pbiJ9.VCbAmNbR5ZnMqzc6PakKZIT6IG_a8L81DCJlsvUnaxw';
+		config.headers.common["token"] = store.state.token;
         return config
     },
     error => {

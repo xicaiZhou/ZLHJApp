@@ -12,10 +12,12 @@ export const idNumValidator = (val) =>{
     }
     return false;
 }
+// 邮箱校验
+export const isEmail = (mail) =>{
+  return /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]$/.test(mail);
+}
+// 根据身份证号码计算生日年龄和性别
 export const idNumInfo = (val) =>{
-
-
-  console.log(val)
 
   let year = ""
   if(val.length==18){

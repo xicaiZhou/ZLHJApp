@@ -19,17 +19,27 @@
 </template>
 
 <script>
+import { getAddress } from '../../request/api'
 export default {
   data() {
     return {
       active: 0
     };
   },
+  mounted(){
+    this.address()
+  },
   methods: {
     onChange(index) {
       Notify({ type: "primary", message: index });
+    },
+    address(){
+      getAddress().then(res=>{
+        this.$store.state.address = res.data.data;
+      })
     }
-  }
+  },
+
 };
 </script>
 
