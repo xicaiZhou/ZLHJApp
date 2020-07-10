@@ -738,7 +738,7 @@ export default {
           updateBy: "", //更新人
           updateTime: "" //更新时间
         }
-      ], 
+      ],
       idCardAddress: "",
       liveAddress: "",
       roomAddress: "",
@@ -856,7 +856,6 @@ export default {
           // 请选择婚姻状况
           this.customerInfo.isMarry = getKey(value, this.popList);
           this.customerInfo.isMarryValue = value;
-
           break;
         }
         case 4: {
@@ -894,7 +893,6 @@ export default {
           // label="房产性质:"
           this.customerHouseProperty.roomNature = getKey(value, this.popList);
           this.customerHouseProperty.roomNatureValue = value;
-
           break;
         }
         case 10: {
@@ -1102,7 +1100,7 @@ export default {
         isEmpty(this.customerInfo.highestEducation) ||
         isEmpty(this.customerInfo.highestEducation)
       ) {
-        this.$toast.fail("请将’基本信息‘中必填项填写完整");
+        this.$toast.fail("请将'基本信息'中必填项填写完整");
         return;
       }
       if (
@@ -1111,7 +1109,7 @@ export default {
         isEmpty(this.customerHouseProperty.liveProvince) ||
         isEmpty(this.customerHouseProperty.liveProvince)
       ) {
-        this.$toast.fail("请将’居住信息‘中必填项填写完整");
+        this.$toast.fail("请将'居住信息'中必填项填写完整");
         return;
       }
       if (
@@ -1120,7 +1118,7 @@ export default {
         isEmpty(this.customerAssets.firstBuyCar) ||
         isEmpty(this.customerAssets.buyCarPurpose)
       ) {
-        this.$toast.fail("请将’主要财产信息‘中必填项填写完整");
+        this.$toast.fail("请将'主要财产信息'中必填项填写完整");
         return;
       }
       if (
@@ -1129,17 +1127,50 @@ export default {
         isEmpty(this.customerAssets.firstBuyCar) ||
         isEmpty(this.customerAssets.buyCarPurpose)
       ) {
-        this.$toast.fail("请将’主要财产信息‘中必填项填写完整");
+        this.$toast.fail("请将'主要财产信息'中必填项填写完整");
         return;
       }
-      if (
-        isEmpty(this.customerAssets.familyMonthIncome) ||
-        isEmpty(this.customerAssets.familyMonthExpenditure) ||
-        isEmpty(this.customerAssets.firstBuyCar) ||
-        isEmpty(this.customerAssets.buyCarPurpose)
-      ) {
-        this.$toast.fail("请将’主要财产信息‘中必填项填写完整");
+      if (isEmpty(this.customerJob.isWork)) {
+        this.$toast.fail("请选择是否用工作");
         return;
+      } else {
+        if (this.customerJob.isWork == "1") {
+          // 有工作
+          if (
+            isEmpty(this.customerJob.company) ||
+            isEmpty(this.customerJob.companyPhone) ||
+            isEmpty(this.customerJob.companyProvince) ||
+            isEmpty(this.customerJob.companyType) ||
+            isEmpty(this.customerJob.position)
+          ) {
+            this.$toast.fail("请将'工作信息'中必填项填写完整");
+            return;
+          }
+        }
+      }
+      if (this.customerInfo.isMarry == "2") {
+        // 已婚
+        if (
+          isEmpty(this.customerJob.company) ||
+          isEmpty(this.customerJob.companyPhone) ||
+          isEmpty(this.customerJob.companyProvince) ||
+          isEmpty(this.customerJob.companyType) ||
+          isEmpty(this.customerJob.position)
+        ) {
+          this.$toast.fail("请将'工作信息'中必填项填写完整");
+          return;
+        }
+      }
+
+      for (let index in this.customerContactPersonList) {
+        if (
+          isEmpty(this.customerContactPersonList[index].contactPersonName) ||
+          isEmpty(this.customerContactPersonList[index].contactPersonPhone) ||
+          isEmpty(this.customerContactPersonList[index].relation)
+        ) {
+           this.$toast.fail("请将'工作信息'中必填项填写完整");
+          return;
+        }
       }
 
       this.$router.back();
