@@ -226,7 +226,7 @@
             label="现居住地地址:"
             v-model="liveAddress"
             placeholder="请选择现居住地地址"
-            @click="showSelectAddressPop(3)"
+            @click="showSelectAddressPop(2)"
           />
           <van-field
             required
@@ -334,7 +334,6 @@
           @click="showSelectAddressPop(3)"
         />
         <van-field label="详细地址:" v-model="customerHouseProperty.roomAddress" placeholder="请填写详细地址" />
-
         <van-field label="面积(m²):" v-model="customerHouseProperty.roomAreas" placeholder="请填写房产面积" />
         <van-field label="房产编号:" v-model="customerHouseProperty.roomNum" placeholder="请填写房产编号" />
       </div>
@@ -380,7 +379,7 @@
             label="单位地址:"
             v-model="companyAddress"
             placeholder="请选择单位地址"
-            @click="showSelectAddressPop(3)"
+            @click="showSelectAddressPop(4)"
           />
           <van-field label="详细地址:" v-model="customerJob.companyAddress" placeholder="请填写详细地址" />
           <van-field
@@ -426,7 +425,7 @@
           readonly
           clickable
           label="证件类型:"
-          v-model="customerSpouseInfo.spouseIdType"
+          v-model="customerSpouseInfo.spouseIdTypeValue"
           placeholder="请选择配偶证件类型"
           @click="showSelectPop(12)"
         />
@@ -476,7 +475,7 @@
       </div>
       <div>
         <div class="header">其他联系方式</div>
-        <div v-for="(item,index) in customerContactPersonList" :key="index" @click="toDetail(item)">
+        <div v-for="(item,index) in customerContactPersonList" :key="index">
           <van-field
             required
             label="联系人姓名:"
@@ -562,7 +561,7 @@
 
 <script>
 import { userDetailInfo, updateUser } from "../../request/api";
-import { getKey, getValue, isEmpty } from "../../utils/utils";
+import { getKey, getValue, isEmpty, getAddress } from "../../utils/utils";
 import { idNumInfo } from "../../utils/common";
 import { dateFormat } from "../../utils/formatter";
 export default {
@@ -715,6 +714,7 @@ export default {
         spouseName: "", //配偶姓名
         spousePhone: "", //配偶手机号
         spouseIdType: "", //证件类型
+        spouseIdTypeValue: "", // 自己加的
         spouseIdNum: "", //证件号码
         createdBy: "", //创建人
         createdTime: "", //创建时间
@@ -773,7 +773,7 @@ export default {
         );
         this.customerInfo.nationalityValue = getValue(
           "5",
-          this.customerInfo.nationalityValue
+          this.customerInfo.nationality
         );
         this.customerInfo.customerNatureValue = getValue(
           "6",
@@ -783,31 +783,31 @@ export default {
           "7",
           this.customerInfo.educationLevel
         );
-        this.customerHouseProperty.liveTypeValue = getValue(
-          "8",
-          this.customerInfo.liveTypeValue
-        );
-        this.customerHouseProperty.roomNatureValue = getValue(
-          "9",
-          this.customerInfo.roomNature
-        );
-        this.customerJob.companyTypeValue = getValue(
-          "10",
-          this.customerInfo.companyType
-        );
-        this.customerJob.positionValue = getValue(
-          "11",
-          this.customerInfo.position
-        );
       }
       if (res.data.data.customerHouseProperty != null) {
         this.customerHouseProperty = res.data.data.customerHouseProperty;
+        this.customerHouseProperty.liveTypeValue = getValue(
+          "8",
+          this.customerHouseProperty.liveType
+        );
+        this.customerHouseProperty.roomNatureValue = getValue(
+          "9",
+          this.customerHouseProperty.roomNature
+        );
       }
       if (res.data.data.customerAssets != null) {
         this.customerAssets = res.data.data.customerAssets;
       }
       if (res.data.data.customerJob != null) {
         this.customerJob = res.data.data.customerJob;
+        this.customerJob.companyTypeValue = getValue(
+          "10",
+          this.customerJob.companyType
+        );
+        this.customerJob.positionValue = getValue(
+          "11",
+          this.customerJob.position
+        );
       }
       if (res.data.data.customerContact != null) {
         this.customerContact = res.data.data.customerContact;
@@ -817,8 +817,18 @@ export default {
       }
       if (res.data.data.customerSpouseInfo != null) {
         this.customerSpouseInfo = res.data.data.customerSpouseInfo;
+        this.customerSpouseInfo.spouseIdTypeValue = getValue(
+          "2",
+          this.customerSpouseInfo.spouseIdType
+        );
       }
-      this.customerContactPersonList = res.data.data.customerContactPersonList;
+      if (
+        res.data.data.customerContactPersonList != null &&
+        res.data.data.customerContactPersonList.length > 0
+      ) {
+        this.customerContactPersonList =
+          res.data.data.customerContactPersonList;
+      }
       this.setAddress();
     });
   },
@@ -917,15 +927,14 @@ export default {
     },
     selectDate(date) {
       this.showDatePop = false;
-      console.log(date);
-
       this.customerInfo.certificateEndDate = dateFormat(date, "yyyy-MM-dd");
     },
     selectedAddress(value) {
-      console.log(value);
       switch (this.selectAddressIndex) {
         case 1: {
           //身份证地址
+          console.log("身份证地址:", value);
+
           this.idCardAddress = value[0].name + value[1].name + value[2].name;
           this.customerInfo.idCardProvince = value[0].code;
           this.customerInfo.idCardCity = value[1].code;
@@ -939,26 +948,33 @@ export default {
           break;
         }
         case 2: {
+          console.log("居住地地址:", value);
           // 居住地址
           this.liveAddress = value[0].name + value[1].name + value[2].name;
           this.customerHouseProperty.liveProvince = value[0].code;
           this.customerHouseProperty.liveCity = value[1].code;
           this.customerHouseProperty.liveArea = value[2].code;
+          console.log("居住地地址:", this.liveAddress);
+
           break;
         }
         case 3: {
           // 房产地址
+          console.log("房产地址:", value);
           this.roomAddress = value[0].name + value[1].name + value[2].name;
           this.customerHouseProperty.roomProvince = value[0].code;
           this.customerHouseProperty.roomCity = value[1].code;
-          this.customerHouseProperty.roomCity = value[2].code;
+          this.customerHouseProperty.roomArea = value[2].code;
+          break;
         }
         case 4: {
           // 工作地址
+          console.log("工作地址:", value);
           this.companyAddress = value[0].name + value[1].name + value[2].name;
           this.customerJob.companyProvince = value[0].code;
           this.customerJob.companyCity = value[1].code;
           this.customerJob.companyArea = value[2].code;
+          break;
         }
       }
       this.showAddressPop = false;
@@ -1096,9 +1112,7 @@ export default {
         isEmpty(this.customerInfo.phone) ||
         isEmpty(this.customerInfo.isLocal) ||
         isEmpty(this.customerInfo.customerNature) ||
-        isEmpty(this.customerInfo.educationLevel) ||
-        isEmpty(this.customerInfo.highestEducation) ||
-        isEmpty(this.customerInfo.highestEducation)
+        isEmpty(this.customerInfo.educationLevel)
       ) {
         this.$toast.fail("请将'基本信息'中必填项填写完整");
         return;
@@ -1148,16 +1162,16 @@ export default {
           }
         }
       }
+      console.log(this.customerInfo.isMarry);
       if (this.customerInfo.isMarry == "2") {
         // 已婚
         if (
-          isEmpty(this.customerJob.company) ||
-          isEmpty(this.customerJob.companyPhone) ||
-          isEmpty(this.customerJob.companyProvince) ||
-          isEmpty(this.customerJob.companyType) ||
-          isEmpty(this.customerJob.position)
+          isEmpty(this.customerSpouseInfo.spouseName) ||
+          isEmpty(this.customerSpouseInfo.spousePhone) ||
+          isEmpty(this.customerSpouseInfo.spouseIdType) ||
+          isEmpty(this.customerSpouseInfo.spouseIdNum)
         ) {
-          this.$toast.fail("请将'工作信息'中必填项填写完整");
+          this.$toast.fail("请将'配偶信息'中必填项填写完整");
           return;
         }
       }
@@ -1168,37 +1182,63 @@ export default {
           isEmpty(this.customerContactPersonList[index].contactPersonPhone) ||
           isEmpty(this.customerContactPersonList[index].relation)
         ) {
-           this.$toast.fail("请将'工作信息'中必填项填写完整");
+          this.$toast.fail("请将'其他联系方式'中必填项填写完整");
           return;
         }
       }
-
-      this.$router.back();
+      const toast = this.$toast.loading({
+        duration: 0,
+        message: "保存中...",
+        forbidClick: true,
+        loadingType: "spinner"
+      });
+      let param = Object.assign({
+        customerId: this.$route.params.customerId,
+        customerInfoParam: this.customerInfo,
+        customerHousePropertyParam: this.customerHouseProperty,
+        customerAssetsParam: this.customerAssets,
+        customerJobParam: this.customerJob,
+        customerSpouseInfoParam: this.customerSpouseInfoParam,
+        customerContactParam: this.customerContact,
+        customerContactPersonParamList: this.customerContactPersonList
+      });
+      if (this.customerInfo.isMarry == "2") {
+        param.customerSpouseInfoParam = this.customerSpouseInfo;
+      }
+      console.log("参数", param);
+      updateUser(param).then(res => {
+        toast.clear();
+        this.$router.back();
+      });
     },
     setAddress() {
       if (this.customerInfo.idCardProvince != null) {
-        this.idCardAddress =
-          this.customerInfo.idCardProvince +
-          this.customerInfo.idCardCity +
-          this.customerInfo.idCardArea;
+        this.idCardAddress = getAddress({
+          province: this.customerInfo.idCardProvince,
+          city: this.customerInfo.idCardCity,
+          area: this.customerInfo.idCardArea
+        });
       }
       if (this.customerHouseProperty.liveProvince != null) {
-        this.liveAddress =
-          this.customerHouseProperty.liveProvince +
-          this.customerHouseProperty.liveCity +
-          this.customerHouseProperty.liveArea;
+        this.liveAddress = getAddress({
+          province: this.customerHouseProperty.liveProvince,
+          city: this.customerHouseProperty.liveCity,
+          area: this.customerHouseProperty.liveArea
+        });
       }
       if (this.customerHouseProperty.roomProvince != null) {
-        this.roomAddress =
-          this.customerHouseProperty.roomProvince +
-          this.customerHouseProperty.roomCity +
-          this.customerHouseProperty.roomArea;
+        this.roomAddress = getAddress({
+          province: this.customerHouseProperty.roomProvince,
+          city: this.customerHouseProperty.roomCity,
+          area: this.customerHouseProperty.roomArea
+        });
       }
       if (this.customerJob.companyProvince != null) {
-        this.companyAddress =
-          this.customerJob.companyProvince +
-          this.customerJob.companyCity +
-          this.customerJob.companyArea;
+        this.companyAddress = getAddress({
+          province: this.customerJob.companyProvince,
+          city: this.customerJob.companyCity,
+          area: this.customerJob.companyArea
+        });
       }
     }
   }

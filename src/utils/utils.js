@@ -1,3 +1,4 @@
+import store from '../store/index'
 export function getValue(type,index){
     if(type == "1"){ // 选择与主借人关系
         var relationValue = ""
@@ -234,7 +235,35 @@ export function getValue(type,index){
                     break;
                   }
               }
-          }
+          }else if(type == "13"){
+            // ["法人", "实际使用人", "股东", "高管", "其他"]
+            switch (parseInt(index)) {
+                case 1: {
+                  return "本人";
+                  break;
+                }
+                case 2: {
+                  return "法人";
+                  break;
+                }
+                case 3: {
+                  return "实际使用人";
+                  break;
+                }
+                case 4: {
+                  return "股东";
+                  break;
+                }
+                case 5: {
+                  return "高管";
+                  break;
+                }
+                case 6: {
+                  return "其他";
+                  break;
+                }
+            }
+        }
 }
 export function getKey(value,list){
         
@@ -253,4 +282,33 @@ export function isEmpty(value){
   }
   return false
 
+}
+
+// 根据code码获取省市区
+// param : {province:'',city:'',area:''}
+export function getAddress (param) {
+  
+  let addressList = store.state.address;
+  var province = ""
+  var city = ""
+  var area = ""
+      
+    for (let key in addressList.province_list){
+      if (param.province == key){
+        province = addressList.province_list[key]
+      }
+    }
+
+    for (let key in addressList.city_list){
+      if (param.city == key){
+        city = addressList.city_list[key]
+      }
+    }
+
+    for (let key in addressList.county_list){
+      if (param.area == key){
+        area = addressList.county_list[key]
+      }
+    }
+    return province + city + area;
 }

@@ -143,6 +143,97 @@ export function updateUser(param) {
     })
 }
 
+//  =========================选择产品========================
+
+// 获取贷款和还款计划等信息
+export function loanDetailAndRepaymentPlan(param){
+    return request({
+        method:'get',
+        url:"/api/loan/loanDetailAndRepaymentPlan/info/" + param.loanNumber,
+        data:param
+    })
+}
+// 资方列表
+export function financingChannelList(param){
+    return request({
+        method:'get',
+        url:"/api/financingChannel/getList",
+        data:param
+    })
+}
+
+// 产品列表
+export function productList(param) {
+    return request({
+        method:'post',
+        url:'/api/loan/product/getPageList',
+        data:param
+    })
+}
+// 产品详情
+export function productDetail(param) {
+    return request({
+        method:'post',
+        url:'/api/loan/product/getDetailInfo',
+        data:param
+    })
+}
+// 付款账号列表
+export function financingChannelAccountList(param){
+    return request({
+        method:'get',
+        url:"/api/financingChannelAccount/getList/"+param.financingChannelId,
+        data:param
+    })
+}
+// 获取资方账户的信息
+export function financingChannelAccountDetail(param){
+    return request({
+        method:'get',
+        url:"/api/financingChannelAccount/info/"+param.id,
+        data:param
+    })
+}
+// 产品贴息方案
+export function productDiscountInterest(param){
+    return request({
+        method:'get',
+        url:"/api/productDiscountInterest/getList/"+param.productId,
+        data:param
+    })
+}
+// 产品贴息详情
+export function productDiscountInterestDetail(param){
+    return request({
+        method:'get',
+        url:"/api/productDiscountInterest/info/"+param.id,
+        data:param
+    })
+}
+// 计算所有金额
+export function calculationFinancingAmount(param) {
+    return request({
+        method:'post',
+        url:'/api/loan/loanDetail/calculationFinancingAmount',
+        data:param
+    })
+}
+// 还款计划表
+export function repaymentPlan(param) {
+    return request({
+        method:'post',
+        url:'/api/loan/repaymentPlan/test',
+        data:param
+    })
+}
+// 保存产品信息
+export function updateLoanDetail(param) {
+    return request({
+        method:'post',
+        url:'/api/loan/loanDetail/update',
+        data:param
+    })
+}
 
 //  =========================其他数据========================
 // 1.省市区数据

@@ -473,7 +473,12 @@ export default {
     },
     toSub() {
       console.log(this.baseInfo.leaseType);
-
+      const toast = this.$toast.loading({
+        duration: 0,
+        message: "保存中...",
+        forbidClick: true,
+        loadingType: "spinner"
+      });
       if (this.baseInfo.businessModel == "1") {
         this.baseInfo.leaseType = "2";
       } else {
@@ -516,7 +521,8 @@ export default {
         return;
       }
       saveBussinessInfo(param).then(res => {
-        // this.$router.back();
+        toast.clear();
+        this.$router.back();
       });
     },
     calculateCost() {

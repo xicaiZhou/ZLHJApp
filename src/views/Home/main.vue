@@ -36,6 +36,7 @@ export default {
     address(){
       getAddress().then(res=>{
         this.$store.state.address = res.data.data;
+        console.log("有地址")
       })
     }
   },

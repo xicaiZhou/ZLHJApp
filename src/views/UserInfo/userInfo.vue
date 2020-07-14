@@ -113,7 +113,7 @@
               label="与承租人关系:"
               placeholder="请选择"
               v-model="addUserInfo.relationValue"
-              @click="showRelation = true"
+              @click="showSelectRelation"
             />
             <van-field
               readonly
@@ -175,7 +175,7 @@
         <van-picker
           title
           show-toolbar
-          :columns="isMainUser? ['本人'] : ['夫妻','父母','子女','兄弟姐妹','同事','其他']"
+          :columns="relationList"
           @confirm="selectRelation"
           @cancel="showRelation=false"
         />
@@ -230,6 +230,7 @@ export default {
       showAddUser: false,
       showRole: false,
       showRelation: false,
+      relationList: [],
       showCustomerType: false,
       showIdType: false,
       mainListData: [],
@@ -262,16 +263,41 @@ export default {
     }
   },
   methods: {
+    showSelectRelation() {
+      if (this.isMainUser) {
+        this.relationList = ["本人"];
+      } else {
+        if (this.licenseType == "1") {
+          this.relationList = [
+            "夫妻",
+            "父母",
+            "子女",
+            "兄弟姐妹",
+            "同事",
+            "其他"
+          ];
+        } else {
+          this.relationList = ["法人", "实际使用人", "股东", "高管", "其他"];
+        }
+      }
+
+      showRelation = true;
+    },
     toDetail(item) {
       if (item.customerType == "1") {
-        console.log(item.customerId)
         this.$router.push({
           name: "userInfoDetail",
-          params:{
-            customerId:item.customerId
+          params: {
+            customerId: item.customerId
           }
         });
       } else {
+        this.$router.push({
+          name: "maleBrandInfoDetail",
+          params: {
+            customerId: item.customerId
+          }
+        });
       }
     },
     toSub() {
@@ -313,29 +339,53 @@ export default {
       console.log("val", val);
     },
     selectRelation(val) {
-      // 1-本人 2-夫妻 3-父母 4-子女 5-兄弟姐妹 6-同事 7-其他
-      if (val == "本人") {
-        this.addUserInfo.relationValue = val;
-        this.addUserInfo.relation = "1";
-      } else if (val == "夫妻") {
-        this.addUserInfo.relationValue = val;
-        this.addUserInfo.relation = "2";
-      } else if (val == "父母") {
-        this.addUserInfo.relationValue = val;
-        this.addUserInfo.relation = "3";
-      } else if (val == "子女") {
-        this.addUserInfo.relationValue = val;
-        this.addUserInfo.relation = "4";
-      } else if (val == "兄弟姐妹") {
-        this.addUserInfo.relationValue = val;
-        this.addUserInfo.relation = "5";
-      } else if (val == "同事") {
-        this.addUserInfo.relationValue = val;
-        this.addUserInfo.relation = "6";
-      } else if (val == "其他") {
-        this.addUserInfo.relationValue = val;
-        this.addUserInfo.relation = "7";
+      if (this.licenseType == "1") {
+        // 1-本人 2-夫妻 3-父母 4-子女 5-兄弟姐妹 6-同事 7-其他
+        if (val == "本人") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "1";
+        } else if (val == "夫妻") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "2";
+        } else if (val == "父母") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "3";
+        } else if (val == "子女") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "4";
+        } else if (val == "兄弟姐妹") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "5";
+        } else if (val == "同事") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "6";
+        } else if (val == "其他") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "7";
+        }
+      } else {
+        // ["法人", "实际使用人", "股东", "高管", "其他"];
+        if (val == "本人") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "1";
+        } else if (val == "法人") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "2";
+        } else if (val == "实际使用人") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "3";
+        } else if (val == "股东") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "4";
+        } else if (val == "高管") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "5";
+        } else if (val == "其他") {
+          this.addUserInfo.relationValue = val;
+          this.addUserInfo.relation = "6";
+        }
       }
+
       this.showRelation = false;
     },
     selectCustomerType(val) {
@@ -360,7 +410,7 @@ export default {
       if (this.addUserInfo.idType == "1") {
         if (
           this.addUserInfo.idNum.length > 0 &&
-          !(idNumValidator(this.addUserInfo.idNum))
+          !idNumValidator(this.addUserInfo.idNum)
         ) {
           this.$toast.fail("身份证格式错误");
           return;

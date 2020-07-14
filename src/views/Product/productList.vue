@@ -18,7 +18,7 @@
             v-for="(item,index) in productList"
             :key="index"
             @click="selected(item)"
-          >{{item}}</div>
+          >{{item.name}}</div>
         </van-list>
       </van-pull-refresh>
     </div>
@@ -26,6 +26,7 @@
 </template>
 
 <script>
+import { productList } from "../../request/api";
 export default {
   data() {
     return {
@@ -33,38 +34,8 @@ export default {
       refreshing: false,
       finished: false,
       loading: false,
-      pIndex: 0,
-      state: 1,
-      productList: [
-        "产品1",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2",
-        "产品2"
-      ]
+      pageIndex: 0,
+      productList: []
     };
   },
   methods: {
@@ -74,18 +45,48 @@ export default {
       this.$router.back();
     },
     onRefresh() {
-      this.pIndex = 1;
+      this.pageIndex = 1;
       this.finished = false;
       this.loading = true;
       this.getData();
     },
     //自动加载更多
     onLoad() {
-      console.log("xxxxxxxxxxxxxx", this.finished);
-      this.pIndex += 1;
+      this.pageIndex += 1;
       this.getData();
     },
-    getData() {}
+    getData() {
+      const toast = this.$toast.loading({
+        duration: 0,
+        message: "加载中...",
+        forbidClick: true,
+        loadingType: "spinner"
+      });
+      var params = Object.assign({
+        loanNumber: this.$store.state.loanNumber,
+        pageIndex: this.pageIndex,
+        pageSize:10,
+        financingChannelId:this.$route.params.financingChannelId,
+        keyword:this.value
+      });
+      console.log("参数:",params)
+      productList(params).then(res => {
+        toast.clear();
+        let num = res.data.data.total;
+        let list = res.data.data["records"];
+        if (this.refreshing) {
+          this.productList = [];
+          this.refreshing = false;
+        }
+        for (let i in list) {
+          this.productList.push(list[i]);
+        }
+        this.loading = false;
+        if (this.productList.length >= num) {
+          this.finished = true;
+        }
+      });
+    }
   },
   beforeRouteLeave(to, from, next) {
     if (to.path == "/selectProduct") {

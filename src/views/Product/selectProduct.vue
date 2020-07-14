@@ -3,7 +3,16 @@
     <div>
       <div>
         <div class="header">资方信息</div>
-        <van-field required is-link readonly clickable label="选择资方:" placeholder="请选择资方" />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="选择资方:"
+          placeholder="请选择资方"
+          v-model="loanInfo.fcName"
+          @click="getFinancingChannelList"
+        />
       </div>
       <div>
         <div class="header">产品信息</div>
@@ -14,6 +23,7 @@
           clickable
           label="产品:"
           placeholder="请选择产品"
+          v-model="loanInfo.productName"
           @click="toSelectProduct"
         />
         <van-collapse v-model="showProductAdditionalInfo">
@@ -69,12 +79,12 @@
             <span class="zlhjRadio_title">签署《新信息确认书》：</span>
             <div class="zlhjRadio_body">
               <div
-                @click="relation = '1'"
-                :class="relation == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                @click="loanInfo.isSign = '1'"
+                :class="loanInfo.isSign == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
               >是</div>
               <div
-                @click="relation = '2'"
-                :class="relation == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                @click="loanInfo.isSign = '2'"
+                :class="loanInfo.isSign == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
               >否</div>
             </div>
           </div>
@@ -82,22 +92,88 @@
             <div class="zlhjRadioLine"></div>
           </div>
         </div>
-        <van-field required clickable label="是否打包:" />
-        <van-field required clickable label="是否需要安装GPS:" />
-        <van-field required clickable label="项目总额:" />
-        <van-field required clickable label="租赁期限(月):" />
-        <van-field required clickable label="首付金额(元):" />
-        <van-field required clickable label="首付比例(%):" />
-        <van-field required clickable label="融资金额(元):" />
-        <van-field required clickable label="净融资额(元):" />
-        <van-field required clickable label="租赁成熟(%):" />
-        <van-field required clickable label="还款周期(元):" />
-        <van-field required clickable label="每期租金(元):" />
+        <div class="readOnly">
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title">是否打包:</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="loanInfo.packFlag = '1'"
+                :class="loanInfo.packFlag == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >是</div>
+              <div
+                @click="loanInfo.packFlag = '2'"
+                :class="loanInfo.packFlag == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >否</div>
+            </div>
+          </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
+        </div>
+        <div class="readOnly">
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title">是否需要安装GPS:</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="loanInfo.hasGps = '1'"
+                :class="loanInfo.hasGps == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >是</div>
+              <div
+                @click="loanInfo.hasGps = '2'"
+                :class="loanInfo.hasGps == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >否</div>
+            </div>
+          </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
+        </div>
+        <van-field
+          class="readOnly"
+          required
+          clickable
+          label="项目总额(元):"
+          v-model="loanInfo.totalAmount"
+        />
+        <van-field class="readOnly" required clickable label="租赁期限(月):" v-model="loanInfo.term" />
+        <van-field required clickable label="首付金额(元):" v-model="loanInfo.downPaymentAmount" />
+        <van-field
+          class="readOnly"
+          required
+          clickable
+          label="首付比例(%):"
+          v-model="loanInfo.downPaymentRate"
+        />
+        <van-field required clickable label="融资金额(元):" v-model="loanInfo.totalAmount" />
+        <van-field
+          class="readOnly"
+          required
+          clickable
+          label="净融资额(元):"
+          v-model="loanInfo.netAmount"
+        />
+        <van-field required clickable label="租赁成数(%):" v-model="loanInfo.rate" />
+        <van-field
+          class="readOnly"
+          required
+          clickable
+          label="还款周期:"
+          v-model="loanInfo.repaymentCycleTypeValue"
+        />
+        <van-field required clickable label="每期租金(元):" v-model="loanInfo.monthRent" />
       </div>
       <div>
         <div class="header">支付信息</div>
-        <van-field required clickable label="支付方式(元):" />
-        <van-field required is-link readonly clickable label="付款账户:" placeholder="请选择付款账户" />
+        <van-field required clickable label="支付方式:" />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          @click="getFinancingChannelAccountList"
+          label="付款账户:"
+          placeholder="请选择付款账户"
+        />
         <van-field required clickable label="户名:" />
         <van-field required clickable label="开户银行:" />
         <van-field required clickable label="支行名称:" />
@@ -107,17 +183,111 @@
       <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
     <div>
-      <van-popup :style="{ height: '428px', width: '90%'}" get-container="body"></van-popup>
+      <van-popup
+        v-model="showZF"
+        position="bottom"
+        :style="{ height: '300px', width: '100%'}"
+        get-container="body"
+      >
+        <van-picker
+          title
+          show-toolbar
+          :columns="zfList"
+          @confirm="selectZF"
+          @cancel="showZF=false"
+        />
+      </van-popup>
+      <van-popup
+        v-model="showAccount"
+        position="bottom"
+        :style="{ height: '300px', width: '100%'}"
+        get-container="body"
+      >
+        <van-picker
+          title
+          show-toolbar
+          :columns="accountList"
+          @confirm="selectAccount"
+          @cancel="showAccount=false"
+        />
+      </van-popup>
     </div>
   </div>
 </template>
 
 <script>
+import {
+  loanDetailAndRepaymentPlan,
+  financingChannelList,
+  financingChannelAccountList
+} from "../../request/api";
 export default {
   data() {
     return {
       showProductAdditionalInfo: ["1"],
-      relation: "1"
+      zfList: [],
+      fcList: [],
+      accountList: [],
+      account: [],
+      showZF: false,
+      showAccount: false,
+      loanInfo: {
+        loanNumber: "",
+        businessModel: "", // 业务类型 1-租赁，2-贷款
+        leaseType: "", //租赁模式 1-直租，2-回租
+        hasGps: "", //是否安装GPS 1-是，2-否
+        isCs: "", //是否产险推荐 1-是，2-否
+        isJjk: "", //是否聚家客推荐 1-是，2-否
+        totalAmount: 0, //融资总额
+        downPaymentAmount: 0, //首付金额
+        amount: 0, //融资金额
+        term: 0, //融资期限
+        repaymentMethod: "", //还款方式 1-等额本息，2-等额本金，3-等本等息
+        useMethod: "", //融资用途 数据字典-贷款用途
+        rate: 0, //融资成数
+        downPaymentRate: 0, //首付比例
+        netAmount: 0, //净融资金额
+        repaymentCycleType: "", //还款周期 1-按月
+        repaymentCycleTypeValue: "按月",
+        monthRent: 0, //每月租金
+        gpsAmount: 0, //GPS金额
+        carAmount: 0, //车辆费用
+        productName: "", //产品名称
+        productId: 0, //产品ID
+        packFlag: "", //是否打包 1-是，2-否
+        fcId: 0, //资方ID
+        fcName: "", //资方名称
+        executeRate: 0, //执行利率(%)
+        capitalCost: 0, //资金成本(%)
+        pdiId: 0, //贴息方案ID
+        manufacturerAmount: 0, //厂商贴息金额
+        dealerAmount: 0, //经销商贴息金额
+        fcaId: 0, //资方账号ID
+        paymentMethod: "", //支付方式
+        isSign: "" //是否签署《新信息确认书》 1-是，2-否
+      },
+      productInfo: {
+        expenseList: [
+          // 费用列表
+          {
+            id: 0,
+            productId: 0,
+            expenseType: "",
+            expenseModel: "",
+            expense: 0,
+            rate: 0,
+            untitled: "",
+            state: "",
+            createdBy: "",
+            createdTime: "",
+            updateBy: "",
+            updateTime: ""
+          }
+        ],
+        expenseTotalAmount: 0, //费用总额
+        packFlag: "", //是否打包 1-是，2-否
+        executeRate: 0 //执行利率
+      }
     };
   },
   methods: {
@@ -126,9 +296,65 @@ export default {
     },
     toSelectProduct() {
       this.$router.push({
-          path:'/productList'
+        name: "productList",
+        params: {
+          financingChannelId: this.loanInfo.fcId
+        }
+      });
+    },
+    selectZF(val) {
+      for (let index in this.fcList) {
+        if (this.fcList[index].name == val) {
+          this.loanInfo.fcId = this.fcList[index].id; //资方ID
+          this.loanInfo.fcName = val; //资方名称
+          break;
+        }
+      }
+      this.showZF = false;
+    },
+    getLoanDetailAndRepaymentPlan() {
+      loanDetailAndRepaymentPlan({
+        loanNumber: this.$store.state.loanNumber
+      }).then(res => {
+        console.log(res);
+        this.loanInfo = res.data.data;
+      });
+    },
+    // 资方列表
+    getFinancingChannelList() {
+      financingChannelList().then(res => {
+        console.log("资方列表：", res);
+        this.fcList = res.data.data;
+        for (let index in this.fcList) {
+          this.zfList.push(this.fcList[index].name);
+        }
+        if (this.zfList.length > 0) {
+          this.showZF = true;
+        }
+      });
+    },
+    getFinancingChannelAccountList() {
+      if (this.loanInfo.fcId == 0 || this.loanInfo.fcId == null) {
+        this.$toast.fail("请先选择资方");
+        return;
+      }
+      financingChannelAccountList({
+        financingChannelId: this.loanInfo.fcId
+      }).then(res => {
+        console.log("付款账户列表：", res);
+        this.account = res.data.data;
+        for (let index in this.account) {
+          this.accountList.push(this.fcList[index].name);
+        }
+        if (this.accountList.length > 0) {
+          this.showAccount = true;
+        }
       });
     }
+  },
+
+  mounted() {
+    this.getLoanDetailAndRepaymentPlan();
   },
   beforeRouteLeave(to, from, next) {
     from.meta.keepAlive = false;
