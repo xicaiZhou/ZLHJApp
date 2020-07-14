@@ -11,7 +11,7 @@
           label="选择资方:"
           placeholder="请选择资方"
           v-model="loanInfo.fcName"
-          @click="getFinancingChannelList"
+          @click="showZF"
         />
       </div>
       <div>
@@ -33,47 +33,46 @@
                 <div class="ProductAdditionalitem_left van-hairline--right">产品附加费用</div>
                 <div class="ProductAdditionalitem_right">金额（元）</div>
               </div>
+            </div>
 
-              <div class="ProductAdditionalitem van-hairline--surround">
-                <div class="ProductAdditionalitem_left van-hairline--right">保证金</div>
-                <div class="ProductAdditionalitem_right">2108.00</div>
-              </div>
-
-              <div class="ProductAdditionalitem van-hairline--surround">
-                <div class="ProductAdditionalitem_left van-hairline--right">服务费（意外险）</div>
-                <div class="ProductAdditionalitem_right">1800</div>
-              </div>
-
-              <div class="ProductAdditionalitem van-hairline--surround">
-                <div class="ProductAdditionalitem_left van-hairline--right">服务费2</div>
-                <div class="ProductAdditionalitem_right">0.00</div>
-              </div>
-
-              <div class="ProductAdditionalitem van-hairline--surround">
-                <div class="ProductAdditionalitem_left van-hairline--right">服务费</div>
-                <div class="ProductAdditionalitem_right">0.00</div>
-              </div>
-
-              <div class="ProductAdditionalitem van-hairline--surround">
-                <div class="ProductAdditionalitem_left van-hairline--right">GPS固定成本</div>
-                <div class="ProductAdditionalitem_right">1500.00</div>
-              </div>
-
-              <div class="ProductAdditionalitem van-hairline--surround">
-                <div class="ProductAdditionalitem_left van-hairline--right">信息服务费</div>
-                <div class="ProductAdditionalitem_right">0.00</div>
-              </div>
-
-              <div class="ProductAdditionalitem van-hairline--surround">
-                <div class="ProductAdditionalitem_left van-hairline--right">其他费用</div>
-                <div class="ProductAdditionalitem_right">0.00</div>
+            <div
+              class="ProductAdditionalBody"
+              v-for="(item, index) in productDetailInfo.expenseList"
+              :key="index"
+            >
+              <div class="ProductAdditionalitem">
+                <div
+                  class="ProductAdditionalitem_left van-hairline--right"
+                >{{expenseType(item.expenseType)}}</div>
+                <div class="ProductAdditionalitem_right">{{item.expense}}</div>
               </div>
             </div>
           </van-collapse-item>
         </van-collapse>
-        <van-field required is-link readonly clickable label="贴息方案:" placeholder="请选择贴息方案" />
-        <van-field required clickable label="厂商贴息(元):" placeholder="请填写厂商贴息" />
-        <van-field required clickable label="经销商贴息(元):" placeholder="请填写经销商贴息" />
+        <van-field
+          required
+          is-link
+          readonly
+          clickable
+          label="贴息方案:"
+          v-model="TXPlanDetail.name"
+          placeholder="请选择贴息方案"
+          @click="showTXPlan=true"
+        />
+        <van-field
+          required
+          clickable
+          label="厂商贴息(元):"
+          placeholder="请填写厂商贴息"
+          v-model="loanInfo.manufacturerAmount"
+        />
+        <van-field
+          required
+          clickable
+          label="经销商贴息(元):"
+          placeholder="请填写经销商贴息"
+          v-model="loanInfo.dealerAmount"
+        />
         <div>
           <div class="zlhjRadio" style="display:flex">
             <span class="zlhjRadio_title">签署《新信息确认书》：</span>
@@ -144,7 +143,7 @@
           label="首付比例(%):"
           v-model="loanInfo.downPaymentRate"
         />
-        <van-field required clickable label="融资金额(元):" v-model="loanInfo.totalAmount" />
+        <van-field class="readOnly" required clickable label="融资金额(元):" v-model="loanInfo.amount" />
         <van-field
           class="readOnly"
           required
@@ -152,7 +151,7 @@
           label="净融资额(元):"
           v-model="loanInfo.netAmount"
         />
-        <van-field required clickable label="租赁成数(%):" v-model="loanInfo.rate" />
+        <van-field class="readOnly" required clickable label="租赁成数(%):" v-model="loanInfo.rate" />
         <van-field
           class="readOnly"
           required
@@ -170,13 +169,14 @@
           is-link
           readonly
           clickable
-          @click="getFinancingChannelAccountList"
+          @click="showAccount"
           label="付款账户:"
           placeholder="请选择付款账户"
+          v-model="accountInfo.accountNumber"
         />
-        <van-field required clickable label="户名:" />
-        <van-field required clickable label="开户银行:" />
-        <van-field required clickable label="支行名称:" />
+        <van-field class="readOnly" required clickable label="户名:" v-model="accountInfo.accountName"/>
+        <van-field class="readOnly" required clickable label="开户银行:" v-model="accountInfo.bankName"/>
+        <van-field class="readOnly" required clickable label="支行名称:" v-model="accountInfo.subbranchName"/>
       </div>
     </div>
     <div class="subBtn">
@@ -195,6 +195,20 @@
           :columns="zfList"
           @confirm="selectZF"
           @cancel="showZF=false"
+        />
+      </van-popup>
+      <van-popup
+        v-model="showTXPlan"
+        position="bottom"
+        :style="{ height: '300px', width: '100%'}"
+        get-container="body"
+      >
+        <van-picker
+          title
+          show-toolbar
+          :columns="TXPlanList"
+          @confirm="selectTXPlan"
+          @cancel="showTXPlan=false"
         />
       </van-popup>
       <van-popup
@@ -219,8 +233,13 @@
 import {
   loanDetailAndRepaymentPlan,
   financingChannelList,
-  financingChannelAccountList
+  financingChannelAccountList,
+  productDetail,
+  productDiscountInterest,
+  productDiscountInterestDetail,
+  financingChannelAccountDetail
 } from "../../request/api";
+
 export default {
   data() {
     return {
@@ -229,8 +248,44 @@ export default {
       fcList: [],
       accountList: [],
       account: [],
+      TXPlan: [],
+      TXPlanList: [],
       showZF: false,
+      showTXPlan: false,
       showAccount: false,
+      productDetailInfo: {
+        expenseList: [],
+        executeRate: 0,
+        expenseTotalAmount: 0,
+        packFlag: ""
+      },
+      accountInfo: {
+        id: 0,
+        fcId: 0, //资方ID
+        bankId: 0, //所属银行ID
+        bankName: "",// 所属银行名称
+        subbranchId: 0, //所属支行ID
+        subbranchName: "", //所属支行名称
+        provinceId: "", //所在省
+        cityId: "",//所在市
+        accountNumber: "", //账户
+        accountName: "", //户名
+        state: "", // 状态 1-有效，2-无效
+      },
+      TXPlanDetail: {
+        id: 0, //贴息id
+        productId: 0, // 产品ID
+        name: "", //贴息名称
+        manufacturerFlag: "", //是否厂商贴息 1-是，2-否
+        manufacturerModel: "", //厂商贴息方式 1-固定金额贴息，2-按比率贴息
+        manufacturerAmount: 0, //厂商贴息金额
+        manufacturerRate: 0, //厂商贴息比例
+        dealerFlag: "", //是否经销商贴息 1-是，2-否
+        dealerModel: "", //经销商贴息方式 1-固定金额贴息，2-按比率贴息
+        dealerAmount: 0, //经销商贴息金额
+        dealerRate: 0, //经销商贴息比例
+        state: "" //状态 1-有效，2-无效
+      },
       loanInfo: {
         loanNumber: "",
         businessModel: "", // 业务类型 1-租赁，2-贷款
@@ -263,7 +318,7 @@ export default {
         manufacturerAmount: 0, //厂商贴息金额
         dealerAmount: 0, //经销商贴息金额
         fcaId: 0, //资方账号ID
-        paymentMethod: "", //支付方式
+        paymentMethod: "", //还款方式
         isSign: "" //是否签署《新信息确认书》 1-是，2-否
       },
       productInfo: {
@@ -294,6 +349,82 @@ export default {
     toSub() {
       this.$router.back();
     },
+    expenseType(type) {
+      var str = "";
+      // console.log(type)
+      switch (parseInt(type)) {
+        case 10:
+          str += "保证金";
+          console.log("zou");
+          break;
+        case 20:
+          str += "服务费(意外险)";
+          break;
+        case 21:
+          str += "服务费2";
+          break;
+        case 22:
+          str += "服务费";
+          break;
+        case 30:
+          str += "GPS固定成本";
+          break;
+        case 40:
+          str += "信息服务费";
+          break;
+        case 90:
+          str += "其他费用";
+          break;
+      }
+      console.log(str);
+      return str;
+    },
+    selectTXPlan(value) {
+      let id = 0;
+      for (let index in this.TXPlan) {
+        if (this.TXPlan[index].name == value) {
+          id = this.TXPlan[index].id;
+          break;
+        }
+      }
+      this.showTXPlan = false;
+      this.getTXPlanDetail(id);
+    },
+    getTXPlanDetail(id) {
+      console.log("1111");
+      productDiscountInterestDetail({ id: id }).then(res => {
+        console.log("贴息详情", res);
+        this.TXPlanDetail = res.data.data;
+        let amount = this.loanInfo.amount;
+        if (this.TXPlanDetail.manufacturerFlag == "1") {
+          if (this.TXPlanDetail.manufacturerModel == "1") {
+            this.loanInfo.manufacturerAmount = this.TXPlanDetail.manufacturerAmount;
+          } else {
+            this.loanInfo.manufacturerAmount = (
+              (this.TXPlanDetail.manufacturerRate * amount) /
+              100
+            ).toFixed(2);
+          }
+        } else {
+          this.loanInfo.manufacturerAmount = 0;
+        }
+
+        if (this.TXPlanDetail.dealerFlag == 1) {
+          if (this.TXPlanDetail.dealerModel == "1") {
+            this.loanInfo.dealerAmount = this.TXPlanDetail.dealerAmount;
+          } else {
+            this.loanInfo.dealerAmount = (
+              (this.TXPlanDetail.dealerRate * amount) /
+              100
+            ).toFixed(2);
+          }
+        } else {
+          this.loanInfo.dealerAmount = 0;
+        }
+
+        this.loanInfo.pdiId = res.data.data.id;
+      });
+    },
     toSelectProduct() {
       this.$router.push({
         name: "productList",
@@ -302,6 +433,7 @@ export default {
         }
       });
     },
+    // 选择资方
     selectZF(val) {
       for (let index in this.fcList) {
         if (this.fcList[index].name == val) {
@@ -310,7 +442,21 @@ export default {
           break;
         }
       }
+
+      // 清空支付信息
+      this.accountInfo = {}
+      // 重新获取支付账号列表
+      this.getFinancingChannelAccountList();
       this.showZF = false;
+    },
+    selectAccount(item) {
+      for (let index in this.account) {
+        if (this.account[index].accountNumber == val) {
+          this.loanInfo.fcId = this.fcList[account].accountNumber; //资方ID
+          this.loanInfo.fcName = val; //资方名称
+          break;
+        }
+      }
     },
     getLoanDetailAndRepaymentPlan() {
       loanDetailAndRepaymentPlan({
@@ -318,6 +464,46 @@ export default {
       }).then(res => {
         console.log(res);
         this.loanInfo = res.data.data;
+        this.loanInfo.repaymentCycleType = "1";
+        this.loanInfo.repaymentCycleTypeValue = "按月";
+        if (this.loanInfo.productId) {
+          this.getProductDetail();
+          this.getProductDiscountInterest();
+        }
+        if (this.loanInfo.pdiId) {
+          this.getTXPlanDetail(this.loanInfo.pdiId);
+        }
+        if (this.loanInfo.fcId == 0 || this.loanInfo.fcId == null) {
+          this.getFinancingChannelAccountList();
+        }
+
+        if (this.loanInfo.fcaId) {
+          this.getFinancingChannelAccountDetail(this.loanInfo.fcaId);
+        }
+      });
+    },
+    // 获取产品贴息方案
+    getProductDiscountInterest() {
+      productDiscountInterest({ productId: this.loanInfo.productId }).then(
+        res => {
+          console.log("贴息方案：", res);
+          this.TXPlan = res.data.data;
+          for (let index in this.TXPlan) {
+            this.TXPlanList.push(this.TXPlan[index].name);
+          }
+        }
+      );
+    },
+    // 获取产品详情
+    getProductDetail() {
+      var param = {
+        productId: this.loanInfo.productId,
+        amount: this.loanInfo.amount,
+        loanNumber: this.$store.state.loanNumber
+      };
+      productDetail(param).then(res => {
+        console.log("产品详情：", res);
+        this.productDetailInfo = res.data.data;
       });
     },
     // 资方列表
@@ -328,11 +514,9 @@ export default {
         for (let index in this.fcList) {
           this.zfList.push(this.fcList[index].name);
         }
-        if (this.zfList.length > 0) {
-          this.showZF = true;
-        }
       });
     },
+    // 获取账号列表
     getFinancingChannelAccountList() {
       if (this.loanInfo.fcId == 0 || this.loanInfo.fcId == null) {
         this.$toast.fail("请先选择资方");
@@ -341,20 +525,26 @@ export default {
       financingChannelAccountList({
         financingChannelId: this.loanInfo.fcId
       }).then(res => {
+        this.accountList = []
         console.log("付款账户列表：", res);
         this.account = res.data.data;
         for (let index in this.account) {
           this.accountList.push(this.fcList[index].name);
         }
-        if (this.accountList.length > 0) {
-          this.showAccount = true;
-        }
+      });
+    },
+    //账号详情
+    getFinancingChannelAccountDetail(id) {
+      financingChannelAccountDetail({ id: id }).then(res => {
+        console.log("账号详情", res);
+        this.accountInfo = res.data.data;
       });
     }
   },
 
   mounted() {
     this.getLoanDetailAndRepaymentPlan();
+    this.getFinancingChannelList();
   },
   beforeRouteLeave(to, from, next) {
     from.meta.keepAlive = false;
