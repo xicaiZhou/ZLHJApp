@@ -525,6 +525,7 @@ export default {
   padding: 0 12%;
   text-align: center;
   margin-top: 30px;
+  
 }
 .subBtn {
   position: fixed;

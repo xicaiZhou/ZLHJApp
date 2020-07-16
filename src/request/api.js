@@ -234,7 +234,32 @@ export function updateLoanDetail(param) {
         data:param
     })
 }
+//  =========================文件上传========================
+// 清空当前文件类型所有文件
+export function deleteAllFile(param) {
+    return request({
+        method:'post',
+        url:'/api/loanFileList/deleteAllFile/' + param.fileId,
+        data:param
+    })
+}
+// 贷款文件列表
+export function allFileList(param) {
+    return request({
+        method:'post',
+        url:'/api/loanFileList/getLoanFileList/' + param.loanNumber,
+        data:param
+    })
+}
+//  =========================综合查询========================
 
+export function searchInfo(param) {
+    return request({
+        method:'post',
+        url:'/api/loanHead/getPageList',
+        data:param
+    })
+}
 //  =========================其他数据========================
 // 1.省市区数据
 export function getAddress(){

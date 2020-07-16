@@ -39,7 +39,10 @@ import maleBrandInfoDetail from '@/views/UserInfo/maleBrandInfoDetail'
 
 // 选择产品
 import selectProduct from '@/views/Product/selectProduct'
+// 产品列表
 import productList from '@/views/Product/productList'
+// 还款计划表-试算
+import reimbursementPlan from '@/views/Product/reimbursementPlan'
 
 // 文件上传
 import uploadFile from '@/views/UploadFile/uploadFile'
@@ -210,7 +213,17 @@ export default new Router({
         keepAlive:true,
         title: '选择产品'
       }
-    },{
+    },
+    {
+      path:'/reimbursementPlan',
+      name:'reimbursementPlan',
+      component:reimbursementPlan,
+      meta:{
+        keepAlive:false,
+        title: '还款计划表-试算'
+      }
+    },
+    {
       path:'/productList',
       name:'productList',
       component:productList,

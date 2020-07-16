@@ -42,6 +42,8 @@ export default {
     onSearch() {},
     onCancel() {},
     selected(item) {
+      this.$store.state.productItem = item;
+
       this.$router.back();
     },
     onRefresh() {
@@ -65,11 +67,11 @@ export default {
       var params = Object.assign({
         loanNumber: this.$store.state.loanNumber,
         pageIndex: this.pageIndex,
-        pageSize:10,
-        financingChannelId:this.$route.params.financingChannelId,
-        keyword:this.value
+        pageSize: 10,
+        financingChannelId: this.$route.params.financingChannelId,
+        keyword: this.value
       });
-      console.log("参数:",params)
+      console.log("参数:", params);
       productList(params).then(res => {
         toast.clear();
         let num = res.data.data.total;

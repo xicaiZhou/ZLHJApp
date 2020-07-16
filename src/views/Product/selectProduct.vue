@@ -11,11 +11,17 @@
           label="选择资方:"
           placeholder="请选择资方"
           v-model="loanInfo.fcName"
-          @click="showZF"
+          @click="showZF = true"
         />
       </div>
       <div>
-        <div class="header">产品信息</div>
+        <div style="display:flex;   justify-content: space-between;">
+          <div class="header">产品信息</div>
+          <div
+            style="color:#ffffff; height:30px;background-color:#ff9900;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
+            @click="reimbursementPlan"
+          >还款计划表</div>
+        </div>
         <van-field
           required
           is-link
@@ -60,14 +66,12 @@
           @click="showTXPlan=true"
         />
         <van-field
-          required
           clickable
           label="厂商贴息(元):"
           placeholder="请填写厂商贴息"
           v-model="loanInfo.manufacturerAmount"
         />
         <van-field
-          required
           clickable
           label="经销商贴息(元):"
           placeholder="请填写经销商贴息"
@@ -163,20 +167,38 @@
       </div>
       <div>
         <div class="header">支付信息</div>
-        <van-field required clickable label="支付方式:" />
+        <van-field class="readOnly" required clickable label="支付方式:" v-model="zfType"></van-field>
         <van-field
           required
           is-link
           readonly
           clickable
-          @click="showAccount"
+          @click="showAccount = true"
           label="付款账户:"
           placeholder="请选择付款账户"
           v-model="accountInfo.accountNumber"
         />
-        <van-field class="readOnly" required clickable label="户名:" v-model="accountInfo.accountName"/>
-        <van-field class="readOnly" required clickable label="开户银行:" v-model="accountInfo.bankName"/>
-        <van-field class="readOnly" required clickable label="支行名称:" v-model="accountInfo.subbranchName"/>
+        <van-field
+          class="readOnly"
+          required
+          clickable
+          label="户名:"
+          v-model="accountInfo.accountName"
+        />
+        <van-field
+          class="readOnly"
+          required
+          clickable
+          label="开户银行:"
+          v-model="accountInfo.bankName"
+        />
+        <van-field
+          class="readOnly"
+          required
+          clickable
+          label="支行名称:"
+          v-model="accountInfo.subbranchName"
+        />
       </div>
     </div>
     <div class="subBtn">
@@ -237,7 +259,9 @@ import {
   productDetail,
   productDiscountInterest,
   productDiscountInterestDetail,
-  financingChannelAccountDetail
+  financingChannelAccountDetail,
+  calculationFinancingAmount,
+  updateLoanDetail
 } from "../../request/api";
 
 export default {
@@ -253,24 +277,25 @@ export default {
       showZF: false,
       showTXPlan: false,
       showAccount: false,
+      zfType: "受托",
       productDetailInfo: {
         expenseList: [],
-        executeRate: 0,
-        expenseTotalAmount: 0,
-        packFlag: ""
+        executeRate: 0, // 执行利率
+        expenseTotalAmount: 0, //费用总额
+        packFlag: "" //是否打包 是否打包 1-是，2-否
       },
       accountInfo: {
         id: 0,
         fcId: 0, //资方ID
         bankId: 0, //所属银行ID
-        bankName: "",// 所属银行名称
+        bankName: "", // 所属银行名称
         subbranchId: 0, //所属支行ID
         subbranchName: "", //所属支行名称
         provinceId: "", //所在省
-        cityId: "",//所在市
+        cityId: "", //所在市
         accountNumber: "", //账户
         accountName: "", //户名
-        state: "", // 状态 1-有效，2-无效
+        state: "" // 状态 1-有效，2-无效
       },
       TXPlanDetail: {
         id: 0, //贴息id
@@ -320,42 +345,103 @@ export default {
         fcaId: 0, //资方账号ID
         paymentMethod: "", //还款方式
         isSign: "" //是否签署《新信息确认书》 1-是，2-否
-      },
-      productInfo: {
-        expenseList: [
-          // 费用列表
-          {
-            id: 0,
-            productId: 0,
-            expenseType: "",
-            expenseModel: "",
-            expense: 0,
-            rate: 0,
-            untitled: "",
-            state: "",
-            createdBy: "",
-            createdTime: "",
-            updateBy: "",
-            updateTime: ""
-          }
-        ],
-        expenseTotalAmount: 0, //费用总额
-        packFlag: "", //是否打包 1-是，2-否
-        executeRate: 0 //执行利率
       }
     };
   },
+  watch: {
+    "$store.state.productItem": {
+      deep: false,
+      handler: function(newValue, oldValue) {
+        console.log(newValue, oldValue);
+        this.loanInfo.productName = newValue.name;
+        this.loanInfo.productId = newValue.id;
+        this.getProductDetail(this.loanInfo.productId, true);
+      }
+    }
+  },
   methods: {
+    reimbursementPlan() {
+      this.$router.push({
+        name: "reimbursementPlan",
+        params: {
+          amount: this.loanInfo.amount,
+          term: this.loanInfo.term,
+          rate: this.loanInfo.executeRate,
+          repaymentMethod: this.loanInfo.repaymentMethod
+        }
+      });
+    },
+    toSelectProduct() {
+      if (this.loanInfo.fcId) {
+        this.$router.push({
+          name: "productList",
+          params: {
+            financingChannelId: this.loanInfo.fcId
+          }
+        });
+      }else{
+        this.$toast.fail("请选择资方");
+        return
+      }
+    },
     toSub() {
-      this.$router.back();
+      if (this.loanInfo.fcId == null || this.loanInfo.fcId == 0) {
+        this.$toast.fail("请选择资方");
+        return;
+      }
+      if (this.loanInfo.productId == null || this.loanInfo.productId == 0) {
+        this.$toast.fail("请选择产品");
+        return;
+      }
+      if (isEmpty(this.loanInfo.isSign)) {
+        this.$toast.fail("请选择是否签署《新信息确认书》");
+        return;
+      }
+      if (isEmpty(this.loanInfo.isSign)) {
+        this.$toast.fail("请选择是否签署《新信息确认书》");
+        return;
+      }
+      if (
+        this.loanInfo.downPaymentAmount == null ||
+        this.loanInfo.downPaymentAmount == 0
+      ) {
+        this.$toast.fail("请填写首付金额");
+        return;
+      }
+      if (this.loanInfo.fcaId == null || this.loanInfo.fcaId == 0) {
+        this.$toast.fail("请选择付款账号");
+        return;
+      }
+      const toast = this.$toast.loading({
+        duration: 0,
+        message: "保存中...",
+        forbidClick: true,
+        loadingType: "spinner"
+      });
+      let param = {
+        loanNumber: this.$store.state.loanNumber,
+        downPaymentAmount: this.loanInfo.downPaymentAmount,
+        repaymentCycleType: this.loanInfo.repaymentCycleType,
+        productId: this.loanInfo.productId,
+        fcId: this.loanInfo.fcId,
+        fcName: this.loanInfo.fcName,
+        pdiId: this.loanInfo.pdiId,
+        manufacturerAmount: this.loanInfo.manufacturerAmount,
+        dealerAmount: this.loanInfo.dealerAmount,
+        fcaId: this.loanInfo.fcaId,
+        paymentMethod: this.loanInfo.paymentMethod,
+        isSign: this.loanInfo.isSign
+      };
+      updateLoanDetail(param).then(res => {
+        toast.clear();
+        this.$router.back();
+      });
     },
     expenseType(type) {
       var str = "";
-      // console.log(type)
       switch (parseInt(type)) {
         case 10:
           str += "保证金";
-          console.log("zou");
           break;
         case 20:
           str += "服务费(意外险)";
@@ -376,7 +462,6 @@ export default {
           str += "其他费用";
           break;
       }
-      console.log(str);
       return str;
     },
     selectTXPlan(value) {
@@ -390,8 +475,8 @@ export default {
       this.showTXPlan = false;
       this.getTXPlanDetail(id);
     },
+    // 贴息详情
     getTXPlanDetail(id) {
-      console.log("1111");
       productDiscountInterestDetail({ id: id }).then(res => {
         console.log("贴息详情", res);
         this.TXPlanDetail = res.data.data;
@@ -425,14 +510,6 @@ export default {
         this.loanInfo.pdiId = res.data.data.id;
       });
     },
-    toSelectProduct() {
-      this.$router.push({
-        name: "productList",
-        params: {
-          financingChannelId: this.loanInfo.fcId
-        }
-      });
-    },
     // 选择资方
     selectZF(val) {
       for (let index in this.fcList) {
@@ -442,13 +519,13 @@ export default {
           break;
         }
       }
-
       // 清空支付信息
-      this.accountInfo = {}
+      this.accountInfo = {};
       // 重新获取支付账号列表
       this.getFinancingChannelAccountList();
       this.showZF = false;
     },
+    // 选择付款账号
     selectAccount(item) {
       for (let index in this.account) {
         if (this.account[index].accountNumber == val) {
@@ -458,6 +535,7 @@ export default {
         }
       }
     },
+    // 获取界面数据
     getLoanDetailAndRepaymentPlan() {
       loanDetailAndRepaymentPlan({
         loanNumber: this.$store.state.loanNumber
@@ -467,13 +545,14 @@ export default {
         this.loanInfo.repaymentCycleType = "1";
         this.loanInfo.repaymentCycleTypeValue = "按月";
         if (this.loanInfo.productId) {
-          this.getProductDetail();
+          this.getProductDetail(this.loanInfo.productId, false);
           this.getProductDiscountInterest();
         }
         if (this.loanInfo.pdiId) {
           this.getTXPlanDetail(this.loanInfo.pdiId);
         }
-        if (this.loanInfo.fcId == 0 || this.loanInfo.fcId == null) {
+        //获取账户列表
+        if (this.loanInfo.fcId) {
           this.getFinancingChannelAccountList();
         }
 
@@ -488,6 +567,7 @@ export default {
         res => {
           console.log("贴息方案：", res);
           this.TXPlan = res.data.data;
+          this.TXPlanList = [];
           for (let index in this.TXPlan) {
             this.TXPlanList.push(this.TXPlan[index].name);
           }
@@ -495,15 +575,28 @@ export default {
       );
     },
     // 获取产品详情
-    getProductDetail() {
+    getProductDetail(id, type) {
       var param = {
-        productId: this.loanInfo.productId,
+        productId: id,
         amount: this.loanInfo.amount,
         loanNumber: this.$store.state.loanNumber
       };
       productDetail(param).then(res => {
         console.log("产品详情：", res);
         this.productDetailInfo = res.data.data;
+        if (type) {
+          // 选择产品
+          // 计算金额
+          this.loanInfo.pdiId = 0;
+          this.loanInfo.manufacturerAmount = 0;
+          this.loanInfo.dealerAmount = 0;
+          this.loanInfo.executeRate = this.productDetailInfo.executeRate;
+          this.loanInfo.packFlag = this.productDetailInfo.packFlag;
+          // 从新获取贴息方案
+          this.getProductDiscountInterest();
+          //计算金额
+          this.getCalculationFinancingAmount();
+        }
       });
     },
     // 资方列表
@@ -525,7 +618,7 @@ export default {
       financingChannelAccountList({
         financingChannelId: this.loanInfo.fcId
       }).then(res => {
-        this.accountList = []
+        this.accountList = [];
         console.log("付款账户列表：", res);
         this.account = res.data.data;
         for (let index in this.account) {
@@ -538,6 +631,21 @@ export default {
       financingChannelAccountDetail({ id: id }).then(res => {
         console.log("账号详情", res);
         this.accountInfo = res.data.data;
+      });
+    },
+    //计算金额
+    getCalculationFinancingAmount() {
+      let param = {
+        productId: this.loanInfo.productId,
+        downPaymentAmount: this.loanInfo.downPaymentAmount,
+        loanNumber: this.$store.state.loanNumber
+      };
+      calculationFinancingAmount(param).then(res => {
+        console.log("计算金额：", res);
+        this.loanInfo.amount = res.data.data.amount;
+        this.loanInfo.downPaymentRate = res.data.data.downPaymentRate;
+        this.loanInfo.netAmount = res.data.data.netAmount;
+        this.loanInfo.monthRent = res.data.data.monthRent;
       });
     }
   },

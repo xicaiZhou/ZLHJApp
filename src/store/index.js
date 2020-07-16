@@ -4,14 +4,12 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
-<<<<<<< HEAD
-        token:'',
-=======
-        token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk0NzY4NDQxLCJpYXQiOjE1OTQ3MzI0NDEsImp0aSI6IjY3NTM1ZjcwNmZiMzRhODliOTQwNzI3MWFkMzQxNzU5IiwidXNlcm5hbWUiOiJhZG1pbiJ9.wwFV4FTZ-a4SlU2sEtpBUPbE9hCWEUvNTZc2JJrejnA',
->>>>>>> 181a32658ca39805c5c12c2e74da47ea4ccbbbc2
+        token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk0OTAwNzczLCJpYXQiOjE1OTQ4NjQ3NzMsImp0aSI6ImI1Y2FiNWFlNDVkNTQ2YTM5ZGNjMjZlODlkMjRhYmJlIiwidXNlcm5hbWUiOiJhZG1pbiJ9.LThSgZfreU4nxzXqx91QlvML_eKwasNxlD38FVbl3W0',
         loanId:'',
         // loanNumber:'20200707153020238',
-        loanNumber:'20200703105318095',
+        // loanNumber:'20200703105318095',
+        loanNumber:'20200715113656719',
+        productItem:{}, // 只做为选择产品后使用，记得清空。
         userInfo:{},
         carModel:{},
         cars:{},
