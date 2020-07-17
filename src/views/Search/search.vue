@@ -4,65 +4,74 @@
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
           <div class="searchContent" v-for="(item,index) in filterDetail" :key="index">
-            <p>
+            <div>
               业务编号:
               <span>{{item.loanNumber}}</span>
-            </p>
-            <p>
+            </div>
+            <div>
               合同编号:
               <span>{{item.contractNumber}}</span>
-            </p>
-            <p>
-              承租人姓名:
-              <span>{{item.customerName}}</span>
-            </p>
-            <p>
-              证件号码:
-              <span>{{item.credentialNumber}}</span>
-            </p>
-            <p>
-              融资金额:
-              <span>{{item.applyAmount}}</span>
-            </p>
-            <p>
-              融资期限:
-              <span>{{item.applyTerm}}</span>
-            </p>
-            <p>
+            </div>
+            <div style="display:flex">
+              <div style="width:50%">
+                承租人姓名:
+                <span>{{item.customerName}}</span>
+              </div>
+              <div>
+                证件号码:
+                <span>{{item.credentialNumber}}</span>
+              </div>
+            </div>
+            <div style="display:flex">
+              <div style="width:50%">
+                融资金额:
+                <span>{{item.applyAmount}} 元</span>
+              </div>
+              <div>
+                融资期限:
+                <span>{{item.applyTerm}} 月</span>
+              </div>
+            </div>
+
+            <div>
               资方:
               <span>{{item.fcName}}</span>
-            </p>
-            <p>
+            </div>
+            <div>
               产品名称:
               <span>{{item.productName}}</span>
-            </p>
-            <p>
-              业务模式:
-              <span>{{item.businessModel}}</span>
-            </p>
-            <p>
-              业务类型:
-              <span>{{item.businessType}}</span>
-            </p>
-            <p>
+            </div>
+            <div>
               展厅:
               <span>{{item.dealerName}}</span>
-            </p>
-            <p>
-              提交日期:
-              <span>{{item.firstSubmitDate}}</span>
-            </p>
-            <p>
-              贷款状态:
-              <span>{{item.loanStatus}}</span>
-            </p>
+            </div>
+            <div style="display:flex">
+              <div style="width:50%">
+                业务模式:
+                <span>{{item.businessModel}}</span>
+              </div>
+              <div>
+                业务类型:
+                <span>{{item.businessType}}</span>
+              </div>
+            </div>
+            <div style="display:flex">
+              <div style="width:50%">
+                提交日期:
+                <span>{{item.firstSubmitDate}}</span>
+              </div>
+              <div>
+                贷款状态:
+                <span>{{item.loanStatus}}</span>
+              </div>
+            </div>
           </div>
         </van-list>
       </van-pull-refresh>
     </div>
 
-    <van-tabbar route v-model="active" @change="onChange">
-      <van-tabbar-item replace to="/main" icon="home-o">首页</van-tabbar-item>
+    <van-tabbar route v-model="active">
+      <van-tabbar-item replace to="/" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item replace to="/search" icon="search">查询</van-tabbar-item>
       <van-tabbar-item replace to="/mine" icon="friends-o">我的</van-tabbar-item>
     </van-tabbar>
@@ -70,6 +79,7 @@
 </template>
 
 <script>
+import { searchInfo } from "../../request/api";
 import { getUrlParam } from "../../utils/common.js";
 export default {
   data() {
@@ -81,18 +91,7 @@ export default {
       filterDetail: [],
       loading: false,
       pIndex: 0,
-      state: 1,
-
-      beginTime: "",
-      endTime: "",
-      dateYM: "",
-      showResult: false,
-      RefuseList: [],
-      showPicker: false, //是否显示起止时间picker
-      dateTime: "",
-      minDate: new Date(2010, 0, 1),
-      maxDate: YmdGetDate(),
-      calendarData: ""
+      state: 1
     };
   },
   created() {
@@ -103,7 +102,6 @@ export default {
     window.showSearch = res => {
       this.popupShow = true;
     };
-    // this.$store.commit("updateParam", getUrlParam());
   },
   methods: {
     showSearch() {
@@ -118,7 +116,6 @@ export default {
     },
     //重置
     toClear() {
-
       this.popupShow = false;
       this.loanMainName = "";
       this.managerName = "";
@@ -126,7 +123,6 @@ export default {
       this.pIndex = 1;
       this.initDate();
       this.getData();
-
     },
     //刷新
     onRefresh() {
@@ -141,7 +137,6 @@ export default {
       this.getData();
     },
     getData() {
-
       if (this.finished) {
         this.finished = false;
         this.loading = true;
@@ -158,9 +153,7 @@ export default {
         dealerName: ""
       };
       console.log(params);
-      screenResultInfo(params).then(res => {
-        toast.clear();
-
+      searchInfo(params).then(res => {
         let num = res.data.data.total;
         let list = res.data.data["records"];
         if (this.refreshing) {
@@ -196,8 +189,7 @@ export default {
 .searchContent {
   width: 90%;
   margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
+
   font-size: 12px;
   background: #ffffff;
   margin-top: 3%;

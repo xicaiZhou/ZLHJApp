@@ -12,6 +12,10 @@ import menu from '@/views/Menu/menu.vue'
 import carInfo from '@/views/carInfo/carInfo.vue'
 // 车型选择界面
 import carModels from '@/views/carInfo/carModels.vue'
+// 车辆品牌
+import carModelList from '@/views/carInfo/carModelList'
+// 车系列表
+import carsList from '@/views/carInfo/carsList'
 // 综合查询
 import search from '@/views/Search/search.vue'
 // 个人中心
@@ -22,10 +26,7 @@ import setup from '@/views/Mine/setup'
 import getphonecode from '@/views/Mine/getphonecode'
 // 修改密码
 import setnewpassword from '@/views/Mine/setnewpassword'
-// 车辆品牌
-import carModelList from '@/views/carInfo/carModelList'
-// 车系列表
-import carsList from '@/views/carInfo/carsList'
+
 
 // 融资业务信息
 import business from '@/views/BusinessInfo/businessInfo'
@@ -52,15 +53,6 @@ Vue.use(Router)
 
 export default new Router({
   routes: [
-    {
-      path: '/',
-      name: 'index',
-      component: index,
-      meta:{
-        keepAlive:false,
-        title: '菜单'
-      }
-    },
     {
       path:'/menu',
       name:'menu',
@@ -116,7 +108,7 @@ export default new Router({
       }
     },
     {
-      path: '/main',
+      path: '/',
       name: 'main',
       component: main,
       meta:{

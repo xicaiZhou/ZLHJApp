@@ -1,4 +1,5 @@
 <template>
+<!-- 车辆信息界面 -->
   <div style="height:100%; margin-bottom: 60px;">
     <div class="content">
       <van-form ref="form" @submit="onSubmit">
@@ -716,6 +717,10 @@ export default {
   },
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
+    to.meta.keepAlive = false;
+    if (to.path == "/menu") {
+      from.meta.keepAlive = false;
+    } 
     to.meta.keepAlive = false;
     next();
   }

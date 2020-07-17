@@ -1,4 +1,5 @@
 <template>
+<!-- 车辆品牌界面 -->
   <div>
     <van-popup v-model="popupShow" position="top">
       <div class="search_form">
@@ -55,7 +56,7 @@ export default {
   },
   mounted() {
     window.showCarModelSearch = res => {
-      showCarModelSearch();
+      this.showCarModelSearch();
     };
     this.getData();
   },
@@ -68,22 +69,7 @@ export default {
         console.log(this.$store.state.carModel);
         this.$router.back();
     },
-    //展示放大镜
-    showSearchIcon() {
-      /**
-       * js 跟APP交互
-       * */
-      var AppData = Object.assign({ type: "carModel" });
-      var u = navigator.userAgent,
-        app = navigator.appVersion;
-      var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Linux") > -1; //android终端或者uc浏览器
-      var isiOS = !!u.match(/(i[^;]+;( U;)? CPU.+Mac OS X)/); //ios终端
-      if (isiOS) {
-        window.webkit.messageHandlers.showSearchIcon.postMessage(AppData);
-      } else if (isAndroid) {
-        android.showSearchIcon(JSON.stringify(AppData));
-      }
-    },
+    
     toClear() {
       this.popupShow = false;
       this.filterDetail = [];

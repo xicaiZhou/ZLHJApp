@@ -4,8 +4,23 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
-        token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk0OTAwNzczLCJpYXQiOjE1OTQ4NjQ3NzMsImp0aSI6ImI1Y2FiNWFlNDVkNTQ2YTM5ZGNjMjZlODlkMjRhYmJlIiwidXNlcm5hbWUiOiJhZG1pbiJ9.LThSgZfreU4nxzXqx91QlvML_eKwasNxlD38FVbl3W0',
+        token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk1MDAxNzE4LCJpYXQiOjE1OTQ5NjU3MTgsImp0aSI6ImVkNTQyYzdlYWFiMzQzODVhNTlmYWJiMmM2NmFkZGUzIiwidXNlcm5hbWUiOiJhZG1pbiJ9.YWm_bdHuN2ASXJ3IX1lWwqefZpov_euVWchHG_qdeUs',
         loanId:'',
+        userInfo: {
+            loginSysUserVo: {
+              id: 0,
+              username: "",
+              nickname: "",
+              gender: 0,
+              state: 0,
+              departmentId: 0,
+              departmentName: "",
+              roleId: 0,
+              roleName: "",
+              roleCode: ""
+            },
+            token: ""
+          },
         // loanNumber:'20200707153020238',
         // loanNumber:'20200703105318095',
         loanNumber:'20200715113656719',
@@ -23,7 +38,7 @@ const store = new Vuex.Store({
     },
     mutations:{
         updateParam(state,param){
-            state.userInfo = param["userInfo"];
+            state.userInfo = param;
             state.token = param["token"];
         },
     },

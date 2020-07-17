@@ -1,4 +1,5 @@
 <template>
+<!-- 车系列表界面 -->
   <div>
     <div class="contentBox">
       <div v-for="(item,index) in filterDetail" :key="index">

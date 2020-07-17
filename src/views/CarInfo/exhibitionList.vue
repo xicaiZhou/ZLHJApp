@@ -1,4 +1,5 @@
 <template>
+<!-- 经销商列表界面 -->
   <div>
     <van-popup v-model="popupShow" position="top">
       <div class="search_form">
@@ -24,9 +25,7 @@
         </div>
       </div>
     </van-popup>
-    <div class="nav_icon">
-      <van-icon name="search" size="25" @click="showExhibitionSearch" color="#07c160" />
-    </div>
+
 
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
@@ -61,34 +60,19 @@ export default {
   },
   mounted() {
     window.showExhibitionSearch = res => {
-      showExhibitionSearch();
+      this.showExhibitionSearch();
     };
   },
   methods: {
     showExhibitionSearch() {
       console.log("zoule");
-      this.popupShow = true;
+      this.popupShow = !this.popupShow;
     },
     exhibitionSelected(item){
       this.$store.state.exhibition = item;
       this.$router.back();
     },
-    //展示放大镜
-    showSearchIcon() {
-      /**
-       * js 跟APP交互
-       * */
-      var AppData = Object.assign({ type: "exhibition" });
-      var u = navigator.userAgent,
-        app = navigator.appVersion;
-      var isAndroid = u.indexOf("Android") > -1 || u.indexOf("Linux") > -1; //android终端或者uc浏览器
-      var isiOS = !!u.match(/(i[^;]+;( U;)? CPU.+Mac OS X)/); //ios终端
-      if (isiOS) {
-        window.webkit.messageHandlers.showSearchIcon.postMessage(AppData);
-      } else if (isAndroid) {
-        android.showSearchIcon(JSON.stringify(AppData));
-      }
-    },
+
     toClear() {
            this.popupShow = false;
       this.loanMainName = "";
@@ -181,7 +165,7 @@ export default {
 }
 .contentBox {
   position: absolute;
-  top: 44px;
+  top: 0px;
   width: 100%;
   background: #f3eeee;
 }

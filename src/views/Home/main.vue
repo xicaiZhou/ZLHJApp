@@ -4,13 +4,13 @@
       <span>录单</span>
 
       <van-grid clickable>
-        <van-grid-item icon="coupon-o" text="录单" to="/menu"/>
-        <van-grid-item icon="search" text="查询" to="/search"/>
+        <van-grid-item icon="coupon-o" text="录单" to="/menu" />
+        <van-grid-item icon="search" text="查询" to="/search" />
       </van-grid>
     </div>
     <div>
       <van-tabbar route v-model="active" @change="onChange">
-        <van-tabbar-item replace to="/main" icon="home-o">首页</van-tabbar-item>
+        <van-tabbar-item replace to="/" icon="home-o">首页</van-tabbar-item>
         <van-tabbar-item replace to="/search" icon="search">查询</van-tabbar-item>
         <van-tabbar-item replace to="/mine" icon="friends-o">我的</van-tabbar-item>
       </van-tabbar>
@@ -19,28 +19,37 @@
 </template>
 
 <script>
-import { getAddress } from '../../request/api'
+import { getAddress } from "../../request/api";
 export default {
   data() {
     return {
-      active: 0
+      active: 0,
+
     };
   },
-  mounted(){
-    this.address()
+  mounted() {
+    
+  },
+  created() {
+    window.userInfo = res => {
+      this.userInfo1(res);
+    };
   },
   methods: {
+    userInfo1(info) {
+      this.$store.commit("updateParam", info);
+      this.address();
+    },
     onChange(index) {
       Notify({ type: "primary", message: index });
     },
-    address(){
-      getAddress().then(res=>{
+    address() {
+      getAddress().then(res => {
         this.$store.state.address = res.data.data;
-        console.log("有地址")
-      })
+        console.log("有地址");
+      });
     }
-  },
-
+  }
 };
 </script>
 
