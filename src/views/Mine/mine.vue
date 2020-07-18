@@ -7,14 +7,14 @@
        <div class="name">用户名</div>
     </div>
     <van-cell-group>
-      <van-field
+      <!-- <van-field
         v-model="value2"
         label="微信绑定"
         left-icon="music-o"
         placeholder="已绑定"
         disabled="true"
         is-link
-      />
+      /> -->
       <van-field
         v-model="value2"
         label="操作手册"

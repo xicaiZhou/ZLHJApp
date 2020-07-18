@@ -3,7 +3,7 @@
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index">
+          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index" @click="toDetail(item)">
             <div>
               业务编号:
               <span>{{item.loanNumber}}</span>
@@ -100,12 +100,18 @@ export default {
   mounted() {
     //js与原生app交互  //原生掉JS
     window.showSearch = res => {
-      this.popupShow = true;
+      this.showSearch()
     };
   },
   methods: {
     showSearch() {
-      this.popupShow = true;
+      this.popupShow = !this.popupShow;
+    },
+    toDetail(item){
+      this.$store.state.loanNumber = item.loanNumber;
+      this.$router.push({
+        path:'/menu'
+      })
     },
     //查询
     toSearch() {
@@ -182,7 +188,7 @@ export default {
 <style scoped>
 .contentBox {
   position: absolute;
-  top: 44px;
+  top: 0px;
   width: 100%;
   background: #f3eeee;
 }
@@ -254,5 +260,9 @@ export default {
 .resultBtn {
   margin-top: 10px;
   width: 70%;
+}
+
+span{
+  color: #333333;
 }
 </style>

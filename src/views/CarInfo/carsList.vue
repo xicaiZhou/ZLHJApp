@@ -92,7 +92,7 @@ export default {
 }
 .contentBox {
   position: absolute;
-  top: 44px;
+  top: 0px;
   width: 100%;
   background: #f3eeee;
 }

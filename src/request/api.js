@@ -252,7 +252,6 @@ export function allFileList(param) {
     })
 }
 //  =========================综合查询========================
-
 export function searchInfo(param) {
     return request({
         method:'post',
@@ -260,6 +259,14 @@ export function searchInfo(param) {
         data:param
     })
 }
+// 登出
+export function logout(param) {
+    return request({
+        method:'post',
+        url:"/api/logout",
+        data:param
+    })
+  }
 //  =========================其他数据========================
 // 1.省市区数据
 export function getAddress(){

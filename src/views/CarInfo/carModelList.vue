@@ -1,5 +1,5 @@
 <template>
-<!-- 车辆品牌界面 -->
+<!-- 车辆品牌列表界面 -->
   <div>
     <van-popup v-model="popupShow" position="top">
       <div class="search_form">
@@ -55,14 +55,14 @@ export default {
     };
   },
   mounted() {
-    window.showCarModelSearch = res => {
+    window.showCarModelListSearch = res => {
       this.showCarModelSearch();
     };
     this.getData();
   },
   methods: {
     showCarModelSearch() {
-      this.popupShow = true;
+      this.popupShow = !this.popupShow;
     },
     carSelected(item){
         this.$store.state.carModel = item;
@@ -130,7 +130,7 @@ export default {
 }
 .contentBox {
   position: absolute;
-  top: 44px;
+  top: 0px;
   width: 100%;
   background: #f3eeee;
 }
