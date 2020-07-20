@@ -4,7 +4,13 @@
        <van-image round style="margin-top:50px;margin-left:30px;"
         width="5rem" height="5rem"
         src="https://img.yzcdn.cn/vant/cat.jpeg" />
-       <div class="name">用户名</div>
+        <div style="display: inline;">
+          <div class="name">{{this.$store.state.userInfo.loginSysUserVo.username}}</div>
+           <div class="departmentName">{{this.$store.state.userInfo.loginSysUserVo.departmentName}}</div>
+
+        </div>
+
+
     </div>
     <van-cell-group>
       <!-- <van-field
@@ -78,12 +84,23 @@ export default {
   display: flex;
   height: 150px;
   width: 100%;
+  
 }
 .name {
   color: black;
   font: 30px;
   height: 30px;
-  margin-top: 90px;
+  margin-top: 60px;
   margin-left: 20px;
+  font-size: 22px;
+  font-weight: 500;
+}
+.departmentName{
+  color: #333333;
+  font: 30px;
+  height: 30px;
+  margin-left: 20px;
+  font-size: 15px;
+  font-weight: 500;
 }
 </style>

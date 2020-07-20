@@ -34,6 +34,7 @@ export default {
     window.userInfo = res => {
       this.userInfo1(res);
     };
+    this.address();
   },
   methods: {
     userInfo1(info) {

@@ -366,7 +366,7 @@
             placeholder="请填写单位电话"
           />
           <van-field
-            required
+            
             label="分机号:"
             v-model="customerJob.companyExtension"
             placeholder="请填写分机号"

@@ -3,6 +3,20 @@
   <div style="height:100%; margin-bottom: 60px;">
     <div class="content">
       <van-form ref="form" @submit="onSubmit">
+
+        <div class="header">渠道信息</div>
+          <van-field
+            required
+            @click="selectExhibition"
+            is-link
+            readonly
+            clickable
+            v-model="loginSysUserVo.dealerName"
+            label="展厅:"
+            name
+            placeholder="请选择展厅"
+          />
+
         <!-- 新车 -->
         <template v-if="this.loginSysUserVo.businessType == '1'">
           <div class="header">贷款信息</div>
@@ -16,19 +30,7 @@
             placeholder="请选择业务类型"
             @click="showBusiness = true"
           />
-          <div class="header">渠道信息</div>
-          <van-field
-            required
-            @click="selectExhibition"
-            is-link
-            readonly
-            clickable
-            v-model="loginSysUserVo.dealerName"
-            label="展厅:"
-            name
-            placeholder="请选择展厅"
-          />
-
+          
           <div class="header">车辆信息</div>
           <van-field
             required
@@ -470,6 +472,7 @@
 import { CarInfo, SaveCarInfo } from "../../request/api";
 import { dateFormat, dataYear } from "../../utils/formatter";
 import { idNumValidator } from "../../utils/common";
+import {getValue} from '../../utils/utils'
 export default {
   data() {
     return {
@@ -655,11 +658,12 @@ export default {
         } else {
           this.loginSysUserVo.businessTypeName = "新车";
         }
-        // 接口返回 yyyy-MM-dd hh:mm:ss  -> yyyy-MM-dd
-        this.loginSysUserVo.firstRegistrationDate = dateFormat(
-          this.loginSysUserVo.firstRegistrationDate,
-          "yyyy-MM-dd"
-        );
+        this.loginSysUserVo.exOwnerIdTypeName = getValue('2',this.loginSysUserVo.exOwnerIdType)
+        // // 接口返回 yyyy-MM-dd hh:mm:ss  -> yyyy-MM-dd
+        // this.loginSysUserVo.firstRegistrationDate = dateFormat(
+        //   this.loginSysUserVo.firstRegistrationDate,
+        //   "yyyy-MM-dd"
+        // );
       });
     },
 

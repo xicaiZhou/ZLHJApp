@@ -95,7 +95,7 @@ export default {
   padding: 0 16px;
   font-size: 17px;
   font-weight: bold;
-  color: #000;
+  color: #ff9900;
   height: 40px;
   line-height: 50px;
 }

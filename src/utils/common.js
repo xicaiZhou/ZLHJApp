@@ -26,7 +26,6 @@ export const idNumInfo = (val) =>{
     year="19"+val.substring(6,8)
   }
   let age = new Date().getFullYear() - parseInt(year)
-  console.log(age)
 
 
   let birthday = ""
@@ -41,10 +40,15 @@ export const idNumInfo = (val) =>{
   }else if(val.length==15){
     sex=val.substring(14,15)
   }
+  console.log({
+    age:age,
+    sex:parseInt(sex) % 2 == 0 ? 2 : 1,
+    birthday:birthday
+  })
 
   return {
     age:age,
-    sex:parseInt(sex) % 2,
+    sex:parseInt(sex) % 2 == 0 ? 2 : 1,
     birthday:birthday
   }
 

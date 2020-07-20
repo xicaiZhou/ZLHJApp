@@ -243,11 +243,27 @@ export function deleteAllFile(param) {
         data:param
     })
 }
+// 清空当前文件类型所有文件
+export function deleteFile(param) {
+    return request({
+        method:'post',
+        url:'/api/loanFileList/deleteFile',
+        data:param
+    })
+}
 // 贷款文件列表
 export function allFileList(param) {
     return request({
-        method:'post',
+        method:'get',
         url:'/api/loanFileList/getLoanFileList/' + param.loanNumber,
+        data:param
+    })
+}
+// 获取文件详情
+export function fileDetail(param) {
+    return request({
+        method:'get',
+        url:'/api/loanFileList/getLoanFileDetails/' + param.fileId,
         data:param
     })
 }

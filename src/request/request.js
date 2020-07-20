@@ -3,7 +3,7 @@ import router from '../router';
 import QS from 'qs'
 import {Toast} from 'vant';
 import store from '../store/index'
-
+import { bridge } from "../utils/bridge";
 /** 创建axios实例*/
 const request = axios.create({})
 
@@ -50,13 +50,15 @@ request.interceptors.response.use(
 				if (error && error.response) {
 					switch (error.response.status) {
 						case 302:
-							error.message = '未授权，请重新登录'
+							error.message = '登录已过期，请重新登录'
+							bridge(5)
 							break;
 						case 400:
 							error.message = '错误请求'
 							break;
 						case 401:
 							error.message = '授权错误，请重新登录'
+							bridge(5)
 							break;
 						case 403:
 							error.message = '登录过期，拒绝访问'

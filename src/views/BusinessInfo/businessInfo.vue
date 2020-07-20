@@ -2,7 +2,13 @@
   <div style="height:100%; margin-bottom: 60px;">
     <div>
       <div class="header">贷款信息</div>
-      <div>
+            <van-field
+        class="readOnly"
+        required
+        readonly
+        label="业务模式:"
+        v-model="baseInfo.businessModel == '1' ? '租赁' : '贷款' "/>
+      <!-- <div>
         <div class="zlhjRadio" style="display:flex">
           <span class="zlhjRadio_title">业务模式：</span>
           <div class="zlhjRadio_body">
@@ -19,7 +25,7 @@
         <div style="padding-left:10px">
           <div class="zlhjRadioLine"></div>
         </div>
-      </div>
+      </div> -->
       <van-field
         class="readOnly"
         required
@@ -550,6 +556,7 @@ export default {
     },
     getBusinessInfo() {
       BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
+        console.log(res)
         this.baseInfo = res.data.data;
         // 1-等额本息，2-等额本金，3-等本等息
         if (this.baseInfo.repaymentMethod == "1") {
@@ -559,11 +566,12 @@ export default {
         } else {
           this.baseInfo.repaymentMethodName = "等本等息";
         }
-        if (this.baseInfo.leaseType == "1") {
-          this.baseInfo.leaseTypeName = "直租";
-        } else {
+        this.baseInfo.businessModel = "1"
+        // if (this.baseInfo.leaseType == "1") {
+        //   this.baseInfo.leaseTypeName = "直租";
+        // } else {
           this.baseInfo.leaseTypeName = "回租";
-        }
+        // }
         this.getCostList();
       });
     },
