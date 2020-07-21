@@ -30,6 +30,6 @@ export function updataInfo(value) {
     if (isiOS) {
         window.webkit.messageHandlers.updataInfo.postMessage(AppData);
     } else if (isAndroid) {
-        android.updataInfo(AppData);
+        android.updataInfo(JSON.stringify(value).toString());
     }
 }

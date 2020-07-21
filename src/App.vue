@@ -1,25 +1,31 @@
 <template>
   <div id="app">
     <keep-alive>
-      <router-view v-wechat-title='$route.meta.title' v-if="$route.meta.keepAlive"></router-view>
+      <router-view v-wechat-title="$route.meta.title" v-if="$route.meta.keepAlive"></router-view>
     </keep-alive>
-    <router-view v-wechat-title='$route.meta.title' v-if="!$route.meta.keepAlive"></router-view>
+    <router-view v-wechat-title="$route.meta.title" v-if="!$route.meta.keepAlive"></router-view>
   </div>
 </template>
 
 <script>
 export default {
-  name: "App"
+  name: "App",
+  created(){
+    // window.screenHeight = res =>{
+    //   this.$store.state.screenHeight = res
+    // }
+  }
 };
 </script>
 
 <style>
+
 .systemAppColor {
   background: #00ff00;
 }
-.readOnly{
+.readOnly {
   pointer-events: none;
-  background-color: #F7F7F7;
+  background-color: #f7f7f7;
 }
 .van-field__body input {
   text-align: right;
@@ -34,6 +40,7 @@ export default {
   width: 100%;
   background: #fff;
 }
+
 .subBtn_body {
   width: 90%;
   margin: auto;
@@ -48,10 +55,10 @@ export default {
   color: #323233;
   padding: 10px 8px 10px 16px;
 }
-.zlhjRadio_title{
-   width: 90px;
+.zlhjRadio_title {
+  width: 90px;
 }
-.zlhjRadio_title_norequired{
+.zlhjRadio_title_norequired {
   width: 90px;
 }
 .zlhjRadio_title::before {

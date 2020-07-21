@@ -15,6 +15,7 @@
         <van-tabbar-item replace to="/mine" icon="friends-o">我的</van-tabbar-item>
       </van-tabbar>
     </div>
+
   </div>
 </template>
 
@@ -24,11 +25,13 @@ export default {
   data() {
     return {
       active: 0,
-
+      info: {},
+      token:this.$store.state.userInfo
     };
   },
   mounted() {
-    
+      // this.$toast.success(this.$store.state.screenHeight);
+      // this.$refs.tabBar.style.top = this.$store.state.screenHeight - 80  + "px";
   },
   created() {
     window.userInfo = res => {
@@ -37,10 +40,10 @@ export default {
     window.systemInfo = res => {
       this.$store.commit("updateSystemInfo", info);
     }
-    // this.address();
   },
   methods: {
     userInfo1(info) {
+      this.info = info.token;
       this.$store.commit("updateParam", info);
       this.address();
     },
@@ -56,7 +59,9 @@ export default {
   }
 };
 </script>
+<style>
 
+</style>
 <style scoped>
 .content {
   margin: 20px;
@@ -65,4 +70,5 @@ export default {
   border-width: 2px;
   border-color: #f7f7f7;
 }
+
 </style>

@@ -4,8 +4,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
-        token:'',
-        loanId:'',
+        // screenHeight:200,
         userInfo: {
             loginSysUserVo: {
               id: 0,
@@ -45,7 +44,6 @@ const store = new Vuex.Store({
     mutations:{
         updateParam(state,param){
             state.userInfo = param;
-            state.token = param["token"];
         },
         updateSystemInfo(state,info){
             state.systemInfo = info;

@@ -12,7 +12,7 @@
       </div>
     </div>
     <div class="tips">提交审核后，审核人员会根据您提交的材料反馈审核结果，请耐心等待！</div>
-    <div class="subBtn">
+    <div class="subBtn" ref="subBtn">
       <van-button
         style="width:100%;background:#ff9900;border:none"
         block
@@ -51,6 +51,12 @@ export default {
       ]
     };
   },
+  mounted() {
+    this.$nextTick(() => {
+      // this.$refs.subBtn.style.top = this.$store.state.screenHeight - 50 + "px";
+    });
+  },
+
   methods: {
     toDetail(val) {
       if (val.name === "经销商信息") {
@@ -75,9 +81,11 @@ export default {
         });
       }
     },
-    toSub() {}
-  },
-  mounted() {}
+    toSub() {
+      // this.$toast.success(this.$store.state.screenHeight);
+      // this.$refs.subBtn.style.top = this.$store.state.screenHeight - 50 + "px";
+    }
+  }
 };
 </script>
 <style scoped>
@@ -121,8 +129,8 @@ export default {
 }
 .subBtn {
   position: fixed;
-  bottom: 20px;
   width: 90%;
+  height: 50px;
   left: 5%;
 }
 </style>

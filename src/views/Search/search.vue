@@ -102,6 +102,9 @@ export default {
     window.showSearch = res => {
       this.showSearch()
     };
+    this.$nextTick(() => {
+      // this.$refs.tabbar.style.top = this.$store.state.screenHeight - 50 + "px";
+    });
   },
   methods: {
     showSearch() {

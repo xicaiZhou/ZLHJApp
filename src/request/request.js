@@ -1,6 +1,4 @@
 import axios from 'axios';
-import router from '../router';
-import QS from 'qs'
 import {Toast} from 'vant';
 import store from '../store/index'
 import { bridge } from "../utils/bridge";
@@ -16,7 +14,7 @@ request.defaults.withCredentials = true;
 /** request interceptor*/
 request.interceptors.request.use(
     config => {
-		config.headers.common["token"] = store.state.token;
+		config.headers.common["token"] = store.state.userInfo.token;
         return config
     },
     error => {

@@ -1,7 +1,7 @@
 <template>
 <!-- 车辆信息界面 -->
-  <div style="height:100%; margin-bottom: 60px;">
-    <div class="content">
+  <div >
+    <div class="content" style="height:100%; margin-bottom: 60px;">
       <van-form ref="form" @submit="onSubmit">
 
         <div class="header">渠道信息</div>

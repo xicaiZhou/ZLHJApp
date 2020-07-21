@@ -11,7 +11,7 @@ const path = require('path')
 // test Environment  准生产
 // var baseUrl = 'http://192.168.90.100'
 //备用环境
-var baseUrl = 'http://192.168.88.94:8888'
+var baseUrl = 'http://192.168.88.93:8888'
 
 module.exports = {
   dev: {
@@ -31,8 +31,8 @@ module.exports = {
     },
 
     // Various Dev Server settings
-    // host: '192.168.31.111', // can be overwritten by process.env.HOST
-    host: 'localhost', // can be overwritten by process.env.HOST
+    host: '192.168.7.30', // can be overwritten by process.env.HOST
+    // host: 'localhost', // can be overwritten by process.env.HOST
     port: 8080, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
     autoOpenBrowser: false,
     errorOverlay: true,
