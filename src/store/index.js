@@ -31,6 +31,11 @@ const store = new Vuex.Store({
         cars:{},
         exhibition:{},
         carInfo:{},
+        systemInfo:{
+            password:'',
+            cache:'',
+            phoneIsTouchID:''
+        },
         address:{
             province_list:[],
             city_list:[],
@@ -42,6 +47,9 @@ const store = new Vuex.Store({
             state.userInfo = param;
             state.token = param["token"];
         },
+        updateSystemInfo(state,info){
+            state.systemInfo = info;
+        }
     },
     getters:{
 

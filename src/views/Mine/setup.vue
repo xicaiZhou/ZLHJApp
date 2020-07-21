@@ -62,7 +62,7 @@ export default {
     },
     alterpasswordselect() {
       this.$router.push({
-        path: "/getphonecode"
+        path: "/setnewpassword"
       });
     }
   }

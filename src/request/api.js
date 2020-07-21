@@ -275,6 +275,7 @@ export function searchInfo(param) {
         data:param
     })
 }
+//  =========================系统功能========================
 // 登出
 export function logout(param) {
     return request({
@@ -282,7 +283,14 @@ export function logout(param) {
         url:"/api/logout",
         data:param
     })
-  }
+}
+export function updatePassword(param) { 
+    return request({
+        method:'post',
+        url:'/api/sysUser/updatePassword',
+        data:param
+    })
+ }
 //  =========================其他数据========================
 // 1.省市区数据
 export function getAddress(){
