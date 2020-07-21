@@ -4,7 +4,7 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
-        token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk1MjU2MDMxLCJpYXQiOjE1OTUyMjAwMzEsImp0aSI6IjkzMWEzYmYwZjhkMzRjNTg4YmE5NDZmYzQ0YTcyN2YzIiwidXNlcm5hbWUiOiJhZG1pbiJ9.DmM8Pr3GzhqqWzPML7mNxlAOBIedjCC3EJuTr3xHwZs',
+        token:'',
         loanId:'',
         userInfo: {
             loginSysUserVo: {
@@ -21,9 +21,10 @@ const store = new Vuex.Store({
             },
             token: ""
           },
+          loanNumber:'',
         // loanNumber:'20200707153020238',
         // loanNumber:'20200703105318095',
-        loanNumber:'20200715113656719',
+        // loanNumber:'20200715113656719',
         productItem:{}, // 只做为选择产品后使用，记得清空。
         userInfo:{},
         carModel:{},

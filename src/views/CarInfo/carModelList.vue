@@ -34,7 +34,6 @@
           </div> 
         </div> 
       </van-index-bar>
-     
     </div>
   </div>
 </template>
