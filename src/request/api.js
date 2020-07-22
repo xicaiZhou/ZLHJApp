@@ -81,7 +81,7 @@ export function CalculateCost(param){
 export function addCost(param){
     return request({
         method:'post',
-        url:'/api/expenseDetail/add',
+        url:'/api/loan/expenseDetail/add',
         data:param
     })
 }
@@ -89,7 +89,7 @@ export function addCost(param){
 export function delCost(param){
     return request({
         method:'post',
-        url:'/api/expenseDetail/delete/' + param.id,
+        url:'/api/loan/expenseDetail/delete/' + param.id,
         data:param
     })
 }
@@ -267,6 +267,15 @@ export function fileDetail(param) {
         data:param
     })
 }
+// 提交订单
+export function submitStartTask(param){
+    return request({
+        method:'post',
+        url:'/api/submit/startTask',
+        data:param
+    })
+}
+
 //  =========================综合查询========================
 export function searchInfo(param) {
     return request({
@@ -298,5 +307,17 @@ export function getAddress(){
         method:'get',
         url:"/api/provinceCityArea/list",
         data:{}
+    })
+}
+// 2.获取码值
+// credentialType - 证件类型
+// useType	- 用途
+// expenseType	- 费用类型
+// node - 节点
+export function codeList(param){
+    return request({
+        method:'get',
+        url:'/api/code/list/' + param.codeType,
+        data:param
     })
 }

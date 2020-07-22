@@ -43,8 +43,7 @@ export default {
 
 .subBtn_body {
   width: 90%;
-  margin: auto;
-  margin-bottom: 20px;
+  margin: auto ;
   background: #ff9900;
   border: none;
 }

@@ -2,12 +2,13 @@
   <div style="height:100%; margin-bottom: 60px;">
     <div>
       <div class="header">贷款信息</div>
-            <van-field
+      <van-field
         class="readOnly"
         required
         readonly
         label="业务模式:"
-        v-model="baseInfo.businessModel == '1' ? '租赁' : '贷款' "/>
+        v-model="baseInfo.businessModel == '1' ? '租赁' : '贷款' "
+      />
       <!-- <div>
         <div class="zlhjRadio" style="display:flex">
           <span class="zlhjRadio_title">业务模式：</span>
@@ -25,7 +26,7 @@
         <div style="padding-left:10px">
           <div class="zlhjRadioLine"></div>
         </div>
-      </div> -->
+      </div>-->
       <van-field
         class="readOnly"
         required
@@ -102,8 +103,8 @@
         >
           <div class="costBox_item">
             <div class="costBox_item_body">
-              <div>费用类型: {{item.expenseType}}</div>
-              <div>实际金额: {{item.amount}}</div>
+              <div>费用类型: {{getValue(item.expenseType,cosTypeList)}}</div>
+              <div style="margin-top:5px">实际金额: {{item.amount}} 元</div>
             </div>
             <div v-if="item.expenseType != '1'" class="costBox_item_action">
               <van-button style="height:100%;width:100%;" type="info" @click="delectCost(item)">删除</van-button>
@@ -279,7 +280,7 @@
         <van-picker
           title
           show-toolbar
-          :columns="useMethodList"
+          :columns="getPickData(this.useTypeList)"
           @confirm="selectUseMethod"
           @cancel="showUseMethod=false"
         />
@@ -287,7 +288,7 @@
 
       <van-popup
         v-model="showAddCost"
-        :style="{ height: '200px', width: '90%'}"
+        :style="{ height: '220px', width: '90%'}"
         get-container="body"
       >
         <div>
@@ -299,7 +300,7 @@
               is-link
               style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
               label="费用类型:"
-              v-model="addCostType"
+              v-model="addCostTypeValue"
               placeholder="请选择"
               @click="showCosType = true"
             />
@@ -326,7 +327,7 @@
         <van-picker
           title
           show-toolbar
-          :columns="cosTypeList"
+          :columns="getPickData(this.cosTypeList)"
           @confirm="selectCosType"
           @cancel="showCosType=false"
         />
@@ -342,7 +343,8 @@ import {
   CalculateCost,
   addCost,
   delCost,
-  saveBussinessInfo
+  saveBussinessInfo,
+  codeList
 } from "../../request/api";
 export default {
   data() {
@@ -355,9 +357,9 @@ export default {
       showRepaymentMethod: false,
       showUseMethod: false,
       showCosType: false,
-      cosTypeList: ["1", "2", "6"],
+      cosTypeList: [],
+      useTypeList:[],
       termList: ["12", "24", "36"],
-      useMethodList: ["2"],
       repaymentMethodList: ["等额本息", "等额本金", "等本等息"],
       totalAmount: 0, // 项目总额
       carAmount: 0,
@@ -379,21 +381,11 @@ export default {
         term: 0, //融资期限
         repaymentMethod: "", //还款方式 1-等额本息，2-等额本金，3-等本等息
         repaymentMethodName: "", //还款方式 1-等额本息，2-等额本金，3-等本等息
-        useMethod: "" //融资用途 数据字典-贷款用途
+        useMethod: "", //融资用途 数据字典-贷款用途
+        useMethodValue: "" // 自己加的
       },
       amount: 0, //融资金额
-      //    {
-      //   "id": 36,
-      //   "loanNumber": "20200703105318095",
-      //   "expenseType": "1", 1-车辆款 2-购置税 3-保险费 4-延保费 5-上牌杂费 6-GPS服务费(加融) 7-GPS服务费(线下收取) 8-意外险保费 9-其他费用
-      //   "amount": 421500,
-      //   "state": "1",
-      //   "updateBy": "admin",
-      //   "updateTime": "2020-07-06 14:51:17",
-      //   "createdBy": "admin",
-      //   "createdTime": "2020-07-03 10:53:18"
-      // },
-      cosList: []
+      cosList: [] //费用信息列表
     };
   },
   watch: {
@@ -416,6 +408,13 @@ export default {
     }
   },
   methods: {
+    getPickData(list) {
+      var data = [];
+      for (let index in list) {
+        data.push(list[index].codeValue);
+      }
+      return data;
+    },
     addCostAction() {
       const toast = this.$toast.loading({
         duration: 0,
@@ -436,7 +435,6 @@ export default {
       });
       this.showAddCost = false;
     },
-
     delectCost(item) {
       const toast = this.$toast.loading({
         duration: 0,
@@ -453,8 +451,32 @@ export default {
       });
     },
     selectCosType(val) {
-      this.addCostType = val;
+      this.addCostTypeValue = val;
+      this.addCostType = this.getKey(val,this.cosTypeList);
       this.showCosType = false;
+    },
+    getKey(str, list) {
+      var id = 0;
+      for (let index in list) {
+        if (str == list[index].codeValue) {
+          id = list[index].codeKey;
+          break;
+        }
+      }
+      return id;
+    },
+    getValue(id, list) {
+      var str = 0;
+      if (id == 1 && list == this.cosTypeList){
+        return "车辆款"
+      }
+      for (let index in list) {
+        if (id == list[index].codeKey) {
+          str = list[index].codeValue;
+          break;
+        }
+      }
+      return str;
     },
     selectTerm(val) {
       this.baseInfo.term = val;
@@ -556,7 +578,7 @@ export default {
     },
     getBusinessInfo() {
       BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
-        console.log(res)
+        console.log(res);
         this.baseInfo = res.data.data;
         // 1-等额本息，2-等额本金，3-等本等息
         if (this.baseInfo.repaymentMethod == "1") {
@@ -566,11 +588,12 @@ export default {
         } else {
           this.baseInfo.repaymentMethodName = "等本等息";
         }
-        this.baseInfo.businessModel = "1"
+        this.baseInfo.useMethodValue = getValue(this.baseInfo.useMethod,this.useTypeList)
+        this.baseInfo.businessModel = "1";
         // if (this.baseInfo.leaseType == "1") {
         //   this.baseInfo.leaseTypeName = "直租";
         // } else {
-          this.baseInfo.leaseTypeName = "回租";
+        this.baseInfo.leaseTypeName = "回租";
         // }
         this.getCostList();
       });
@@ -581,9 +604,22 @@ export default {
         this.cosList = res.data.data;
         this.calculateCost();
       });
+    },
+    getCode() {
+      // 获取费用类型
+      codeList({codeType: "expenseType" }).then(res => {
+        this.cosTypeList = res.data.data;
+      });
+      codeList({codeType: "useType" }).then(res=>{
+        this.useTypeList = res.data.data;
+        this.baseInfo.useMethodValue = getValue(this.baseInfo.useMethod,this.useTypeList)
+
+      });
     }
   },
   mounted() {
+    // 获取码值
+    this.getCode();
     this.getBusinessInfo();
   }
 };
@@ -628,11 +664,12 @@ export default {
 .showAddCost_body {
   font-size: 14px;
   font-weight: bold;
-  padding: 0 10%;
+  padding: 0 5%;
 }
 .showAddCost_btn {
   display: flex;
-  width: 100%;
-  margin-top: 8px;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 20px;
 }
 </style>

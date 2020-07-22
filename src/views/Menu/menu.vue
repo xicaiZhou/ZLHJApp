@@ -24,6 +24,7 @@
 </template>
 
 <script>
+import{submitStartTask} from '../../request/api'
 export default {
   data() {
     return {
@@ -82,8 +83,11 @@ export default {
       }
     },
     toSub() {
-      // this.$toast.success(this.$store.state.screenHeight);
-      // this.$refs.subBtn.style.top = this.$store.state.screenHeight - 50 + "px";
+
+      // 提交订单
+      submitStartTask({loanNumber:this.$store.state.loanNumber}).then(res => {
+        this.$router.back();
+      })
     }
   }
 };

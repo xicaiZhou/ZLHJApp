@@ -56,6 +56,14 @@ export default {
         console.log("有地址");
       });
     }
+  },
+    //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
+  beforeRouteLeave(to, from, next) {
+    to.meta.keepAlive = false;
+    if (to.path == "/menu") {
+      this.$store.state.loanNumber = ''
+    } 
+    next();
   }
 };
 </script>
