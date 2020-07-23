@@ -37,9 +37,6 @@ export default {
     window.userInfo = res => {
       this.userInfo1(res);
     };
-    window.systemInfo = res => {
-      this.$store.commit("updateSystemInfo", info);
-    }
   },
   methods: {
     userInfo1(info) {

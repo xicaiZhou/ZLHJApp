@@ -167,7 +167,7 @@ export default new Router({
       component:business,
       meta:{
         keepAlive:false,
-        title: '车系列表'
+        title: '融资业务信息'
       }
     },
     {

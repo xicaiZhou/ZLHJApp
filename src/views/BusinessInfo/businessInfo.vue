@@ -9,28 +9,10 @@
         label="业务模式:"
         v-model="baseInfo.businessModel == '1' ? '租赁' : '贷款' "
       />
-      <!-- <div>
-        <div class="zlhjRadio" style="display:flex">
-          <span class="zlhjRadio_title">业务模式：</span>
-          <div class="zlhjRadio_body">
-            <div
-              @click="baseInfo.businessModel = '1'"
-              :class="baseInfo.businessModel == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-            >租赁</div>
-            <div
-              @click="baseInfo.businessModel = '2'"
-              :class="baseInfo.businessModel == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-            >贷款</div>
-          </div>
-        </div>
-        <div style="padding-left:10px">
-          <div class="zlhjRadioLine"></div>
-        </div>
-      </div>-->
       <van-field
         class="readOnly"
         required
-        v-show="baseInfo.businessModel == 1"
+        v-show="baseInfo.businessModel == '1'"
         readonly
         label="租赁模式:"
         v-model="baseInfo.leaseTypeName"
@@ -117,7 +99,7 @@
       </div>
       <van-field
         class="readOnly"
-        v-show="baseInfo.businessModel == 1"
+        v-show="baseInfo.businessModel == '1'"
         type="digit"
         label="项目总额(元):"
         v-model="totalAmount"
@@ -125,7 +107,7 @@
       />
       <van-field
         class="readOnly"
-        v-show="baseInfo.businessModel == 2"
+        v-show="baseInfo.businessModel == '2'"
         type="digit"
         label="标的物价格(元):"
         v-model="totalAmount"
@@ -138,7 +120,7 @@
         placeholder="请填写首付金额"
       />
       <van-field
-        v-show="baseInfo.businessModel == 1"
+        v-show="baseInfo.businessModel == '1'"
         class="readOnly"
         label="融资金额(元):"
         type="digit"
@@ -146,7 +128,7 @@
         v-model="amount"
       />
       <van-field
-        v-show="baseInfo.businessModel == 2"
+        v-show="baseInfo.businessModel == '2'"
         class="readOnly"
         label="贷款金额(元):"
         type="digit"
@@ -157,7 +139,7 @@
         is-link
         readonly
         clickable
-        v-show="baseInfo.businessModel == 2"
+        v-show="baseInfo.businessModel == '2'"
         label="贷款期限(月):"
         v-model="baseInfo.term"
         placeholder="请选择贷款期限"
@@ -167,7 +149,7 @@
         is-link
         readonly
         clickable
-        v-show="baseInfo.businessModel == 1"
+        v-show="baseInfo.businessModel == '1'"
         label="租赁期限(月):"
         v-model="baseInfo.term"
         placeholder="请选择租赁期限"
@@ -186,7 +168,7 @@
         is-link
         readonly
         clickable
-        v-show="baseInfo.businessModel == 1"
+        v-show="baseInfo.businessModel == '1'"
         label="租赁用途:"
         v-model="baseInfo.useMethod"
         placeholder="请选择租赁用途"
@@ -196,7 +178,7 @@
         is-link
         readonly
         clickable
-        v-show="baseInfo.businessModel == 2"
+        v-show="baseInfo.businessModel == '2'"
         label="贷款用途:"
         v-model="baseInfo.useMethod"
         placeholder="请选择贷款用途"
@@ -204,7 +186,7 @@
       />
       <van-field
         class="readOnly"
-        v-show="baseInfo.businessModel == 1"
+        v-show="baseInfo.businessModel == '1'"
         label="租赁成数(%):"
         type="digit"
         v-model="rate"
@@ -212,7 +194,7 @@
       />
       <van-field
         class="readOnly"
-        v-show="baseInfo.businessModel == 2"
+        v-show="baseInfo.businessModel == '2'"
         label="贷款成数(%):"
         type="digit"
         v-model="rate"
@@ -580,6 +562,7 @@ export default {
       BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
         console.log(res);
         this.baseInfo = res.data.data;
+        this.$toast.success(this.baseInfo.businessModel)
         // 1-等额本息，2-等额本金，3-等本等息
         if (this.baseInfo.repaymentMethod == "1") {
           this.baseInfo.repaymentMethodName = "等额本息";
@@ -589,7 +572,7 @@ export default {
           this.baseInfo.repaymentMethodName = "等本等息";
         }
         this.baseInfo.useMethodValue = getValue(this.baseInfo.useMethod,this.useTypeList)
-        this.baseInfo.businessModel = "1";
+        // this.baseInfo.businessModel = "1";
         // if (this.baseInfo.leaseType == "1") {
         //   this.baseInfo.leaseTypeName = "直租";
         // } else {

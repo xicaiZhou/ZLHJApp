@@ -20,12 +20,12 @@ const store = new Vuex.Store({
             },
             token: ""
           },
-          loanNumber:'',
+          loanNumber: '',
+          loanStatus: 0,
         // loanNumber:'20200707153020238',
         // loanNumber:'20200703105318095',
         // loanNumber:'20200715113656719',
         productItem:{}, // 只做为选择产品后使用，记得清空。
-        userInfo:{},
         carModel:{},
         cars:{},
         exhibition:{},
@@ -33,7 +33,8 @@ const store = new Vuex.Store({
         systemInfo:{
             password:'',
             cache:'',
-            phoneIsTouchID:''
+            phoneIsTouchID:false,
+            phoneIsGesture:false,
         },
         address:{
             province_list:[],

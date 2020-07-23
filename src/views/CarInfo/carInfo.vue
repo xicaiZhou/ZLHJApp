@@ -1,21 +1,20 @@
 <template>
-<!-- 车辆信息界面 -->
-  <div >
+  <!-- 车辆信息界面 -->
+  <div>
     <div class="content" style="height:100%; margin-bottom: 60px;">
       <van-form ref="form" @submit="onSubmit">
-
         <div class="header">渠道信息</div>
-          <van-field
-            required
-            @click="selectExhibition"
-            is-link
-            readonly
-            clickable
-            v-model="loginSysUserVo.dealerName"
-            label="展厅:"
-            name
-            placeholder="请选择展厅"
-          />
+        <van-field
+          required
+          @click="selectExhibition"
+          is-link
+          readonly
+          clickable
+          v-model="loginSysUserVo.dealerName"
+          label="展厅:"
+          name
+          placeholder="请选择展厅"
+        />
 
         <!-- 新车 -->
         <template v-if="this.loginSysUserVo.businessType == '1'">
@@ -30,7 +29,7 @@
             placeholder="请选择业务类型"
             @click="showBusiness = true"
           />
-          
+
           <div class="header">车辆信息</div>
           <van-field
             required
@@ -227,6 +226,13 @@
             v-model="loginSysUserVo.engineNumber"
             placeholder="请填写发动机号"
           />
+          <van-field
+            required
+            label="车辆颜色:"
+            name
+            v-model="loginSysUserVo.colour"
+            placeholder="请填写车辆颜色"
+          />
           <div>
             <div class="zlhjRadio" style="display:flex">
               <span class="zlhjRadio_title">牌照类型：</span>
@@ -379,6 +385,13 @@
             v-model="loginSysUserVo.engineNumber"
             placeholder="请填写发动机号"
           />
+          <van-field
+            required
+            label="车辆颜色:"
+            name
+            v-model="loginSysUserVo.colour"
+            placeholder="请填写车辆颜色"
+          />
           <div>
             <div class="zlhjRadio" style="display:flex">
               <span class="zlhjRadio_title">牌照类型：</span>
@@ -472,7 +485,7 @@
 import { CarInfo, SaveCarInfo } from "../../request/api";
 import { dateFormat, dataYear } from "../../utils/formatter";
 import { idNumValidator } from "../../utils/common";
-import {getValue} from '../../utils/utils'
+import { getValue } from "../../utils/utils";
 export default {
   data() {
     return {
@@ -553,11 +566,8 @@ export default {
         loadingType: "spinner"
       });
       SaveCarInfo(this.loginSysUserVo).then(res => {
-        console.log(res)
         toast.clear();
         this.$store.state.loanNumber = res.data.data.loanNumber;
-        console.log(res.data.loanNumber);
-        console.log("loanNumber:" + this.$store.state.loanNumber);
         this.$router.back();
       });
     },
@@ -658,7 +668,10 @@ export default {
         } else {
           this.loginSysUserVo.businessTypeName = "新车";
         }
-        this.loginSysUserVo.exOwnerIdTypeName = getValue('2',this.loginSysUserVo.exOwnerIdType)
+        this.loginSysUserVo.exOwnerIdTypeName = getValue(
+          "2",
+          this.loginSysUserVo.exOwnerIdType
+        );
         // // 接口返回 yyyy-MM-dd hh:mm:ss  -> yyyy-MM-dd
         // this.loginSysUserVo.firstRegistrationDate = dateFormat(
         //   this.loginSysUserVo.firstRegistrationDate,
@@ -724,7 +737,7 @@ export default {
     to.meta.keepAlive = false;
     if (to.path == "/menu") {
       from.meta.keepAlive = false;
-    } 
+    }
     to.meta.keepAlive = false;
     next();
   }

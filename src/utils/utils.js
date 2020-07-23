@@ -263,7 +263,31 @@ export function getValue(type,index){
                   break;
                 }
             }
-        }
+        }else if(type == "14"){
+          // ["法人", "实际使用人", "股东", "高管", "其他"]
+          switch (parseInt(index)) {
+              case 1: {
+                return "行外员工";
+                break;
+              }
+              case 2: {
+                return "行内员工";
+                break;
+              }
+              case 3: {
+                return "优良职业";
+                break;
+              }
+              case 4: {
+                return "低风险客户";
+                break;
+              }
+              case 5: {
+                return "其他客户";
+                break;
+              }
+          }
+      }
 }
 export function getKey(value,list){
         

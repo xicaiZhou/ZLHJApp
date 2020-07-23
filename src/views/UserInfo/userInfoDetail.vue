@@ -99,7 +99,7 @@
                 :class="customerInfo.isLongTerm == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
               >是</div>
               <div
-                @click="customerInfo.isLongTerm = '2'"
+                @click="selectIsLongTerm"
                 :class="customerInfo.isLongTerm == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
               >否</div>
             </div>
@@ -110,6 +110,7 @@
         </div>
         <van-field
           required
+          v-show="customerInfo.isLongTerm == '2'"
           is-link
           readonly
           clickable
@@ -365,12 +366,7 @@
             v-model="customerJob.companyPhone"
             placeholder="请填写单位电话"
           />
-          <van-field
-            
-            label="分机号:"
-            v-model="customerJob.companyExtension"
-            placeholder="请填写分机号"
-          />
+          <van-field label="分机号:" v-model="customerJob.companyExtension" placeholder="请填写分机号" />
           <van-field
             required
             is-link
@@ -521,7 +517,7 @@
         get-container="body"
       >
         <van-picker
-          title="请选择选择"
+          title="请选择"
           show-toolbar
           :columns="popList"
           @confirm="selected"
@@ -581,7 +577,7 @@ export default {
         beforeName: "", // 曾用名
         loanNumber: "", // 申请编号
         customerRole: "", //角色(1-承租人 2-担保人)
-        customerType: "", //客户类型(1=自然人，2=法人)
+        customerType: "", //客户类型(1=自然人，2=法人) 暂时弃用了
         relation: "", // 与承租人关系 1-本人 2-夫妻 3-父母 4-子女 5-兄弟姐妹 6-同事 7-其他
         relationValue: "", //自己添加的
         sex: "", //客户性别
@@ -602,7 +598,8 @@ export default {
         idCardAddress: "", //身份证/营业执照地址--详细地址
         phone: "", //主要联系方式（手机/企业联系电话）
         isLocal: "", // 是否本地户籍
-        customerNature: "", //客户/企业性质
+        customerNature: "", //客户/企业性质（当做客户类型）
+        customerNatureValue: "", //自己加的 1-行外员工 2-行内员工 3-优良职业 4-低风险客户 5-其他客户
         educationLevel: "", //教育程度
         highestEducation: "", //最高学历
         creditFlag: "", //征信标志
@@ -776,7 +773,7 @@ export default {
           this.customerInfo.nationality
         );
         this.customerInfo.customerNatureValue = getValue(
-          "6",
+          "14",
           this.customerInfo.customerNature
         );
         this.customerInfo.educationLevelValue = getValue(
@@ -833,6 +830,10 @@ export default {
     });
   },
   methods: {
+    selectIsLongTerm() {
+      this.customerInfo.isLongTerm = "2";
+      this.customerInfo.certificateEndDate = "";
+    },
     selectWhetherIdAddr(val) {
       this.customerHouseProperty.whetherIdAddr = val;
       if (val == "1") {
@@ -1026,7 +1027,13 @@ export default {
           // label="客户类型:"
           // v-model="customerInfo.customerNature"
           // *****进到这个界面只能是自然人
-          this.popList = ["自然人"];
+          this.popList = [
+            "行外员工",
+            "行内员工",
+            "优良职业",
+            "低风险客户",
+            "其他客户"
+          ];
           break;
         }
         case 7: {
@@ -1105,7 +1112,7 @@ export default {
         isEmpty(this.customerInfo.occupationType) ||
         isEmpty(this.customerInfo.nationality) ||
         isEmpty(this.customerInfo.isLongTerm) ||
-        isEmpty(this.customerInfo.certificateEndDate) ||
+        (this.customerInfo.isLongTerm =="2" && isEmpty(this.customerInfo.certificateEndDate)) ||
         isEmpty(this.customerInfo.certificationAuthority) ||
         isEmpty(this.customerInfo.idCardProvince) ||
         isEmpty(this.customerInfo.idCardAddress) ||

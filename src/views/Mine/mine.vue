@@ -6,46 +6,28 @@
         src="https://img.yzcdn.cn/vant/cat.jpeg" />
         <div style="display: inline;">
           <div class="name">{{this.$store.state.userInfo.loginSysUserVo.username}}</div>
-           <div class="departmentName">{{this.$store.state.userInfo.loginSysUserVo.departmentName}}</div>
-
+          <div class="departmentName">{{this.$store.state.userInfo.loginSysUserVo.departmentName}}</div>
         </div>
-
-
     </div>
     <van-cell-group>
-      <!-- <van-field
-        v-model="value2"
-        label="微信绑定"
-        left-icon="music-o"
-        placeholder="已绑定"
-        disabled="true"
-        is-link
-      /> -->
       <van-field
-        v-model="value2"
         label="操作手册"
-        left-icon="music-o"
         disabled="true"
         is-link
       />
       <van-field
-        v-model="value2"
         label="设置"
-        left-icon="music-o"
         disabled="true"
         is-link
         @click="setupselect"
       />
       <van-field
-        v-model="value2"
         label="版本号"
-        left-icon="music-o"
         placeholder="1.0.0"
         disabled="true"
         is-link
       />
   </van-cell-group>
-
     <div>
       <van-tabbar route v-model="active" @change="onChange">
         <van-tabbar-item replace to="/" icon="home-o">首页</van-tabbar-item>
@@ -61,8 +43,6 @@ export default {
   data() {
     return {
       active: 2,
-      value2:'',
-      value1:''
     };
   },
   methods: {

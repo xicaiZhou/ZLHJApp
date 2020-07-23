@@ -65,7 +65,6 @@ export default {
   },
   methods: {
     showExhibitionSearch() {
-      console.log("zoule");
       this.popupShow = !this.popupShow;
     },
     exhibitionSelected(item){
@@ -74,7 +73,7 @@ export default {
     },
 
     toClear() {
-           this.popupShow = false;
+      this.popupShow = false;
       this.loanMainName = "";
       this.managerName = "";
       this.filterDetail = [];
