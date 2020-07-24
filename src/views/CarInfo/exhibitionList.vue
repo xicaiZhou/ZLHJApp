@@ -25,8 +25,6 @@
         </div>
       </div>
     </van-popup>
-
-
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
@@ -96,7 +94,6 @@ export default {
     },
     //自动加载更多
     onLoad() {
-      console.log("xxxxxxxxxxxxxx", this.finished);
       this.pIndex += 1;
       this.getData();
     },
@@ -117,7 +114,6 @@ export default {
         { pageIndex: this.pIndex },
         { pageSize: 10 }
       );
-      console.log(params);
       ExhibitionLIst(params).then(res => {
         toast.clear();
         let num = res.data.data.total;
@@ -130,21 +126,18 @@ export default {
           this.filterDetail.push(list[i]);
         }
         this.loading = false;
-        console.log(this.filterDetail);
-        console.log(this.filterDetail.length, num);
         if (this.filterDetail.length >= num) {
           this.finished = true;
         }
-        console.log(this.finished);
       });
     }
   },
   beforeRouteLeave(to, from, next) {
     if (to.path == "/carInfo") {
       to.meta.keepAlive = true;
-    } else {
-      to.meta.keepAlive = false;
-    }
+    } 
+    console.log("to", to);
+    console.log("from", from);
     next();
   }
 };

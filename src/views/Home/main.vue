@@ -4,7 +4,7 @@
       <span>录单</span>
 
       <van-grid clickable>
-        <van-grid-item icon="coupon-o" text="录单" to="/menu" />
+        <van-grid-item icon="coupon-o" text="录单" @click="toMenu" />
         <van-grid-item icon="search" text="查询" to="/search" />
       </van-grid>
     </div>
@@ -39,6 +39,13 @@ export default {
     };
   },
   methods: {
+    toMenu(){
+      //情况订单编号
+      this.$store.state.loanNumber = ''
+      this.$router.push({
+        path:'/menu'
+      })
+    },
     userInfo1(info) {
       this.info = info.token;
       this.$store.commit("updateParam", info);
@@ -54,14 +61,6 @@ export default {
       });
     }
   },
-    //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
-  beforeRouteLeave(to, from, next) {
-    to.meta.keepAlive = false;
-    if (to.path == "/menu") {
-      this.$store.state.loanNumber = ''
-    } 
-    next();
-  }
 };
 </script>
 <style>

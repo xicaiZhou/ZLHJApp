@@ -223,6 +223,8 @@ export default {
     } else {
       to.meta.keepAlive = false;
     }
+        console.log("to", to);
+    console.log("from", from);
     next();
   }
 };

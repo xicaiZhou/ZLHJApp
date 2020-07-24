@@ -65,11 +65,21 @@ export default {
         this.loanStatus = res.data.data.loanStatus;
       });
     }
-    this.$nextTick(() => {
-      // this.$refs.subBtn.style.top = this.$store.state.screenHeight - 50 + "px";
-    });
   },
+  beforeRouteLeave(to, from, next) {
+    if (to.path == "/carInfo") {
+      if (this.$store.state.loanNumber){
+        this.$store.state.isload = true
+      }else{
+                this.$store.state.isload = false
 
+      }
+      // to.meta.keepAlive = false;
+    } 
+    console.log("to", to);
+    console.log("from", from);
+    next();
+  },
   methods: {
     toDetail(val) {
       if (val.name === "经销商信息") {

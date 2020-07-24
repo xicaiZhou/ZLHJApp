@@ -52,7 +52,6 @@
             class="searchContent"
             v-for="(item,index) in filterDetail"
             :key="index"
-            @click="toDetail(item)"
           >
             <div class="item">
               <div>
@@ -118,6 +117,28 @@
             </div>
             <div>
               <div class="line"></div>
+              <div class="edit">
+                <van-button
+                  v-if="item.loanStatus > 0 || item.loanStatus < 110"
+                  style="flex:1"
+                  @click="toDetail(item)"
+                >操作</van-button>
+                <van-button v-else style="flex:1">-</van-button>
+
+                <van-button
+                  v-if="(item.loanStatus > 0 || item.loanStatus < 110) && item.isReturn == '1'"
+                  style="flex:1"
+                  @click="two"
+                >退回原因</van-button>
+                <van-button v-else style="flex:1">-</van-button>
+
+                <van-button
+                  v-if="item.loanStatus >= -150 && item.loanStatus <= -110"
+                  style="flex:1"
+                  @click="three"
+                >拒绝原因</van-button>
+                <van-button v-else style="flex:1">-</van-button>
+              </div>
             </div>
           </div>
         </van-list>
@@ -348,5 +369,8 @@ export default {
 
 span {
   color: #333333;
+}
+.edit {
+  display: flex;
 }
 </style>

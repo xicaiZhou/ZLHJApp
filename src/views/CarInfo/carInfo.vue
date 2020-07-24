@@ -533,16 +533,22 @@ export default {
     "$store.state.exhibition": {
       deep: false,
       handler: function(newValue, oldValue) {
-        console.log(newValue, oldValue);
+        console.log(this.loginSysUserVo);
         this.loginSysUserVo.dealerId = newValue.id;
         this.loginSysUserVo.dealerName = newValue.name;
-        console.log(this.loginSysUserVo);
+      }
+    },
+    "$store.state.isload": {
+      deep: false,
+      handler: function(newValue, oldValue) {
+        if (newValue) {
+          this.getData();
+        }
       }
     },
     "$store.state.carInfo": {
       deep: false,
       handler: function(newValue, oldValue) {
-        console.log(newValue, oldValue);
         this.loginSysUserVo.modelId = newValue.id;
         this.loginSysUserVo.modelName = newValue.name;
         this.loginSysUserVo.guidancePrice = newValue.guidancePrice;
@@ -573,37 +579,32 @@ export default {
     },
 
     clear() {
-      this.loginSysUserVo = {
-        loanNumber: "", //申请编号
-        businessType: "", //业务类型 1-车抵贷，2-二手车,3-新车
-        businessTypeName: "", //自己加的 界面初始化和手动修改业务类型时需要手动修改
-        dealerId: "", //经销商ID
-        dealerName: "", //经销商名称
-        seriesId: "", //车系ID
-        seriesName: "", // 车系名字
-        modelId: "", //车型ID
-        modelName: "", //品牌车型
-        year: "", // 年份
-        otherModel: "", //自定义车型
-        vin: "", //车架号
-        engineNumber: "", //发动机号
-        license: "", //车牌号
-        mileage: "", //里程数
-        colour: "", //颜色
-        purchasePrice: "", //购买价格（开票价格）
-        guidancePrice: "", //指导价格
-        appraisalPrice: "", //评估价格
-        firstRegistrationDate: "", //首次上牌日期
-        usedTime: "", //使用年限
-        exOwnerName: "", //原车辆所有人姓名
-        exOwnerIdType: "", //原车辆所有人证件类型
-        exOwnerIdTypeName: "", // 自己加的   原车辆所有人证件类型名
-        exOwnerIdNumber: "", //原车辆所有人证件号
-        exOwnerMobileNumber: "", //原车辆所有人手机
-        licenseType: "", //车牌类型 1:私牌 2:公牌
-        importFlag: "", //进口标志 1:进口 2:非进口
-        hasDrivingLicense: "" //是否有驾照 1:有 2:没有
-      };
+      (this.loginSysUserVo.businessType = ""), //业务类型 1-车抵贷，2-二手车,3-新车
+        (this.loginSysUserVo.businessTypeName = ""), //自己加的 界面初始化和手动修改业务类型时需要手动修改
+        (this.loginSysUserVo.seriesId = ""), //车系ID
+        (this.loginSysUserVo.seriesName = ""), // 车系名字
+        (this.loginSysUserVo.modelId = ""), //车型ID
+        (this.loginSysUserVo.modelName = ""), //品牌车型
+        (this.loginSysUserVo.year = ""), // 年份
+        (this.loginSysUserVo.otherModel = ""), //自定义车型
+        (this.loginSysUserVo.vin = ""), //车架号
+        (this.loginSysUserVo.engineNumber = ""), //发动机号
+        (this.loginSysUserVo.license = ""), //车牌号
+        (this.loginSysUserVo.mileage = ""), //里程数
+        (this.loginSysUserVo.colour = ""), //颜色
+        (this.loginSysUserVo.purchasePrice = ""), //购买价格（开票价格）
+        (this.loginSysUserVo.guidancePrice = ""), //指导价格
+        (this.loginSysUserVo.appraisalPrice = ""), //评估价格
+        (this.loginSysUserVo.firstRegistrationDate = ""), //首次上牌日期
+        (this.loginSysUserVo.usedTime = ""), //使用年限
+        (this.loginSysUserVo.exOwnerName = ""), //原车辆所有人姓名
+        (this.loginSysUserVo.exOwnerIdType = ""), //原车辆所有人证件类型
+        (this.loginSysUserVo.exOwnerIdTypeName = ""), // 自己加的   原车辆所有人证件类型名
+        (this.loginSysUserVo.exOwnerIdNumber = ""), //原车辆所有人证件号
+        (this.loginSysUserVo.exOwnerMobileNumber = ""), //原车辆所有人手机
+        (this.loginSysUserVo.licenseType = ""), //车牌类型 1:私牌 2:公牌
+        (this.loginSysUserVo.importFlag = ""), //进口标志 1:进口 2:非进口
+        (this.loginSysUserVo.hasDrivingLicense = ""); //是否有驾照 1:有 2:没有
     },
     chechData() {
       if (this.loginSysUserVo.businessType == "") {
@@ -726,19 +727,62 @@ export default {
       this.$refs.form.submit();
     }
   },
-  mounted() {
-    console.log(this.$store.state.loanNumber);
-    if (this.$store.state.loanNumber) {
-      this.getData();
+  // mounted() {
+  //   console.log("mounted", this.loginSysUserVo);
+  //   if (this.$store.state.loanNumber) {
+  //     this.getData();
+  //   }
+  // },
+
+  beforeRouteUpdate(to, from, next) {
+    console.log("beforeRouteUpdate", this.loginSysUserVo);
+
+    if (from.path == "/menu") {
+      if (this.$store.state.loanNumber) {
+        this.getData();
+      }
     }
+    next();
   },
+
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
-    to.meta.keepAlive = false;
     if (to.path == "/menu") {
-      from.meta.keepAlive = false;
+      this.loginSysUserVo.businessType = ""; //业务类型 1-车抵贷，2-二手车,3-新车
+      this.loginSysUserVo.dealerId = ""; //经销商ID
+      this.loginSysUserVo.dealerName = "";
+      this.loginSysUserVo.businessTypeName = ""; //自己加的 界面初始化和手动修改业务类型时需要手动修改
+      this.loginSysUserVo.seriesId = ""; //车系ID
+      this.loginSysUserVo.seriesName = ""; // 车系名字
+      this.loginSysUserVo.modelId = ""; //车型ID
+      this.loginSysUserVo.modelName = ""; //品牌车型
+      this.loginSysUserVo.year = ""; // 年份
+      this.loginSysUserVo.otherModel = ""; //自定义车型
+      this.loginSysUserVo.vin = ""; //车架号
+      this.loginSysUserVo.engineNumber = ""; //发动机号
+      this.loginSysUserVo.license = ""; //车牌号
+      this.loginSysUserVo.mileage = ""; //里程数
+      this.loginSysUserVo.colour = ""; //颜色
+      this.loginSysUserVo.purchasePrice = ""; //购买价格（开票价格）
+      this.loginSysUserVo.guidancePrice = ""; //指导价格
+      this.loginSysUserVo.appraisalPrice = ""; //评估价格
+      this.loginSysUserVo.firstRegistrationDate = ""; //首次上牌日期
+      this.loginSysUserVo.usedTime = ""; //使用年限
+      this.loginSysUserVo.exOwnerName = ""; //原车辆所有人姓名
+      this.loginSysUserVo.exOwnerIdType = ""; //原车辆所有人证件类型
+      this.loginSysUserVo.exOwnerIdTypeName = ""; // 自己加的   原车辆所有人证件类型名
+      this.loginSysUserVo.exOwnerIdNumber = ""; //原车辆所有人证件号
+      this.loginSysUserVo.exOwnerMobileNumber = ""; //原车辆所有人手机
+      this.loginSysUserVo.licenseType = ""; //车牌类型 1:私牌 2:公牌
+      this.loginSysUserVo.importFlag = ""; //进口标志 1:进口 2:非进口
+      this.loginSysUserVo.hasDrivingLicense = ""; //是否有驾照 1:有 2:没有
+      from.meta.keepAlive = true;
+    } else {
+      from.meta.keepAlive = true;
     }
-    to.meta.keepAlive = false;
+    // to.meta.keepAlive = false;
+    console.log("to", to);
+    console.log("from", from);
     next();
   }
 };
