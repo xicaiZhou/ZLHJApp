@@ -42,7 +42,7 @@
         />
         <van-field
           style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="getValue"
+          v-model="loanStatusValue"
           label="业务状态:"
           placeholder="请选择业务状态"
           @click="showLoanStatus = true"
@@ -203,6 +203,7 @@ export default {
       dealerName: "", // 经销商名称
       type: "", // 查询类型
       showLoanStatus: false,
+      loanStatusValue:' 全部',
       loanStatusList: ["全部", "待审批", "待资方审批"]
     };
   },
@@ -238,11 +239,14 @@ export default {
     getValue() {
       switch (this.loanStatus) {
         case 0:
-          return "全部";
+          this.loanStatusValue = "全部";
+          break;
         case 1:
-          return "待审批";
+          this.loanStatusValue = "待审批";
+          break;
         case 2:
-          return "待资方审批";
+          this.loanStatusValue = "待资方审批";
+          break;
       }
     },
     selectLoanStatus(val) {
@@ -253,6 +257,7 @@ export default {
       } else if (val == "待资方审批") {
         this.loanStatus = 2;
       }
+      this.getValue(this.loanStatus)
     },
     getStatue(status) {
       for (let i in this.statusCodeList) {

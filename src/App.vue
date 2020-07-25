@@ -36,16 +36,16 @@ export default {
 }
 .subBtn {
   position: fixed;
-  bottom: 0px;
-  width: 100%;
-  background: #fff;
+  bottom: 0px !important;
+  width: 100% !important;
+  background: #fff !important;
 }
 
 .subBtn_body {
-  width: 90%;
-  margin: auto ;
-  background: #ff9900;
-  border: none;
+  width: 90% !important;
+  margin: auto !important;
+  background: #ff9900 !important;
+  border: none !important;
 }
 .zlhjRadio {
   display: flex;
