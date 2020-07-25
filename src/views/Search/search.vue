@@ -1,5 +1,19 @@
 <template>
   <div>
+    <van-popup
+      v-model="showLoanStatus"
+      position="bottom"
+      :style="{ height: '300px', width: '100%'}"
+      get-container="body"
+    >
+      <van-picker
+        title
+        show-toolbar
+        :columns="loanStatusList"
+        @confirm="selectLoanStatus"
+        @cancel="loanStatusList"
+      />
+    </van-popup>
     <van-popup v-model="popupShow" position="top">
       <div class="search_form">
         <van-field
@@ -28,7 +42,7 @@
         />
         <van-field
           style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="carModelName"
+          v-model="getValue"
           label="业务状态:"
           placeholder="请选择业务状态"
           @click="showLoanStatus = true"
@@ -45,14 +59,23 @@
         </div>
       </div>
     </van-popup>
+    <!-- 退回拒绝原因 -->
+    <van-popup v-model="popupyuanyin"  position="top">
+      <div style="width:90%;height:300px">
+        <van-field
+          :value="message"
+          :label="titleLabel"
+          type="textarea"
+          placeholder="请输入留言"
+          autosize
+          border
+        />
+      </div>
+    </van-popup>
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div
-            class="searchContent"
-            v-for="(item,index) in filterDetail"
-            :key="index"
-          >
+          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index">
             <div class="item">
               <div>
                 业务编号:
@@ -128,14 +151,14 @@
                 <van-button
                   v-if="(item.loanStatus > 0 || item.loanStatus < 110) && item.isReturn == '1'"
                   style="flex:1"
-                  @click="two"
+                  @click="tuihui(item)"
                 >退回原因</van-button>
                 <van-button v-else style="flex:1">-</van-button>
 
                 <van-button
                   v-if="item.loanStatus >= -150 && item.loanStatus <= -110"
                   style="flex:1"
-                  @click="three"
+                  @click="jujue"
                 >拒绝原因</van-button>
                 <van-button v-else style="flex:1">-</van-button>
               </div>
@@ -153,7 +176,7 @@
 </template>
 
 <script>
-import { searchInfo, codeList } from "../../request/api";
+import { searchInfo, codeList, getWhy } from "../../request/api";
 import { getUrlParam } from "../../utils/common.js";
 export default {
   data() {
@@ -167,13 +190,16 @@ export default {
       pIndex: 0,
       statusCodeList: [],
       popupShow: false,
+      popupyuanyin: false,
+      message: "",
+      titleLabel: "",
       // 条件
       loanNumber: "", // 申请编号 业务主键
       customerName: "", //客户名称
       credentialNumber: "", //证件号码
       keyword: "", // 搜索字符串
       customerMobileNumber: "", // 客户手机号
-      loanStatus: "", // 贷款状态 数据字典-贷款状态
+      loanStatus: 0, // 贷款状态 数据字典-贷款状态
       dealerName: "", // 经销商名称
       type: "", // 查询类型
       showLoanStatus: false,
@@ -193,7 +219,41 @@ export default {
     });
   },
   methods: {
-    getValue(loanStatus) {},
+    tuihui(item) {
+      this.titleLabel = "退回原因:";
+      this.popupyuanyin = true;
+      this.message = "";
+      getWhy({ loanNumber: item.loanNumber }).then(res => {
+        this.message = res.data.data.approveDesc;
+      });
+    },
+    jujue(item) {
+      this.titleLabel = "拒绝原因:";
+      this.popupyuanyin = true;
+      this.message = "";
+      getWhy({ loanNumber: item.loanNumber }).then(res => {
+        this.message = res.data.data.approveDesc;
+      });
+    },
+    getValue() {
+      switch (this.loanStatus) {
+        case 0:
+          return "全部";
+        case 1:
+          return "待审批";
+        case 2:
+          return "待资方审批";
+      }
+    },
+    selectLoanStatus(val) {
+      if (val == "全部") {
+        this.loanStatus = 0;
+      } else if (val == "待审批") {
+        this.loanStatus = 1;
+      } else if (val == "待资方审批") {
+        this.loanStatus = 2;
+      }
+    },
     getStatue(status) {
       for (let i in this.statusCodeList) {
         if (status == this.statusCodeList[i].codeKey) {

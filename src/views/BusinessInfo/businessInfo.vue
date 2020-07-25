@@ -333,6 +333,7 @@ export default {
     return {
       addCostAmount: "",
       addCostType: "",
+      addCostTypeValue:'',
       addCostId: 0,
       showTerm: false,
       showAddCost: false,
@@ -347,6 +348,7 @@ export default {
       carAmount: 0,
       rate: 0, //融资成数
       gpsAmount: 0, //GPS金额
+
       baseInfo: {
         loanNumber: "", // 贷款申请编号
         managerName: "", //客户经理名称
@@ -571,7 +573,7 @@ export default {
         } else {
           this.baseInfo.repaymentMethodName = "等本等息";
         }
-        this.baseInfo.useMethodValue = getValue(this.baseInfo.useMethod,this.useTypeList)
+        this.baseInfo.useMethodValue = this.getValue(this.baseInfo.useMethod,this.useTypeList)
         // this.baseInfo.businessModel = "1";
         // if (this.baseInfo.leaseType == "1") {
         //   this.baseInfo.leaseTypeName = "直租";
@@ -595,7 +597,7 @@ export default {
       });
       codeList({codeType: "useType" }).then(res=>{
         this.useTypeList = res.data.data;
-        this.baseInfo.useMethodValue = getValue(this.baseInfo.useMethod,this.useTypeList)
+        this.baseInfo.useMethodValue = this.getValue(this.baseInfo.useMethod,this.useTypeList)
 
       });
     }

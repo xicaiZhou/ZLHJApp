@@ -542,6 +542,7 @@ export default {
       deep: false,
       handler: function(newValue, oldValue) {
         if (newValue) {
+          
           this.getData();
         }
       }
@@ -557,6 +558,11 @@ export default {
         this.loginSysUserVo.year = newValue.year;
         console.log(this.loginSysUserVo);
       }
+    }
+  },
+  mounted(){
+    if (this.$store.state.loanNumber){
+       this.getData();
     }
   },
   methods: {
@@ -748,6 +754,7 @@ export default {
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
     if (to.path == "/menu") {
+      this.$store.state.isload = false;
       this.loginSysUserVo.businessType = ""; //业务类型 1-车抵贷，2-二手车,3-新车
       this.loginSysUserVo.dealerId = ""; //经销商ID
       this.loginSysUserVo.dealerName = "";

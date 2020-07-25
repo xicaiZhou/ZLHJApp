@@ -3,12 +3,11 @@
     <div class="section-top">
       <div class="header">人员列表</div>
       <div class="userlist">
-        <div
-          class="user-item"
-          v-for="(item,index) in this.dataList"
-          :key="index"
-          @click="changeUser(index)"
-        >{{item.customerName}}</div>
+        <div style="margin-top:10px" v-for="(item,index) in this.dataList" :key="index" @click="changeUser(index)">
+          <span
+            :class="currentIndex == index ? 'user-item-selected' :'user-item'"
+          >{{item.customerName}}</span>
+        </div>
       </div>
     </div>
 
@@ -69,15 +68,17 @@ export default {
       customerId: 0,
       loanFileVoList: [],
       activeName: -1,
+      currentIndex: 0,
       width: 300
     };
   },
   methods: {
     toSub() {
-      this.$router.back()
+      this.$router.back();
     },
-    changeUser(val){
-      this.dealData(val)
+    changeUser(val) {
+      this.currentIndex = val;
+      this.dealData(val);
     },
     onChange(event) {
       this.activeName = event;
@@ -86,10 +87,10 @@ export default {
       this.getAllFileList();
     },
     delAll(item) {
-      console.log(item)
-      deleteAllFile({fileId:item.id}).then(res =>{
-      this.getAllFileList();
-      })
+      console.log(item);
+      deleteAllFile({ fileId: item.id }).then(res => {
+        this.getAllFileList();
+      });
     },
     delected(val) {
       console.log(val);
@@ -114,16 +115,16 @@ export default {
       allFileList({ loanNumber: this.$store.state.loanNumber }).then(res => {
         console.log(res);
         this.dataList = res.data.data;
-        this.dealData(0)
+        this.dealData(this.currentIndex);
         toast.clear();
       });
     },
-    dealData(index){
-        this.loanFileVoList = this.dataList[index].loanFileVoList;
-        for (let item in this.loanFileVoList) {
-          this.loanFileVoList[item].fileList = [];
-          this.getFileDetail(this.loanFileVoList[item]);
-        }
+    dealData(index) {
+      this.loanFileVoList = this.dataList[index].loanFileVoList;
+      for (let item in this.loanFileVoList) {
+        this.loanFileVoList[item].fileList = [];
+        this.getFileDetail(this.loanFileVoList[item]);
+      }
     },
     getFileDetail(item) {
       fileDetail({ fileId: item.id }).then(res => {
@@ -139,9 +140,8 @@ export default {
             id: list[index].id
           });
         }
-        this.activeName = this.activeName + 1
-        this.activeName = this.activeName - 1
-        
+        this.activeName = this.activeName + 1;
+        this.activeName = this.activeName - 1;
       });
     }
   },
@@ -187,11 +187,23 @@ export default {
 }
 
 .user-item {
-  height: 50px;
+  height: 40px;
   margin-top: 10px;
-  line-height: 50px;
+  line-height: 40px;
   text-align: center;
-  width: 100px;
+  border: 1px solid #fff;
+  box-shadow: 0px 5px 5px #ebedf0;
+  background: #fff;
+  color: #ff9900;
+  font-weight: bold;
+  padding: 10px;
+}
+.user-item-selected {
+  height: 40px;
+  padding: 10px;
+  margin-top: 10px;
+  line-height: 40px;
+  text-align: center;
   border: 1px solid #ff9900;
   box-shadow: 0px 5px 5px #ebedf0;
   background: #ff9900;
