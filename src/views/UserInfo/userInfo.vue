@@ -50,7 +50,7 @@
                 <div style="margin-left:20px">{{item.relationValue}}</div>
               </div>
               <div class="itemR">
-                <div>{{item.licenseType == "1" ? "自然人" : "企业"}}</div>
+                <div>{{item.customerType == "1" ? "自然人" : "企业"}}</div>
                 <van-icon
                   v-if="item.saveFlag == 1"
                   color="#0066FF"
@@ -123,7 +123,7 @@
               label="证件类型:"
               placeholder="请选择"
               v-model="addUserInfo.idTypeValue"
-              @click="showIdType = true"
+              @click="popIdType"
             />
             <van-field
               v-model="addUserInfo.idNum"
@@ -190,7 +190,7 @@
         <van-picker
           title
           show-toolbar
-          :columns="addUserInfo.customerRole == '1' ? ['身份证'] : ['社会统一信用代码']"
+          :columns="idTypeList"
           @confirm="selectIdType"
           @cancel="showIdType=false"
         />
@@ -233,6 +233,7 @@ export default {
       relationList: [],
       showCustomerType: false,
       showIdType: false,
+      idTypeList: [],
       mainListData: [],
       danbaoListData: []
     };
@@ -255,19 +256,39 @@ export default {
             idType: "", // 证件类型
             idTypeValue: "", // 自己添加的
             idNum: "", //证件号码
-            createdBy: "zxc", //创建人
-            createdTime: "2020-07-08" // 创建时间
+            createdBy: "", //创建人
+            createdTime: "" // 创建时间
           };
         }
       }
     }
   },
   methods: {
+    popIdType() {
+      if (this.addUserInfo.customerType == "") {
+        this.$toast.fail("请先选择客户类型");
+        return;
+      }
+      if (this.addUserInfo.customerType == "1") {
+        this.idTypeList = ["身份证"];
+      } else {
+        this.idTypeList = ["社会统一信用代码"];
+      }
+      this.showIdType = true;
+    },
     showSelectRelation() {
       if (this.isMainUser) {
         this.relationList = ["本人"];
       } else {
-        if (this.licenseType == "1") {
+        console.log(this.addUserInfo.customerType);
+        if (
+          this.addUserInfo.customerType == "" ||
+          this.addUserInfo.customerRole == ""
+        ) {
+          this.$toast.fail("请先填写必填项");
+          return;
+        }
+        if (this.addUserInfo.customerType == "1") {
           this.relationList = [
             "夫妻",
             "父母",
@@ -281,7 +302,7 @@ export default {
         }
       }
 
-      showRelation = true;
+      this.showRelation = true;
     },
     toDetail(item) {
       if (item.customerType == "1") {
@@ -339,7 +360,8 @@ export default {
       console.log("val", val);
     },
     selectRelation(val) {
-      if (this.licenseType == "1") {
+      console.log(val);
+      if (this.addUserInfo.customerType == "1") {
         // 1-本人 2-夫妻 3-父母 4-子女 5-兄弟姐妹 6-同事 7-其他
         if (val == "本人") {
           this.addUserInfo.relationValue = val;
@@ -442,34 +464,67 @@ export default {
         for (let item in users) {
           let index = users[item].relation;
           var relationValue = "";
-          switch (parseInt(index)) {
-            case 1: {
-              relationValue = "本人";
-              break;
+          if (item.customerType == "1") {
+            switch (parseInt(index)) {
+              case 1: {
+                relationValue = "本人";
+                break;
+              }
+              case 2: {
+                relationValue = "夫妻";
+                break;
+              }
+              case 3: {
+                relationValue = "父母";
+                break;
+              }
+              case 4: {
+                relationValue = "子女";
+                break;
+              }
+              case 5: {
+                relationValue = "兄弟姐妹";
+                break;
+              }
+              case 6: {
+                relationValue = "同事";
+                break;
+              }
+              case 7: {
+                relationValue = "其他";
+                break;
+              }
             }
-            case 2: {
-              relationValue = "夫妻";
-              break;
-            }
-            case 3: {
-              relationValue = "父母";
-              break;
-            }
-            case 4: {
-              relationValue = "子女";
-              break;
-            }
-            case 5: {
-              relationValue = "兄弟姐妹";
-              break;
-            }
-            case 6: {
-              relationValue = "同事";
-              break;
-            }
-            case 7: {
-              relationValue = "其他";
-              break;
+          }else{
+            switch (parseInt(index)) {
+              case 1: {
+                relationValue = "本人";
+                break;
+              }
+              case 2: {
+                relationValue = "法人";
+                break;
+              }
+              case 3: {
+                relationValue = "实际使用人";
+                break;
+              }
+              case 4: {
+                relationValue = "股东";
+                break;
+              }
+              case 5: {
+                relationValue = "高管";
+                break;
+              }
+              case 6: {
+                relationValue = "其他";
+                break;
+              }
+              case 7: {
+                relationValue = "其他";
+                break;
+              }
             }
           }
 
@@ -525,7 +580,6 @@ export default {
   padding: 0 12%;
   text-align: center;
   margin-top: 30px;
-  
 }
 .subBtn {
   position: fixed;

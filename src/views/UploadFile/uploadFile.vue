@@ -23,7 +23,6 @@
             >
               <div class="file-item-title" slot="title">
                 {{item.loanFileName}}
-                {{index}}
                 <span>{{item.required == "1" ? "(必填)" :""}}</span>
               </div>
               <div slot="value">

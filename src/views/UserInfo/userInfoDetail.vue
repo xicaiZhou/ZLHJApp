@@ -458,12 +458,7 @@
             <div class="zlhjRadioLine"></div>
           </div>
         </div>
-        <van-field
-          v-show="customerContact.isNeedStatement == 1"
-          label="委托收件人:"
-          v-model="customerContact.entrustedRecipient"
-          placeholder="请填写委托收件人"
-        />
+
         <van-field label="手机一:" v-model="customerContact.firstMobilePhone" placeholder="请填写手机号" />
         <van-field label="手机二:" v-model="customerContact.secMobilePhone" placeholder="请填写手机号" />
         <van-field label="固话一:" v-model="customerContact.tel1" placeholder="请填写固话" />
@@ -577,7 +572,7 @@ export default {
         beforeName: "", // 曾用名
         loanNumber: "", // 申请编号
         customerRole: "", //角色(1-承租人 2-担保人)
-        customerType: "", //客户类型(1=自然人，2=法人) 暂时弃用了
+        customerType: "", //客户类型(1=自然人，2=法人) 
         relation: "", // 与承租人关系 1-本人 2-夫妻 3-父母 4-子女 5-兄弟姐妹 6-同事 7-其他
         relationValue: "", //自己添加的
         sex: "", //客户性别
@@ -752,7 +747,7 @@ export default {
           "1",
           this.customerInfo.relation
         );
-        if (this.customerInfo.idType == "1") {
+        if (this.customerInfo.idType == "1" && this.customerInfo.idNum.length > 0) {
           this.customerInfo.sex = idNumInfo(this.customerInfo.idNum).sex;
           this.customerInfo.age = idNumInfo(this.customerInfo.idNum).age;
           this.customerInfo.birthday = idNumInfo(
@@ -990,21 +985,22 @@ export default {
     showSelectPop(state) {
       switch (state) {
         case 1: {
-          //与承租人关系:
-          this.popList = [
-            "本人",
-            "夫妻",
-            "父母",
-            "子女",
-            "兄弟姐妹",
-            "同事",
-            "其他"
-          ];
+          if (this.customerInfo.customerRole == "1") {
+            this.popList = ["本人"];
+          } else {
+            //与承租人关系:
+            this.popList = ["夫妻", "父母", "子女", "兄弟姐妹", "同事", "其他"];
+          }
           break;
         }
         case 2: {
           //证件类型:
-          this.popList = ["身份证", "社会统一信用代码"];
+            if (this.customerInfo.customerType == "1") {
+            this.popList = ["身份证"];
+          } else {
+            //与承租人关系:
+            this.popList = ["社会统一信用代码"];
+          }
           break;
         }
         case 3: {
@@ -1103,6 +1099,7 @@ export default {
       if (
         isEmpty(this.customerInfo.customerName) ||
         isEmpty(this.customerInfo.customerRole) ||
+        isEmpty(this.customerInfo.relation) ||
         isEmpty(this.customerInfo.idType) ||
         isEmpty(this.customerInfo.idNum) ||
         isEmpty(this.customerInfo.sex) ||
@@ -1112,7 +1109,8 @@ export default {
         isEmpty(this.customerInfo.occupationType) ||
         isEmpty(this.customerInfo.nationality) ||
         isEmpty(this.customerInfo.isLongTerm) ||
-        (this.customerInfo.isLongTerm =="2" && isEmpty(this.customerInfo.certificateEndDate)) ||
+        (this.customerInfo.isLongTerm == "2" &&
+          isEmpty(this.customerInfo.certificateEndDate)) ||
         isEmpty(this.customerInfo.certificationAuthority) ||
         isEmpty(this.customerInfo.idCardProvince) ||
         isEmpty(this.customerInfo.idCardAddress) ||

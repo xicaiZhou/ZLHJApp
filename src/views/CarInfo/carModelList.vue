@@ -9,7 +9,6 @@
           v-model="name"
           label="品牌模糊:"
           placeholder="请输入关键字"
-          @click="showSheet = true"
         />
         <div class="searchBtn">
           <van-button style="width:40%" block type="info" @click="toSearch">查询</van-button>

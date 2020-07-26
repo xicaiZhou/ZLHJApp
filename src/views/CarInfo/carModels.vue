@@ -1,5 +1,5 @@
 <template>
-<!-- 车型选择界面 -->
+  <!-- 车型选择界面 -->
   <div>
     <van-popup v-model="popupShow" position="top">
       <div class="search_form">
@@ -28,17 +28,14 @@
           v-model="carModelName"
           label="车型模糊:"
           placeholder="请填写车型"
-          @click="selectCars"
         />
         <van-field
-          readonly
           clickable
           is-link
           style="border-style: solid;border-color:#D5D5D5;border-width:1px;margin-top:10px"
           v-model="year"
           label="年份:"
           placeholder="请选择年份"
-          @click="showDate=true"
         />
 
         <div class="searchBtn">
@@ -46,19 +43,6 @@
           <van-button style="width:40%" type="info" @click="toClear">重置</van-button>
         </div>
       </div>
-    </van-popup>
-    <van-popup
-      v-model="showDate"
-      position="bottom"
-      :style="{ height: '300px', width: '100%'}"
-      get-container="body">
-      <van-picker
-        title="选择年份"
-        show-toolbar
-        :columns="yearList"
-        @confirm="selectYear"
-        @cancel="showDate=false"
-      />
     </van-popup>
 
     <div class="nav_icon">
@@ -68,7 +52,12 @@
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index" @click="carInfoSelect(item)">
+          <div
+            class="searchContent"
+            v-for="(item,index) in filterDetail"
+            :key="index"
+            @click="carInfoSelect(item)"
+          >
             <div class="searchBox">{{item.name}}</div>
             <div style="width:20%; text-align:right;">{{item.year}}</div>
           </div>
@@ -88,8 +77,6 @@ export default {
       showSheet: false,
       refreshing: false,
       finished: false,
-      showDate: false,
-      yearList: [],
       filterDetail: [],
       loading: false,
       pIndex: 0,
@@ -98,7 +85,7 @@ export default {
       year: "",
       carModel: {},
       cars: {},
-      carModelName:''
+      carModelName: ""
     };
   },
   mounted() {
@@ -127,14 +114,11 @@ export default {
     showCarModelSearch() {
       this.popupShow = true;
     },
-    carInfoSelect(item){
-        this.$store.state.carInfo = item;
-        this.$router.back();
+    carInfoSelect(item) {
+      this.$store.state.carInfo = item;
+      this.$router.back();
     },
-    selectYear(value) {
-      this.year = value;
-      this.showDate = false;
-    },
+
     selectCarModel() {
       this.$router.push({
         path: "/carModelList"
@@ -151,26 +135,28 @@ export default {
     },
     toClear() {
       this.popupShow = false;
-      this.year = ""
+      this.year = "";
       this.$store.state.carModel = {};
       this.$store.state.cars = {};
       this.filterDetail = [];
+      this.carModelName = "";
       this.pIndex = 1;
       this.getData();
+      this.finished = false;
+      this.loading = true;
     },
     toSearch() {
       this.popupShow = false;
       this.pIndex = 1;
       this.filterDetail = [];
       this.getData();
-    
-    this.finished = false;
-    this.loading = true;
- 
+
+      this.finished = false;
+      this.loading = true;
     },
     //刷新
     onRefresh() {
-        console.log("刷新")
+      console.log("刷新");
       this.pIndex = 1;
       this.finished = false;
       this.loading = true;
@@ -178,7 +164,7 @@ export default {
     },
     //自动加载更多
     onLoad() {
-     console.log("自动加载更多")
+      console.log("自动加载更多");
       this.pIndex += 1;
       this.getData();
     },
@@ -193,7 +179,14 @@ export default {
         forbidClick: true,
         loadingType: "spinner"
       });
-      var params = Object.assign({brandId:this.carModel.id},{seriesId:this.cars.id},{year:this.year},{carModel:this.carModelName},{ pageIndex: this.pIndex }, { pageSize: 10 });
+      var params = Object.assign(
+        { brandId: this.carModel.id },
+        { seriesId: this.cars.id },
+        { year: this.year },
+        { carModel: this.carModelName },
+        { pageIndex: this.pIndex },
+        { pageSize: 10 }
+      );
       console.log(params);
       CarModelSearch(params).then(res => {
         toast.clear();
@@ -217,13 +210,13 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-      from.meta.keepAlive = false;
+    from.meta.keepAlive = false;
     if (to.path == "/carInfo") {
       to.meta.keepAlive = true;
     } else {
       to.meta.keepAlive = false;
     }
-        console.log("to", to);
+    console.log("to", to);
     console.log("from", from);
     next();
   }

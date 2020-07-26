@@ -170,7 +170,7 @@
         clickable
         v-show="baseInfo.businessModel == '1'"
         label="租赁用途:"
-        v-model="baseInfo.useMethod"
+        v-model="baseInfo.useMethodValue"
         placeholder="请选择租赁用途"
         @click="showUseMethod = true"
       />
@@ -180,7 +180,7 @@
         clickable
         v-show="baseInfo.businessModel == '2'"
         label="贷款用途:"
-        v-model="baseInfo.useMethod"
+        v-model="baseInfo.useMethodValue"
         placeholder="请选择贷款用途"
         @click="showUseMethod = true"
       />
@@ -387,6 +387,7 @@ export default {
           this.addCostId = 0;
           this.addCostType = "";
           this.addCostAmount = "";
+          this.addCostTypeValue = "";
         }
       }
     }
@@ -412,6 +413,12 @@ export default {
         expenseType: this.addCostType,
         amount: this.addCostAmount
       });
+
+      if(this.addCostType == "" || this.addCostAmount == ""){
+        this.$toast.fail("请将必填项填写完整");
+        return
+      }
+
       console.log("保存费用：", param);
       addCost(param).then(res => {
         toast.clear();
@@ -480,7 +487,8 @@ export default {
       this.showRepaymentMethod = false;
     },
     selectUseMethod(val) {
-      this.baseInfo.useMethod = val;
+      this.baseInfo.useMethodValue = val;
+      this.baseInfo.useMethod = this.getKey(this.baseInfo.val,this.useTypeList);
       this.showUseMethod = false;
     },
     toSub() {
@@ -564,17 +572,16 @@ export default {
       BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
         console.log(res);
         this.baseInfo = res.data.data;
-        this.$toast.success(this.baseInfo.businessModel)
         // 1-等额本息，2-等额本金，3-等本等息
         if (this.baseInfo.repaymentMethod == "1") {
           this.baseInfo.repaymentMethodName = "等额本息";
         } else if (this.baseInfo.repaymentMethod == "2") {
           this.baseInfo.repaymentMethodName = "等额本金";
-        } else {
+        } else if (this.baseInfo.repaymentMethod == "3"){
           this.baseInfo.repaymentMethodName = "等本等息";
         }
         this.baseInfo.useMethodValue = this.getValue(this.baseInfo.useMethod,this.useTypeList)
-        // this.baseInfo.businessModel = "1";
+        this.baseInfo.businessModel = "1";
         // if (this.baseInfo.leaseType == "1") {
         //   this.baseInfo.leaseTypeName = "直租";
         // } else {
@@ -592,7 +599,7 @@ export default {
     },
     getCode() {
       // 获取费用类型
-      codeList({codeType: "expenseType" }).then(res => {
+      codeList({codeType: "expenseType"}).then(res => {
         this.cosTypeList = res.data.data;
       });
       codeList({codeType: "useType" }).then(res=>{

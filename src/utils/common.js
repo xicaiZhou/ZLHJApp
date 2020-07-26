@@ -12,6 +12,10 @@ export const idNumValidator = (val) =>{
     }
     return false;
 }
+// vin码校验
+export const vin = (val) =>{
+   return /[\dA-HJ-NPR-Z]{17}/.test(val)
+}
 // 邮箱校验
 export const isEmail = (mail) =>{
   return /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]$/.test(mail);
@@ -28,28 +32,28 @@ export const idNumInfo = (val) =>{
   let age = new Date().getFullYear() - parseInt(year)
 
 
-  let birthday = ""
+  var birthday = ""
   if(val.length==18){
     birthday=val.substring(6,14)
   }else if(val.length==15){
     birthday="19"+val.substring(6,12)
   }
+  let month = birthday.substring(4,6)
+  let day = birthday.substring(6,8)
+
+
+
   let sex = ""
   if(val.length==18){
     sex=val.substring(16,17)
   }else if(val.length==15){
     sex=val.substring(14,15)
   }
-  console.log({
-    age:age,
-    sex:parseInt(sex) % 2 == 0 ? 2 : 1,
-    birthday:birthday
-  })
-
+  console.log(year + "-" + month + "-" + day)
   return {
     age:age,
     sex:parseInt(sex) % 2 == 0 ? 2 : 1,
-    birthday:birthday
+    birthday:year + "-" + month + "-" + day
   }
 
 }

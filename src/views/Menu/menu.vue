@@ -35,23 +35,23 @@ export default {
       loanStatus: 0,
       listData: [
         {
-          name: "经销商信息",
+          name: "车辆信息",
           state: 10
         },
         {
-          name: "融资业务信息",
+          name: "融资信息",
           state: 20
         },
         {
-          name: "个人信息",
+          name: "人员信息",
           state: 30
         },
         {
-          name: "产品选择",
+          name: "产品信息",
           state: 40
         },
         {
-          name: "文件上传",
+          name: "文件信息",
           state: 50
         }
       ]
@@ -82,37 +82,37 @@ export default {
   },
   methods: {
     toDetail(val) {
-      if (val.name === "经销商信息") {
+      if (val.name === "车辆信息") {
         this.$router.push({
           path: "/carInfo"
         });
-      } else if (val.name === "融资业务信息") {
+      } else if (val.name === "融资信息") {
         if ( this.loanStatus + 10 < val.state){
-          this.$toast.fail("请先录入经销商信息")
+          this.$toast.fail("请先录入车辆信息")
           return
         }
         this.$router.push({
           path: "/business"
         });
-      } else if (val.name === "个人信息") {
+      } else if (val.name === "人员信息") {
         if ( this.loanStatus + 10 < val.state){
-          this.$toast.fail("请先录入融资业务信息")
+          this.$toast.fail("请先录入融资信息")
           return
         }
         this.$router.push({
           path: "/userInfo"
         });
-      } else if (val.name === "产品选择") {
+      } else if (val.name === "产品信息") {
          if ( this.loanStatus + 10 < val.state){
-          this.$toast.fail("请先录入个人信息")
+          this.$toast.fail("请先录入人员信息")
           return
         }
         this.$router.push({
           path: "/selectProduct"
         });
-      } else if (val.name === "文件上传") {
+      } else if (val.name === "文件信息") {
         if ( this.loanStatus + 10 < val.state){
-          this.$toast.fail("请先录入个人信息")
+          this.$toast.fail("请先录入产品信息")
           return
         }
         this.$router.push({

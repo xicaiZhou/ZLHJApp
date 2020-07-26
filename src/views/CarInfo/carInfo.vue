@@ -484,7 +484,7 @@
 <script>
 import { CarInfo, SaveCarInfo } from "../../request/api";
 import { dateFormat, dataYear } from "../../utils/formatter";
-import { idNumValidator } from "../../utils/common";
+import { idNumValidator, vin } from "../../utils/common";
 import { getValue } from "../../utils/utils";
 export default {
   data() {
@@ -494,7 +494,7 @@ export default {
       maxDate: new Date(),
       radio: 1,
       showBusiness: false,
-      businessList: ["新车", "二手车", "车抵贷"],
+      businessList: ["新车", "二手车"],
       idTypeList: ["身份证", "社会统一信用代码"],
       loginSysUserVo: {
         loanNumber: "", //申请编号
@@ -533,7 +533,6 @@ export default {
     "$store.state.exhibition": {
       deep: false,
       handler: function(newValue, oldValue) {
-        console.log(this.loginSysUserVo);
         this.loginSysUserVo.dealerId = newValue.id;
         this.loginSysUserVo.dealerName = newValue.name;
       }
@@ -542,7 +541,6 @@ export default {
       deep: false,
       handler: function(newValue, oldValue) {
         if (newValue) {
-          
           this.getData();
         }
       }
@@ -556,13 +554,12 @@ export default {
         this.loginSysUserVo.seriesId = newValue.seriesId;
         this.loginSysUserVo.seriesName = newValue.seriesName;
         this.loginSysUserVo.year = newValue.year;
-        console.log(this.loginSysUserVo);
       }
     }
   },
-  mounted(){
-    if (this.$store.state.loanNumber){
-       this.getData();
+  mounted() {
+    if (this.$store.state.loanNumber) {
+      this.getData();
     }
   },
   methods: {
@@ -660,18 +657,29 @@ export default {
           return false;
         }
       }
+      if (this.loginSysUserVo.businessType == "2") {
+        if (!vin(this.loginSysUserVo.vin)) {
+          this.$toast.fail("vin码格式错误！");
+          return false;
+        }
+      }
       return true;
     },
 
     getData() {
       // 数据校验
       CarInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
-        console.log(res);
+        console.log("res");
         this.loginSysUserVo = res.data.data;
         if (this.loginSysUserVo.businessType == "3") {
           this.loginSysUserVo.businessTypeName = "车抵贷";
         } else if (this.loginSysUserVo.businessType == "2") {
           this.loginSysUserVo.businessTypeName = "二手车";
+          // 接口返回 yyyy-MM-dd hh:mm:ss  -> yyyy-MM-dd
+          this.loginSysUserVo.firstRegistrationDate = dateFormat(
+            this.loginSysUserVo.firstRegistrationDate,
+            "yyyy-MM-dd"
+          );
         } else {
           this.loginSysUserVo.businessTypeName = "新车";
         }
@@ -679,20 +687,17 @@ export default {
           "2",
           this.loginSysUserVo.exOwnerIdType
         );
-        // // 接口返回 yyyy-MM-dd hh:mm:ss  -> yyyy-MM-dd
-        // this.loginSysUserVo.firstRegistrationDate = dateFormat(
-        //   this.loginSysUserVo.firstRegistrationDate,
-        //   "yyyy-MM-dd"
-        // );
       });
     },
 
     selectIdType(value) {
-      this.loginSysUserVo.exOwnerIdTypeName = value;
+      this.loginSysUserVo.exOwnerIdType = value;
       this.loginSysUserVo.exOwnerIdTypeName = value == "身份证" ? "1" : "2";
+      this.showIdType = false;
     },
     // 选择上牌时间
     selectDate(value) {
+      // console.log(value)
       this.loginSysUserVo.firstRegistrationDate = dateFormat(
         value,
         "yyyy-MM-dd"
@@ -733,23 +738,16 @@ export default {
       this.$refs.form.submit();
     }
   },
-  // mounted() {
-  //   console.log("mounted", this.loginSysUserVo);
-  //   if (this.$store.state.loanNumber) {
-  //     this.getData();
+
+  // beforeRouteUpdate(to, from, next) {
+  //   console.log("beforeRouteUpdate", this.loginSysUserVo);
+  //   if (from.path == "/menu") {
+  //     if (this.$store.state.loanNumber) {
+  //       this.getData();
+  //     }
   //   }
+  //   next();
   // },
-
-  beforeRouteUpdate(to, from, next) {
-    console.log("beforeRouteUpdate", this.loginSysUserVo);
-
-    if (from.path == "/menu") {
-      if (this.$store.state.loanNumber) {
-        this.getData();
-      }
-    }
-    next();
-  },
 
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
@@ -787,9 +785,6 @@ export default {
     } else {
       from.meta.keepAlive = true;
     }
-    // to.meta.keepAlive = false;
-    console.log("to", to);
-    console.log("from", from);
     next();
   }
 };

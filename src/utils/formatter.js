@@ -79,10 +79,11 @@ export function formatNumber( value ){
     
 }
 // 格式化时间
-export const dateFormat = (dateStr, fmt = 'yyyy-MM-dd hh:mm') => {
+export const dateFormat = (dateStr, fmt = 'yyyy-MM-dd') => {
     if (!dateStr) return
+    dateStr = dateStr.substring(0,19).replace(/-/ig,"/")
     let date = new Date(dateStr)
-  console.log(date)
+    console.log(date)
     let o = {
       'M+': date.getMonth() + 1,
       'd+': date.getDate(),
@@ -100,6 +101,7 @@ export const dateFormat = (dateStr, fmt = 'yyyy-MM-dd hh:mm') => {
         fmt = fmt.replace(RegExp.$1, (RegExp.$1.length === 1) ? (o[k]) : (('00' + o[k]).substr(('' + o[k]).length)))
       }
     }
+
     return fmt
   }
 

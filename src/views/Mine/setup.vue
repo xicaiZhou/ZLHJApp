@@ -46,7 +46,6 @@
         @click="huancun(6)"
       />
     </van-cell-group>
-    <div>{{info}}</div>
     <div style="padding:30px">
       <van-button type="primary" size="large" color="#ff9900" @click="goLogout">登 出</van-button>
     </div>

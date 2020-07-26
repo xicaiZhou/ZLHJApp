@@ -11,7 +11,7 @@
         show-toolbar
         :columns="loanStatusList"
         @confirm="selectLoanStatus"
-        @cancel="loanStatusList"
+        @cancel="showLoanStatus = false"
       />
     </van-popup>
     <van-popup v-model="popupShow" position="top">
@@ -41,6 +41,7 @@
           placeholder="请填写手机号码"
         />
         <van-field
+          readonly
           style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
           v-model="loanStatusValue"
           label="业务状态:"
@@ -60,7 +61,7 @@
       </div>
     </van-popup>
     <!-- 退回拒绝原因 -->
-    <van-popup v-model="popupyuanyin"  position="top">
+    <van-popup v-model="popupyuanyin" position="top">
       <div style="width:90%;height:300px">
         <van-field
           :value="message"
@@ -120,11 +121,11 @@
               <div style="display:flex">
                 <div style="width:50%">
                   业务模式:
-                  <span>{{item.businessModel}}</span>
+                  <span>租赁</span>
                 </div>
                 <div>
                   业务类型:
-                  <span>{{item.businessType}}</span>
+                  <span>{{item.businessType == "1" ? "新车" : "二手车"}}</span>
                 </div>
               </div>
               <div style="display:flex">
@@ -203,7 +204,7 @@ export default {
       dealerName: "", // 经销商名称
       type: "", // 查询类型
       showLoanStatus: false,
-      loanStatusValue:' 全部',
+      loanStatusValue: " 全部",
       loanStatusList: ["全部", "待审批", "待资方审批"]
     };
   },
@@ -257,7 +258,8 @@ export default {
       } else if (val == "待资方审批") {
         this.loanStatus = 2;
       }
-      this.getValue(this.loanStatus)
+      this.showLoanStatus = false;
+      this.getValue(this.loanStatus);
     },
     getStatue(status) {
       for (let i in this.statusCodeList) {
@@ -286,11 +288,16 @@ export default {
     //重置
     toClear() {
       this.popupShow = false;
-      this.loanMainName = "";
-      this.managerName = "";
+      this.loanNumber = ""; // 申请编号 业务主键
+      this.customerName = ""; //客户名称
+      this.credentialNumber = ""; //证件号码
+      this.keyword = ""; // 搜索字符串
+      this.customerMobileNumber = ""; // 客户手机号
+      this.loanStatus = 0; // 贷款状态 数据字典-贷款状态
+      this.dealerName = ""; // 经销商名称
+      this.type = ""; // 查询类型
       this.filterDetail = [];
       this.pIndex = 1;
-      this.initDate();
       this.getData();
     },
     //刷新
