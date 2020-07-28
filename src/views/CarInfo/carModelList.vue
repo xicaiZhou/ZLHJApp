@@ -58,6 +58,7 @@ export default {
     showCarModelSearch() {
       this.name = ""
       this.popupShow = !this.popupShow;
+      
     },
     carSelected(item){
         this.$store.state.carModel = item;

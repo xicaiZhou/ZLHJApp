@@ -484,7 +484,7 @@
 <script>
 import { CarInfo, SaveCarInfo } from "../../request/api";
 import { dateFormat, dataYear } from "../../utils/formatter";
-import { idNumValidator, vin } from "../../utils/common";
+import { idNumValidator, vin, isPhoneNum } from "../../utils/common";
 import { getValue } from "../../utils/utils";
 export default {
   data() {
@@ -565,7 +565,6 @@ export default {
   methods: {
     onSubmit() {
       if (!this.chechData()) {
-        this.$toast.fail("请将必填项填写完整");
         return;
       }
       const toast = this.$toast.loading({
@@ -611,6 +610,9 @@ export default {
     },
     chechData() {
       if (this.loginSysUserVo.businessType == "") {
+        console.log("1");
+        this.$toast.fail("请将必填项填写完整");
+
         return false;
       } else if (this.loginSysUserVo.businessType == "1") {
         if (
@@ -622,6 +624,10 @@ export default {
           this.loginSysUserVo.licenseType == "" ||
           this.loginSysUserVo.hasDrivingLicense == ""
         ) {
+          console.log("2");
+
+          this.$toast.fail("请将必填项填写完整");
+
           return false;
         }
       } else if (this.loginSysUserVo.businessType == "2") {
@@ -637,29 +643,27 @@ export default {
           this.loginSysUserVo.exOwnerName == "" ||
           this.loginSysUserVo.exOwnerIdType == "" ||
           this.loginSysUserVo.exOwnerIdNumber == "" ||
-          (this.loginSysUserVo.exOwnerIdType == "1" &&
-            !idNumValidator(this.loginSysUserVo.exOwnerIdNumber))
+          this.loginSysUserVo.exOwnerMobileNumber == ""
         ) {
+          console.log("3");
+
+          this.$toast.fail("请将必填项填写完整");
+
           return false;
         }
-      } else {
         if (
-          this.loginSysUserVo.dealerId == "" ||
-          this.loginSysUserVo.modelId == "" ||
-          this.loginSysUserVo.firstRegistrationDate == "" ||
-          this.loginSysUserVo.mileage == "" ||
-          this.loginSysUserVo.appraisalPrice == "" ||
-          this.loginSysUserVo.vin == "" ||
-          this.loginSysUserVo.engineNumber == "" ||
-          this.loginSysUserVo.licenseType == "" ||
-          this.loginSysUserVo.hasDrivingLicense == ""
+          this.loginSysUserVo.exOwnerIdType == "1" &&
+          !idNumValidator(this.loginSysUserVo.exOwnerIdNumber)
         ) {
+          this.$toast.fail("原有车辆所有人证件号格式错误！");
           return false;
         }
-      }
-      if (this.loginSysUserVo.businessType == "2") {
+        if (!isPhoneNum(this.loginSysUserVo.exOwnerMobileNumber)) {
+          this.$toast.fail("原有车辆所有人手机号格式错误！");
+          return false;
+        }
         if (!vin(this.loginSysUserVo.vin)) {
-          this.$toast.fail("vin码格式错误！");
+          this.$toast.fail("车架号格式错误！");
           return false;
         }
       }
@@ -790,7 +794,7 @@ export default {
 };
 </script>
 
-<style>
+<style >
 .content {
   background: none;
   height: 80%;

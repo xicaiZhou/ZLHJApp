@@ -110,7 +110,7 @@ export default {
   },
   methods: {
     showCarModelSearch() {
-      this.popupShow = true;
+      this.popupShow = !this.popupShow;
     },
     carInfoSelect(item) {
       this.$store.state.carInfo = item;
@@ -214,8 +214,7 @@ export default {
     } else {
       to.meta.keepAlive = false;
     }
-    console.log("to", to);
-    console.log("from", from);
+
     next();
   }
 };

@@ -553,7 +553,7 @@ export default {
           // 获取产品详情
           this.getProductDetail(this.loanInfo.productId, false);
           // 获取产品贴息方案
-          this.getProductDiscountInterest();
+          // this.getProductDiscountInterest();
         }
         // if (this.loanInfo.pdiId) {
         //   this.getTXPlanDetail(this.loanInfo.pdiId);
@@ -600,7 +600,7 @@ export default {
           this.loanInfo.executeRate = this.productDetailInfo.executeRate;
           this.loanInfo.packFlag = this.productDetailInfo.packFlag;
           // 从新获取贴息方案
-          this.getProductDiscountInterest();
+          // this.getProductDiscountInterest();
           //计算金额
           this.getCalculationFinancingAmount();
         }

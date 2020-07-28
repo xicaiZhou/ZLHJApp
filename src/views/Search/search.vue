@@ -1,83 +1,88 @@
 <template>
-  <div>
-    <van-popup
-      v-model="showLoanStatus"
-      position="bottom"
-      :style="{ height: '300px', width: '100%'}"
-      get-container="body"
-    >
-      <van-picker
-        title
-        show-toolbar
-        :columns="loanStatusList"
-        @confirm="selectLoanStatus"
-        @cancel="showLoanStatus = false"
-      />
-    </van-popup>
-    <van-popup v-model="popupShow" position="top">
-      <div class="search_form">
-        <van-field
-          style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="loanNumber"
-          label="业务编号:"
-          placeholder="请填写业务编号"
+  <div style="heigh:200px">
+    <div>
+      <van-popup
+        v-model="showLoanStatus"
+        position="bottom"
+        :style="{ height: '300px', width: '100%'}"
+        get-container="body"
+      >
+        <van-picker
+          title
+          show-toolbar
+          :columns="loanStatusList"
+          @confirm="selectLoanStatus"
+          @cancel="showLoanStatus = false"
         />
-        <van-field
-          style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="customerName"
-          label="承租人姓名:"
-          placeholder="请填写姓名"
-        />
-        <van-field
-          style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="credentialNumber"
-          label="承租人证件号码:"
-          placeholder="请填写证件号码"
-        />
-        <van-field
-          style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="customerMobileNumber"
-          label="承租人手机号码:"
-          placeholder="请填写手机号码"
-        />
-        <van-field
-          readonly
-          style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="loanStatusValue"
-          label="业务状态:"
-          placeholder="请选择业务状态"
-          @click="showLoanStatus = true"
-        />
-        <van-field
-          style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="dealerName"
-          label="展厅名称:"
-          placeholder="请填写展厅名称"
-        />
-        <div class="searchBtn">
-          <van-button style="width:40%" block type="info" @click="toSearch">查询</van-button>
-          <van-button style="width:40%" type="info" @click="toClear">重置</van-button>
+      </van-popup>
+      <van-popup v-model="popupShow" position="top">
+        <div class="search_form">
+          <van-field
+            style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+            v-model="loanNumber"
+            label="业务编号:"
+            placeholder="请填写业务编号"
+          />
+          <van-field
+            style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+            v-model="customerName"
+            label="承租人姓名:"
+            placeholder="请填写姓名"
+          />
+          <van-field
+            style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+            v-model="credentialNumber"
+            label="承租人证件号码:"
+            placeholder="请填写证件号码"
+          />
+          <van-field
+            style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+            v-model="customerMobileNumber"
+            label="承租人手机号码:"
+            placeholder="请填写手机号码"
+          />
+          <van-field
+            readonly
+            style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+            v-model="loanStatusValue"
+            label="业务状态:"
+            placeholder="请选择业务状态"
+            @click="showLoanStatus = true"
+          />
+          <van-field
+            style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+            v-model="dealerName"
+            label="展厅名称:"
+            placeholder="请填写展厅名称"
+          />
+          <div class="searchBtn">
+            <van-button style="width:40%" block type="info" @click="toSearch">查询</van-button>
+            <van-button style="width:40%" type="info" @click="toClear">重置</van-button>
+          </div>
         </div>
-      </div>
-    </van-popup>
-    <!-- 退回拒绝原因 -->
-    <van-popup v-model="popupyuanyin" position="top">
-      <div style="width:90%;height:300px">
-        <van-field
-          :value="message"
-          :label="titleLabel"
-          type="textarea"
-          placeholder="请输入留言"
-          autosize
-          border
-        />
-      </div>
-    </van-popup>
-    <div class="contentBox">
+      </van-popup>
+      <!-- 退回拒绝原因 -->
+      <van-popup v-model="popupyuanyin" position="top">
+        <div style="width:90%;height:300px">
+          <van-field
+            :value="message"
+            :label="titleLabel"
+            type="textarea"
+            placeholder="请输入留言"
+            autosize
+            border
+          />
+        </div>
+      </van-popup>
+    </div>
+
+    <div >
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index">
-            <div class="item">
+          <div  style="height:110px" v-for="(item,index) in filterDetail" :key="index" @click="toDetail({loanNumber:''})">
+
+            123
+            <!-- <div>
               <div>
                 业务编号:
                 <span>{{item.loanNumber}}</span>
@@ -163,7 +168,7 @@
                 >拒绝原因</van-button>
                 <van-button v-else style="flex:1">-</van-button>
               </div>
-            </div>
+            </div> -->
           </div>
         </van-list>
       </van-pull-refresh>
@@ -182,8 +187,7 @@ import { getUrlParam } from "../../utils/common.js";
 export default {
   data() {
     return {
-      title: "",
-      active: 1,
+      active:1,
       refreshing: false,
       finished: false,
       filterDetail: [],
@@ -313,40 +317,57 @@ export default {
       this.getData();
     },
     getData() {
-      if (this.finished) {
+            if (this.finished) {
         this.finished = false;
         this.loading = true;
       }
-      var params = {
-        loanNumber: this.loanNumber,
-        customerName: this.customerName,
-        credentialNumber: this.credentialNumber,
-        customerMobileNumber: this.customerMobileNumber,
-        status: this.loanStatus,
-        dealerName: this.dealerName,
-        pageIndex: this.pIndex,
-        pageSize: 10,
-        keyword: ""
-      };
-      console.log(params);
-      searchInfo(params).then(res => {
-        let num = res.data.data.total;
-        let list = res.data.data["records"];
+      setTimeout(() => {
         if (this.refreshing) {
           this.filterDetail = [];
           this.refreshing = false;
         }
-        for (let i in list) {
-          this.filterDetail.push(list[i]);
+        for (let i = 0; i < 10; i++) {
+          this.filterDetail.push(this.filterDetail.length + 1);
         }
         this.loading = false;
-        console.log(this.filterDetail);
-        console.log(this.filterDetail.length, num);
-        if (this.filterDetail.length >= num) {
+        if (this.filterDetail.length >= 40) {
           this.finished = true;
         }
-        console.log(this.finished);
-      });
+      }, 1000);
+      // if (this.finished) {
+      //   this.finished = false;
+      //   this.loading = true;
+      // }
+      // var params = {
+      //   loanNumber: this.loanNumber,
+      //   customerName: this.customerName,
+      //   credentialNumber: this.credentialNumber,
+      //   customerMobileNumber: this.customerMobileNumber,
+      //   status: this.loanStatus,
+      //   dealerName: this.dealerName,
+      //   pageIndex: this.pIndex,
+      //   pageSize: 10,
+      //   keyword: ""
+      // };
+      // console.log(params);
+      // searchInfo(params).then(res => {
+      //   let num = res.data.data.total;
+      //   let list = res.data.data["records"];
+      //   if (this.refreshing) {
+      //     this.filterDetail = [];
+      //     this.refreshing = false;
+      //   }
+      //   for (let i in list) {
+      //     this.filterDetail.push(list[i]);
+      //   }
+      //   this.loading = false;
+      //   console.log(this.filterDetail);
+      //   console.log(this.filterDetail.length, num);
+      //   if (this.filterDetail.length >= num) {
+      //     this.finished = true;
+      //   }
+      //   console.log(this.finished);
+      // });
     },
     sure() {
       this.showResult = false;
@@ -361,7 +382,6 @@ export default {
   top: 0px;
   width: 100%;
   background: #f3eeee;
-  z-index: -1;
 }
 .searchContent {
   width: 90%;
@@ -380,12 +400,7 @@ export default {
 .searchBox2 {
   width: 40%;
 }
-.item-icon {
-  margin-top: -1px;
-  margin-right: 5px;
-  width: 20px;
-  height: 20px;
-}
+
 .search_form {
   margin: 7% 3%;
 }
@@ -394,45 +409,7 @@ export default {
   margin-top: 20px;
   justify-content: space-between;
 }
-.nav_icon {
-  position: absolute;
-  right: 0;
-  top: 0;
-  padding: 10px 5%;
-}
-.calendar {
-  position: absolute;
-  right: 10px;
-  top: 8px;
-}
-.navBar {
-  width: 92%;
-  position: fixed;
-  top: 0px;
-  z-index: 999;
-  height: 44px;
-  padding: 0 4%;
-  line-height: 44px;
-  background: #fff;
-  color: rgb(255, 0, 51);
-}
-.rejectResult {
-  /* margin-top: 10px; */
-  padding: 16px;
-  font-size: 12px;
-}
-.rejectResult-title {
-  font-size: 18px;
-  font-weight: bold;
-  padding: 4px 0;
-}
-.rejectResult-tex {
-  padding: 2px 3%;
-}
-.resultBtn {
-  margin-top: 10px;
-  width: 70%;
-}
+
 .line {
   margin-top: 5px;
   height: 1px;

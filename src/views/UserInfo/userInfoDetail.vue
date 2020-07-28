@@ -1154,7 +1154,7 @@ export default {
       }
       if (
         this.customerInfo.idType == "1" &&
-        idNumValidator(this.customerInfo.idNum)
+        !idNumValidator(this.customerInfo.idNum)
       ) {
         this.$toast.fail("身份证格式错误！");
         return;
@@ -1208,30 +1208,30 @@ export default {
             return;
           }
         }
-        if (isPhoneNum(this.customerJob.companyPhone)) {
+        if (!isPhoneNum(this.customerJob.companyPhone)) {
           this.$toast.fail("单位电话格式错误！");
           return;
         }
         if (!isEmpty(this.customerContact.firstMobilePhone)) {
-          if (isPhoneNum(this.customerContact.firstMobilePhone)) {
+          if (!isPhoneNum(this.customerContact.firstMobilePhone)) {
             this.$toast.fail("手机一格式错误！");
             return;
           }
         }
         if (!isEmpty(this.customerContact.secMobilePhone)) {
-          if (isPhoneNum(this.customerContact.secMobilePhone)) {
+          if (!isPhoneNum(this.customerContact.secMobilePhone)) {
             this.$toast.fail("手机二格式错误！");
             return;
           }
         }
         if (!isEmpty(this.customerContact.tel1)) {
-          if (isPhoneNum(this.customerContact.tel1)) {
+          if (!isPhoneNum(this.customerContact.tel1)) {
             this.$toast.fail("固话一格式错误！");
             return;
           }
         }
         if (!isEmpty(this.customerContact.tel2)) {
-          if (isPhoneNum(this.customerContact.tel2)) {
+          if (!isPhoneNum(this.customerContact.tel2)) {
             this.$toast.fail("固话二格式错误！");
             return;
           }
