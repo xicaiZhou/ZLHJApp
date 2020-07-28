@@ -333,15 +333,16 @@ export default {
     return {
       addCostAmount: "",
       addCostType: "",
-      addCostTypeValue:'',
+      addCostTypeValue: "",
       addCostId: 0,
       showTerm: false,
+      isHaveGPS: false, // 自己加的用来判断只能添加一个GPS费用类型
       showAddCost: false,
       showRepaymentMethod: false,
       showUseMethod: false,
       showCosType: false,
       cosTypeList: [],
-      useTypeList:[],
+      useTypeList: [],
       termList: ["12", "24", "36"],
       repaymentMethodList: ["等额本息", "等额本金", "等本等息"],
       totalAmount: 0, // 项目总额
@@ -400,7 +401,18 @@ export default {
       }
       return data;
     },
+    // 添加费用类型
     addCostAction() {
+      if (
+        (this.addCostType == "6" || this.addCostType == "7") &&
+        this.isHaveGPS
+      ) {
+        this.$toast.fail("已经存在GPS款项！");
+        this.addCostType = "";
+        this.addCostTypeValue = "";
+        this.addCostAmount = "";
+        return;
+      }
       const toast = this.$toast.loading({
         duration: 0,
         message: "保存中...",
@@ -414,11 +426,10 @@ export default {
         amount: this.addCostAmount
       });
 
-      if(this.addCostType == "" || this.addCostAmount == ""){
+      if (this.addCostType == "" || this.addCostAmount == "") {
         this.$toast.fail("请将必填项填写完整");
-        return
+        return;
       }
-
       console.log("保存费用：", param);
       addCost(param).then(res => {
         toast.clear();
@@ -426,6 +437,7 @@ export default {
       });
       this.showAddCost = false;
     },
+    // 删除费用
     delectCost(item) {
       const toast = this.$toast.loading({
         duration: 0,
@@ -441,9 +453,10 @@ export default {
         this.getCostList();
       });
     },
+    // 选择费用类型
     selectCosType(val) {
       this.addCostTypeValue = val;
-      this.addCostType = this.getKey(val,this.cosTypeList);
+      this.addCostType = this.getKey(val, this.cosTypeList);
       this.showCosType = false;
     },
     getKey(str, list) {
@@ -458,8 +471,8 @@ export default {
     },
     getValue(id, list) {
       var str = 0;
-      if (id == 1 && list == this.cosTypeList){
-        return "车辆款"
+      if (id == 1 && list == this.cosTypeList) {
+        return "车辆款";
       }
       for (let index in list) {
         if (id == list[index].codeKey) {
@@ -469,6 +482,7 @@ export default {
       }
       return str;
     },
+    // 选择分期
     selectTerm(val) {
       this.baseInfo.term = val;
       this.showTerm = false;
@@ -488,7 +502,9 @@ export default {
     },
     selectUseMethod(val) {
       this.baseInfo.useMethodValue = val;
-      this.baseInfo.useMethod = this.getKey(this.baseInfo.val,this.useTypeList);
+      this.baseInfo.useMethod = this.getKey(val,
+        this.useTypeList
+      );
       this.showUseMethod = false;
     },
     toSub() {
@@ -570,17 +586,23 @@ export default {
     },
     getBusinessInfo() {
       BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
-        console.log(res);
+        console.log("BusinessInfo", res);
         this.baseInfo = res.data.data;
         // 1-等额本息，2-等额本金，3-等本等息
         if (this.baseInfo.repaymentMethod == "1") {
           this.baseInfo.repaymentMethodName = "等额本息";
         } else if (this.baseInfo.repaymentMethod == "2") {
           this.baseInfo.repaymentMethodName = "等额本金";
-        } else if (this.baseInfo.repaymentMethod == "3"){
+        } else if (this.baseInfo.repaymentMethod == "3") {
           this.baseInfo.repaymentMethodName = "等本等息";
         }
-        this.baseInfo.useMethodValue = this.getValue(this.baseInfo.useMethod,this.useTypeList)
+        if (this.baseInfo.useMethod) {
+          this.baseInfo.useMethodValue = this.getValue(
+            this.baseInfo.useMethod,
+            this.useTypeList
+          );
+        }
+
         this.baseInfo.businessModel = "1";
         // if (this.baseInfo.leaseType == "1") {
         //   this.baseInfo.leaseTypeName = "直租";
@@ -590,29 +612,42 @@ export default {
         this.getCostList();
       });
     },
+    // 费用列表
     getCostList() {
       CostList({ loanNumber: this.$store.state.loanNumber }).then(res => {
         console.log(res);
         this.cosList = res.data.data;
+
+        // 判断是否存在GPS 如果存在则不允许添加GPS费用
+        for (let index in this.cosList) {
+          if (
+            this.cosList[index].expenseType == "6" ||
+            this.cosList[index].expenseType == "7"
+          ) {
+            this.isHaveGPS = true;
+          } else {
+            this.isHaveGPS = false;
+          }
+        }
+
         this.calculateCost();
       });
     },
+    // 获取码值列表
     getCode() {
       // 获取费用类型
-      codeList({codeType: "expenseType"}).then(res => {
+      codeList({ codeType: "expenseType" }).then(res => {
         this.cosTypeList = res.data.data;
-      });
-      codeList({codeType: "useType" }).then(res=>{
-        this.useTypeList = res.data.data;
-        this.baseInfo.useMethodValue = this.getValue(this.baseInfo.useMethod,this.useTypeList)
-
+        codeList({ codeType: "useType" }).then(res => {
+          this.useTypeList = res.data.data;
+          this.getBusinessInfo();
+        });
       });
     }
   },
   mounted() {
     // 获取码值
     this.getCode();
-    this.getBusinessInfo();
   }
 };
 </script>

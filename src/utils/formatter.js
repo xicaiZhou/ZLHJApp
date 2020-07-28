@@ -81,7 +81,7 @@ export function formatNumber( value ){
 // 格式化时间
 export const dateFormat = (dateStr, fmt = 'yyyy-MM-dd') => {
     if (!dateStr) return
-    dateStr = dateStr.substring(0,19).replace(/-/ig,"/")
+    // dateStr = dateStr.substring(0,19).replace(/-/ig,"/")
     let date = new Date(dateStr)
     console.log(date)
     let o = {

@@ -6,8 +6,8 @@
         <van-icon name="https://b.yzcdn.cn/vant/icon-demo-1126.png" size="20" />
         <div style="margin-left:4px">{{item.name}}</div>
       </div>
-      <div class="itemR" v-if="item.state <= loanStatus" >
-        <van-icon name="checked" color="#ff9900"  size="22" />
+      <div class="itemR" v-if="item.state <= loanStatus">
+        <van-icon name="checked" color="#ff9900" size="22" />
         <div style="margin-left:10px;">已完成</div>
       </div>
       <div class="itemR" v-else>
@@ -16,7 +16,7 @@
       </div>
     </div>
     <div class="tips">提交审核后，审核人员会根据您提交的材料反馈审核结果，请耐心等待！</div>
-    <div v-show="loanStatus <= 50" class="subBtn" ref="subBtn">
+    <div v-show="loanStatus <= 50" class="subBtn1" ref="subBtn">
       <van-button
         style="width:100%;background:#ff9900;border:none"
         block
@@ -58,26 +58,22 @@ export default {
     };
   },
   mounted() {
-
     if (this.$store.state.loanNumber) {
       CarInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
-        this.$store.state.loanStatus = res.data.data.loanStatus;
-        this.loanStatus = res.data.data.loanStatus;
+        console.log("menu:", res);
+        this.$store.state.loanStatus = parseInt(res.data.data.loanStatus);
+        this.loanStatus = parseInt(res.data.data.loanStatus);
       });
     }
   },
   beforeRouteLeave(to, from, next) {
     if (to.path == "/carInfo") {
-      if (this.$store.state.loanNumber){
-        this.$store.state.isload = true
-      }else{
-                this.$store.state.isload = false
-
+      if (this.$store.state.loanNumber) {
+        this.$store.state.isload = true;
+      } else {
+        this.$store.state.isload = false;
       }
-      // to.meta.keepAlive = false;
-    } 
-    console.log("to", to);
-    console.log("from", from);
+    }
     next();
   },
   methods: {
@@ -87,33 +83,33 @@ export default {
           path: "/carInfo"
         });
       } else if (val.name === "融资信息") {
-        if ( this.loanStatus + 10 < val.state){
-          this.$toast.fail("请先录入车辆信息")
-          return
+        if (this.loanStatus + 10 < val.state) {
+          this.$toast.fail("请先录入车辆信息");
+          return;
         }
         this.$router.push({
           path: "/business"
         });
       } else if (val.name === "人员信息") {
-        if ( this.loanStatus + 10 < val.state){
-          this.$toast.fail("请先录入融资信息")
-          return
+        if (this.loanStatus + 10 < val.state) {
+          this.$toast.fail("请先录入融资信息");
+          return;
         }
         this.$router.push({
           path: "/userInfo"
         });
       } else if (val.name === "产品信息") {
-         if ( this.loanStatus + 10 < val.state){
-          this.$toast.fail("请先录入人员信息")
-          return
+        if (this.loanStatus + 10 < val.state) {
+          this.$toast.fail("请先录入人员信息");
+          return;
         }
         this.$router.push({
           path: "/selectProduct"
         });
       } else if (val.name === "文件信息") {
-        if ( this.loanStatus + 10 < val.state){
-          this.$toast.fail("请先录入产品信息")
-          return
+        if (this.loanStatus + 10 < val.state) {
+          this.$toast.fail("请先录入产品信息");
+          return;
         }
         this.$router.push({
           path: "/uploadFile"
@@ -122,8 +118,18 @@ export default {
     },
     toSub() {
       // 提交订单
+      const toast = this.$toast.loading({
+        duration: 0,
+        message: "提交中...",
+        forbidClick: true,
+        loadingType: "spinner"
+      });
+            console.log(this.$store.state.loanNumber)
+
       submitStartTask({ loanNumber: this.$store.state.loanNumber }).then(
         res => {
+          toast.clear();
+          this.$toast.success("申请提交成功！")
           this.$router.back();
         }
       );
@@ -170,8 +176,9 @@ export default {
   text-align: center;
   margin-top: 30px;
 }
-.subBtn {
+.subBtn1 {
   position: fixed;
+  bottom: 0px;
   width: 90%;
   height: 50px;
   left: 5%;

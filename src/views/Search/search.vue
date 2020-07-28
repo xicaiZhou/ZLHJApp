@@ -322,7 +322,7 @@ export default {
         customerName: this.customerName,
         credentialNumber: this.credentialNumber,
         customerMobileNumber: this.customerMobileNumber,
-        loanStatus: this.loanStatus,
+        status: this.loanStatus,
         dealerName: this.dealerName,
         pageIndex: this.pIndex,
         pageSize: 10,
@@ -361,6 +361,7 @@ export default {
   top: 0px;
   width: 100%;
   background: #f3eeee;
+  z-index: -1;
 }
 .searchContent {
   width: 90%;

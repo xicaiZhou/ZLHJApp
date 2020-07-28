@@ -163,7 +163,6 @@
           @cancel="showAddressPop = false"
           title="选择地址"
           :area-list="addressList"
-          :columns-placeholder="['请选择', '请选择', '请选择']"
         />
       </van-popup>
     </div>
@@ -173,7 +172,7 @@
 <script>
 import { userDetailInfo, updateUser } from "../../request/api";
 import { getKey, getValue, isEmpty, getAddress } from "../../utils/utils";
-import { idNumInfo } from "../../utils/common";
+import { idNumValidator, isPhoneNum } from "../../utils/common";
 import { dateFormat } from "../../utils/formatter";
 export default {
   data() {
@@ -317,6 +316,10 @@ export default {
         this.$toast.fail("请将'基本信息'中必填项填写完整");
         return;
       }
+      if (!isPhoneNum(this.customerInfo.phone)) {
+        this.$toast.fail("企业联系电话格式错误！");
+        return;
+      }
       if (
         isEmpty(this.customerCompany.legalRepresentative) ||
         isEmpty(this.customerCompany.legalRepresentativePhone) ||
@@ -330,6 +333,22 @@ export default {
         this.$toast.fail("请将'企业人员信息'中必填项填写完整");
         return;
       }
+      if (!isPhoneNum(this.customerCompany.legalRepresentativePhone)) {
+        this.$toast.fail("'法人联系方式'格式错误！");
+        return;
+      }
+      if (!isPhoneNum(this.customerCompany.ownerPhone)) {
+        this.$toast.fail("'实际用车人联系方式'格式错误！");
+        return;
+      }
+      if (!idNumValidator(this.customerCompany.representativeIdNum)) {
+        this.$toast.fail("'法人证件号码'格式错误！");
+        return;
+      }
+      if (!idNumValidator(this.customerCompany.ownerIdNum)) {
+        this.$toast.fail("'实际用车人证件号码'格式错误！");
+        return;
+      }
       const toast = this.$toast.loading({
         duration: 0,
         message: "保存中...",
@@ -340,7 +359,7 @@ export default {
         customerId: this.$route.params.customerId,
         customerInfoParam: this.customerInfo,
         customerHousePropertyParam: this.customerHouseProperty,
-        customerCompanyParam:this.customerCompany
+        customerCompanyParam: this.customerCompany
       });
       if (this.customerInfo.isMarry == "2") {
         param.customerSpouseInfoParam = this.customerSpouseInfo;

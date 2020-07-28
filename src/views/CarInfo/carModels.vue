@@ -30,12 +30,10 @@
           placeholder="请填写车型"
         />
         <van-field
-          clickable
-          is-link
           style="border-style: solid;border-color:#D5D5D5;border-width:1px;margin-top:10px"
           v-model="year"
           label="年份:"
-          placeholder="请选择年份"
+          placeholder="请填写年份"
         />
 
         <div class="searchBtn">

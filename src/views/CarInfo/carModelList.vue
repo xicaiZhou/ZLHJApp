@@ -16,10 +16,6 @@
         </div>
       </div>
     </van-popup>
-    <div class="nav_icon">
-      <van-icon name="search" size="25" @click="showCarModelSearch" color="#07c160" />
-    </div>
-
     <div class="contentBox">
       <van-index-bar :index-list="indexList">
           <div v-for="(indexItem,index) in indexList" :key="index">
@@ -60,6 +56,7 @@ export default {
   },
   methods: {
     showCarModelSearch() {
+      this.name = ""
       this.popupShow = !this.popupShow;
     },
     carSelected(item){

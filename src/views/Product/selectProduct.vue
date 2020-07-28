@@ -55,7 +55,7 @@
             </div>
           </van-collapse-item>
         </van-collapse>
-        <van-field
+        <!-- <van-field
           required
           is-link
           readonly
@@ -76,7 +76,7 @@
           label="经销商贴息(元):"
           placeholder="请填写经销商贴息"
           v-model="loanInfo.dealerAmount"
-        />
+        /> -->
         <div>
           <div class="zlhjRadio" style="display:flex">
             <span class="zlhjRadio_title">签署《新信息确认书》：</span>
@@ -461,6 +461,9 @@ export default {
         case 90:
           str += "其他费用";
           break;
+        case 100 :
+            str += '合计';
+            break;
       }
       return str;
     },
@@ -526,7 +529,7 @@ export default {
       this.showZF = false;
     },
     // 选择付款账号
-    selectAccount(item) {
+    selectAccount(val) {
       for (let index in this.account) {
         if (this.account[index].accountNumber == val) {
           this.loanInfo.fcId = this.fcList[account].accountNumber; //资方ID
@@ -534,6 +537,7 @@ export default {
           break;
         }
       }
+      this.showAccount = false;
     },
     // 获取界面数据
     getLoanDetailAndRepaymentPlan() {
@@ -545,12 +549,15 @@ export default {
         this.loanInfo.repaymentCycleType = "1";
         this.loanInfo.repaymentCycleTypeValue = "按月";
         if (this.loanInfo.productId) {
+          console.log("产品ID",this.loanInfo.productId)
+          // 获取产品详情
           this.getProductDetail(this.loanInfo.productId, false);
+          // 获取产品贴息方案
           this.getProductDiscountInterest();
         }
-        if (this.loanInfo.pdiId) {
-          this.getTXPlanDetail(this.loanInfo.pdiId);
-        }
+        // if (this.loanInfo.pdiId) {
+        //   this.getTXPlanDetail(this.loanInfo.pdiId);
+        // }
         //获取账户列表
         if (this.loanInfo.fcId) {
           this.getFinancingChannelAccountList();
@@ -578,7 +585,7 @@ export default {
     getProductDetail(id, type) {
       var param = {
         productId: id,
-        amount: this.loanInfo.amount,
+        netAmount: this.loanInfo.amount, //净融资金额
         loanNumber: this.$store.state.loanNumber
       };
       productDetail(param).then(res => {
@@ -651,7 +658,9 @@ export default {
   },
 
   mounted() {
+    // 获取界面数据
     this.getLoanDetailAndRepaymentPlan();
+    // 资方列表
     this.getFinancingChannelList();
   },
   beforeRouteLeave(to, from, next) {

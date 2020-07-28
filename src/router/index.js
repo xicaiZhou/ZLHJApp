@@ -50,7 +50,6 @@ import uploadFile from '@/views/UploadFile/uploadFile'
 
 Vue.use(Router)
 
-
 export default new Router({
   routes: [
     {
@@ -167,7 +166,7 @@ export default new Router({
       component:business,
       meta:{
         keepAlive:false,
-        title: '融资业务信息'
+        title: '融资信息'
       }
     },
     {
@@ -176,7 +175,7 @@ export default new Router({
       component:userInfo,
       meta:{
         keepAlive:false,
-        title: '个人信息'
+        title: '人员信息'
       }
     },
     {
@@ -185,7 +184,7 @@ export default new Router({
       component:userInfoDetail,
       meta:{
         keepAlive:false,
-        title: '个人详细信息'
+        title: '人员详细信息'
       }
     },
     {
@@ -194,7 +193,7 @@ export default new Router({
       component:maleBrandInfoDetail,
       meta:{
         keepAlive:false,
-        title: '个人详细信息'
+        title: '人员详细信息'
       }
     },
     {
@@ -203,7 +202,7 @@ export default new Router({
       component:selectProduct,
       meta:{
         keepAlive:true,
-        title: '选择产品'
+        title: '产品信息'
       }
     },
     {
@@ -230,7 +229,7 @@ export default new Router({
       component:uploadFile,
       meta:{
         keepAlive:false,
-        title: '文件上传'
+        title: '文件信息'
       }
     },
 

@@ -35,7 +35,7 @@ request.interceptors.response.use(
         return response;
       }else{
         Toast({
-          message: response.data.msg,
+          message: response.data.message,
           type: 'error',
           duration: 2* 1000
         })

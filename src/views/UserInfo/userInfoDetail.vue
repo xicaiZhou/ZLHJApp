@@ -30,7 +30,13 @@
           placeholder="请选择证件类型"
           @click="showSelectPop(2)"
         />
-        <van-field required label="证件号码:" v-model="customerInfo.idNum" placeholder="请填写证件号码" />
+        <van-field
+          required
+          label="证件号码:"
+          v-model="customerInfo.idNum"
+          placeholder="请填写证件号码"
+          @blur="getIdNumInfo"
+        />
         <div>
           <div class="zlhjRadio" style="display:flex">
             <span class="zlhjRadio_title">客户性别：</span>
@@ -67,7 +73,7 @@
           label="出生日期:"
           v-model="customerInfo.birthday"
           placeholder="请选择出生日期"
-          @click="showBirthday = true"
+          @click="showSelectDatePop(2)"
         />
         <van-field required label="年龄:" v-model="customerInfo.age" placeholder="请填写年龄" />
         <van-field
@@ -465,7 +471,7 @@
         <van-field label="固话二:" v-model="customerContact.tel2" placeholder="请填写固话" />
       </div>
       <div>
-        <div class="header">其他联系方式</div>
+        <div class="header">联系人信息</div>
         <div v-for="(item,index) in customerContactPersonList" :key="index">
           <van-field
             required
@@ -543,7 +549,6 @@
           @cancel="showAddressPop = false"
           title="选择地址"
           :area-list="addressList"
-          :columns-placeholder="['请选择', '请选择', '请选择']"
         />
       </van-popup>
     </div>
@@ -553,7 +558,12 @@
 <script>
 import { userDetailInfo, updateUser } from "../../request/api";
 import { getKey, getValue, isEmpty, getAddress } from "../../utils/utils";
-import { idNumInfo } from "../../utils/common";
+import {
+  idNumInfo,
+  idNumValidator,
+  isPhoneNum,
+  isEmail
+} from "../../utils/common";
 import { dateFormat } from "../../utils/formatter";
 export default {
   data() {
@@ -565,6 +575,7 @@ export default {
       minDate: new Date(),
       showAddressPop: false,
       selectAddressIndex: 0,
+      selectDateIndex: 0,
       addressList: this.$store.state.address,
       customerInfo: {
         customerId: "", // 客户id
@@ -572,7 +583,7 @@ export default {
         beforeName: "", // 曾用名
         loanNumber: "", // 申请编号
         customerRole: "", //角色(1-承租人 2-担保人)
-        customerType: "", //客户类型(1=自然人，2=法人) 
+        customerType: "", //客户类型(1=自然人，2=法人)
         relation: "", // 与承租人关系 1-本人 2-夫妻 3-父母 4-子女 5-兄弟姐妹 6-同事 7-其他
         relationValue: "", //自己添加的
         sex: "", //客户性别
@@ -747,7 +758,10 @@ export default {
           "1",
           this.customerInfo.relation
         );
-        if (this.customerInfo.idType == "1" && this.customerInfo.idNum.length > 0) {
+        if (
+          this.customerInfo.idType == "1" &&
+          idNumValidator(this.customerInfo.idNum)
+        ) {
           this.customerInfo.sex = idNumInfo(this.customerInfo.idNum).sex;
           this.customerInfo.age = idNumInfo(this.customerInfo.idNum).age;
           this.customerInfo.birthday = idNumInfo(
@@ -825,6 +839,16 @@ export default {
     });
   },
   methods: {
+    // 监听输入身份证获取性别出生日期年龄
+    getIdNumInfo(val) {
+      if (idNumValidator(this.customerInfo.idNum)) {
+        this.customerInfo.sex = idNumInfo(this.customerInfo.idNum).sex;
+        this.customerInfo.age = idNumInfo(this.customerInfo.idNum).age;
+        this.customerInfo.birthday = idNumInfo(
+          this.customerInfo.idNum
+        ).birthday;
+      }
+    },
     selectIsLongTerm() {
       this.customerInfo.isLongTerm = "2";
       this.customerInfo.certificateEndDate = "";
@@ -923,7 +947,11 @@ export default {
     },
     selectDate(date) {
       this.showDatePop = false;
-      this.customerInfo.certificateEndDate = dateFormat(date, "yyyy-MM-dd");
+      if (this.selectDateIndex == 1) {
+        this.customerInfo.certificateEndDate = dateFormat(date, "yyyy-MM-dd");
+      } else if (this.selectDateIndex == 2) {
+        this.customerInfo.birthday = dateFormat(date, "yyyy-MM-dd");
+      }
     },
     selectedAddress(value) {
       switch (this.selectAddressIndex) {
@@ -980,6 +1008,8 @@ export default {
       this.showAddressPop = true;
     },
     showSelectDatePop(state) {
+      // 1-证件到期日 2-出生日期
+      this.selectDateIndex = state;
       this.showDatePop = true;
     },
     showSelectPop(state) {
@@ -995,7 +1025,7 @@ export default {
         }
         case 2: {
           //证件类型:
-            if (this.customerInfo.customerType == "1") {
+          if (this.customerInfo.customerType == "1") {
             this.popList = ["身份证"];
           } else {
             //与承租人关系:
@@ -1123,6 +1153,18 @@ export default {
         return;
       }
       if (
+        this.customerInfo.idType == "1" &&
+        idNumValidator(this.customerInfo.idNum)
+      ) {
+        this.$toast.fail("身份证格式错误！");
+        return;
+      }
+
+      if (!isPhoneNum(this.customerInfo.phone)) {
+        this.$toast.fail("手机号格式错误！");
+        return;
+      }
+      if (
         isEmpty(this.customerHouseProperty.liveType) ||
         isEmpty(this.customerHouseProperty.whetherIdAddr) ||
         isEmpty(this.customerHouseProperty.liveProvince) ||
@@ -1166,6 +1208,34 @@ export default {
             return;
           }
         }
+        if (isPhoneNum(this.customerJob.companyPhone)) {
+          this.$toast.fail("单位电话格式错误！");
+          return;
+        }
+        if (!isEmpty(this.customerContact.firstMobilePhone)) {
+          if (isPhoneNum(this.customerContact.firstMobilePhone)) {
+            this.$toast.fail("手机一格式错误！");
+            return;
+          }
+        }
+        if (!isEmpty(this.customerContact.secMobilePhone)) {
+          if (isPhoneNum(this.customerContact.secMobilePhone)) {
+            this.$toast.fail("手机二格式错误！");
+            return;
+          }
+        }
+        if (!isEmpty(this.customerContact.tel1)) {
+          if (isPhoneNum(this.customerContact.tel1)) {
+            this.$toast.fail("固话一格式错误！");
+            return;
+          }
+        }
+        if (!isEmpty(this.customerContact.tel2)) {
+          if (isPhoneNum(this.customerContact.tel2)) {
+            this.$toast.fail("固话二格式错误！");
+            return;
+          }
+        }
       }
       console.log(this.customerInfo.isMarry);
       if (this.customerInfo.isMarry == "2") {
@@ -1181,14 +1251,33 @@ export default {
         }
       }
 
+      if (isEmpty(this.customerContact.statementEmail)) {
+        this.$toast.fail("请将'邮箱(对账单地址)'填写完整");
+        return;
+      }
+      if (!isEmail(this.customerContact.statementEmail)) {
+        this.$toast.fail("'邮箱(对账单地址)'格式错误！");
+        return;
+      }
       for (let index in this.customerContactPersonList) {
         if (
           isEmpty(this.customerContactPersonList[index].contactPersonName) ||
           isEmpty(this.customerContactPersonList[index].contactPersonPhone) ||
           isEmpty(this.customerContactPersonList[index].relation)
         ) {
-          this.$toast.fail("请将'其他联系方式'中必填项填写完整");
+          this.$toast.fail("请将'联系人信息'中必填项填写完整");
           return;
+        }
+        if (
+          !isPhoneNum(
+            this.customerContactPersonParamList[index].contactPersonPhone
+          )
+        ) {
+          this.$toast.fail(
+            "联系人'" +
+              this.customerContactPersonList[index].contactPersonName +
+              "'联系方式格式错误"
+          );
         }
       }
       const toast = this.$toast.loading({

@@ -691,8 +691,8 @@ export default {
     },
 
     selectIdType(value) {
-      this.loginSysUserVo.exOwnerIdType = value;
-      this.loginSysUserVo.exOwnerIdTypeName = value == "身份证" ? "1" : "2";
+      this.loginSysUserVo.exOwnerIdTypeName = value;
+      this.loginSysUserVo.exOwnerIdType = value == "身份证" ? "1" : "2";
       this.showIdType = false;
     },
     // 选择上牌时间
