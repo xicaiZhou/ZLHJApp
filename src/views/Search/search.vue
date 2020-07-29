@@ -1,5 +1,5 @@
 <template>
-  <div style="heigh:200px">
+  <div style="min-height:10000px;">
     <div>
       <van-popup
         v-model="showLoanStatus"
@@ -61,7 +61,6 @@
           </div>
         </div>
       </van-popup>
-      <!-- 退回拒绝原因 -->
       <van-popup v-model="popupyuanyin" position="top">
         <div style="width:90%;height:300px">
           <van-field
@@ -76,13 +75,11 @@
       </van-popup>
     </div>
 
-    <div >
+    <div class="searchContent">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div  style="height:110px" v-for="(item,index) in filterDetail" :key="index" @click="toDetail({loanNumber:''})">
-
-            123
-            <!-- <div>
+          <div v-for="(item,index) in filterDetail" :key="index" @click="toDetail({loanNumber:''})">
+            <div class="item">
               <div>
                 业务编号:
                 <span>{{item.loanNumber}}</span>
@@ -168,7 +165,7 @@
                 >拒绝原因</van-button>
                 <van-button v-else style="flex:1">-</van-button>
               </div>
-            </div> -->
+            </div>
           </div>
         </van-list>
       </van-pull-refresh>
@@ -317,57 +314,41 @@ export default {
       this.getData();
     },
     getData() {
-            if (this.finished) {
+      
+      if (this.finished) {
         this.finished = false;
         this.loading = true;
       }
-      setTimeout(() => {
+      var params = {
+        loanNumber: this.loanNumber,
+        customerName: this.customerName,
+        credentialNumber: this.credentialNumber,
+        customerMobileNumber: this.customerMobileNumber,
+        status: this.loanStatus,
+        dealerName: this.dealerName,
+        pageIndex: this.pIndex,
+        pageSize: 10,
+        keyword: ""
+      };
+      console.log(params);
+      searchInfo(params).then(res => {
+        let num = res.data.data.total;
+        let list = res.data.data["records"];
         if (this.refreshing) {
           this.filterDetail = [];
           this.refreshing = false;
         }
-        for (let i = 0; i < 10; i++) {
-          this.filterDetail.push(this.filterDetail.length + 1);
+        for (let i in list) {
+          this.filterDetail.push(list[i]);
         }
         this.loading = false;
-        if (this.filterDetail.length >= 40) {
+        console.log(this.filterDetail);
+        console.log(this.filterDetail.length, num);
+        if (this.filterDetail.length >= num) {
           this.finished = true;
         }
-      }, 1000);
-      // if (this.finished) {
-      //   this.finished = false;
-      //   this.loading = true;
-      // }
-      // var params = {
-      //   loanNumber: this.loanNumber,
-      //   customerName: this.customerName,
-      //   credentialNumber: this.credentialNumber,
-      //   customerMobileNumber: this.customerMobileNumber,
-      //   status: this.loanStatus,
-      //   dealerName: this.dealerName,
-      //   pageIndex: this.pIndex,
-      //   pageSize: 10,
-      //   keyword: ""
-      // };
-      // console.log(params);
-      // searchInfo(params).then(res => {
-      //   let num = res.data.data.total;
-      //   let list = res.data.data["records"];
-      //   if (this.refreshing) {
-      //     this.filterDetail = [];
-      //     this.refreshing = false;
-      //   }
-      //   for (let i in list) {
-      //     this.filterDetail.push(list[i]);
-      //   }
-      //   this.loading = false;
-      //   console.log(this.filterDetail);
-      //   console.log(this.filterDetail.length, num);
-      //   if (this.filterDetail.length >= num) {
-      //     this.finished = true;
-      //   }
-      //   console.log(this.finished);
-      // });
+        console.log(this.finished);
+      });
     },
     sure() {
       this.showResult = false;
@@ -387,7 +368,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   font-size: 12px;
-  background: #ffffff;
+  background: #cccccc;
   height: calc(100% - 44px);
 }
 .item {

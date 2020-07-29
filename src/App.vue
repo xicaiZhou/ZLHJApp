@@ -10,14 +10,19 @@
 <script>
 export default {
   name: "App",
-  created() {
-    
+  created(){
+    // window.screenHeight = res =>{
+    //   this.$store.state.screenHeight = res
+    // }
   }
 };
 </script>
 
 <style>
 
+.systemAppColor {
+  background: #00ff00;
+}
 .readOnly {
   pointer-events: none;
   background-color: #f7f7f7;
