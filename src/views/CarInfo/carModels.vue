@@ -105,6 +105,7 @@ export default {
       handler: function(newValue, oldValue) {
         console.log(newValue, oldValue);
         this.carModel = newValue;
+        this.$store.state.cars = {}
       }
     },
     "$store.state.cars": {

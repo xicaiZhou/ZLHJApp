@@ -1225,10 +1225,10 @@ export default {
             this.$toast.fail("请将'工作信息'中必填项填写完整");
             return;
           }
-          if (!isPhoneNum(this.customerJob.companyPhone)) {
-            this.$toast.fail("单位电话格式错误！");
-            return;
-          }
+          // if (!isPhoneNum(this.customerJob.companyPhone)) {
+          //   this.$toast.fail("单位电话格式错误！");
+          //   return;
+          // }
         }
 
         if (!isEmpty(this.customerContact.firstMobilePhone)) {

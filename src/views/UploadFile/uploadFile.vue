@@ -1,4 +1,5 @@
 <template>
+<div>
   <div style="height:100%; margin-bottom: 60px;">
     <div class="section-top">
       <div class="header">人员列表</div>
@@ -10,7 +11,6 @@
         </div>
       </div>
     </div>
-
     <div class="content">
       <div class="header">文件列表</div>
       <div class="filelist">
@@ -45,10 +45,12 @@
         </van-collapse>
       </div>
     </div>
-    <div class="subBtn">
+  </div>
+      <div class="subBtn">
       <van-button class="subBtn_body" block type="info" @click="toSub">完 成</van-button>
     </div>
-  </div>
+</div>
+
 </template>
 
 <script>

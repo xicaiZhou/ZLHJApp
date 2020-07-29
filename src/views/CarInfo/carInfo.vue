@@ -600,7 +600,7 @@ export default {
     },
 
     clear() {
-      (this.loginSysUserVo.businessType = ""), //业务类型 1-车抵贷，2-二手车,3-新车
+        (this.loginSysUserVo.businessType = ""), //业务类型 1-车抵贷，2-二手车,3-新车
         (this.loginSysUserVo.businessTypeName = ""), //自己加的 界面初始化和手动修改业务类型时需要手动修改
         (this.loginSysUserVo.seriesId = ""), //车系ID
         (this.loginSysUserVo.seriesName = ""), // 车系名字
@@ -662,7 +662,6 @@ export default {
           this.loginSysUserVo.exOwnerName == "" ||
           this.loginSysUserVo.exOwnerIdType == "" ||
           this.loginSysUserVo.exOwnerIdNumber == "" ||
-          this.loginSysUserVo.exOwnerMobileNumber == "" ||
           this.loginSysUserVo.importFlag == ""
         ) {
           console.log("3");
@@ -678,10 +677,13 @@ export default {
           this.$toast.fail("原有车辆所有人证件号格式错误！");
           return false;
         }
+        if(this.loginSysUserVo.exOwnerMobileNumber.length > 0){
         if (!isPhoneNum(this.loginSysUserVo.exOwnerMobileNumber)) {
           this.$toast.fail("原有车辆所有人手机号格式错误！");
           return false;
         }
+        }
+
         if (!vin(this.loginSysUserVo.vin)) {
           this.$toast.fail("车架号格式错误！");
           return false;
@@ -800,7 +802,7 @@ export default {
       from.meta.keepAlive = true;
     } else if (to.path == "/carModels") {
       to.meta.keepAlive = true;
-              this.$store.state.isloadCarModels = true;
+      this.$store.state.isloadCarModels = true;
 
     } else {
       from.meta.keepAlive = true;
