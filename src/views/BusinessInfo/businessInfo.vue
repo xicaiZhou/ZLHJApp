@@ -1,4 +1,5 @@
 <template>
+<div>
   <div style="height:100%; margin-bottom: 60px;">
     <div>
       <div class="header">贷款信息</div>
@@ -9,14 +10,7 @@
         label="业务模式:"
         v-model="baseInfo.businessModel == '1' ? '租赁' : '贷款' "
       />
-      <van-field
-        class="readOnly"
-        required
-        v-show="baseInfo.businessModel == '1'"
-        readonly
-        label="租赁模式:"
-        v-model="baseInfo.leaseTypeName"
-      />
+
       <div>
         <div class="zlhjRadio" style="display:flex">
           <span class="zlhjRadio_title">安装GPS：</span>
@@ -97,6 +91,15 @@
           </div>
         </div>
       </div>
+      <div class="header">租赁信息</div>
+      <van-field
+        class="readOnly"
+        required
+        v-show="baseInfo.businessModel == '1'"
+        readonly
+        label="租赁模式:"
+        v-model="baseInfo.leaseTypeName"
+      />
       <van-field
         class="readOnly"
         v-show="baseInfo.businessModel == '1'"
@@ -221,7 +224,9 @@
         placeholder="请填写销售联系方式"
       />
     </div>
-    <div class="subBtn">
+
+  </div>
+      <div class="subBtn">
       <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
     <div>
@@ -315,7 +320,8 @@
         />
       </van-popup>
     </div>
-  </div>
+</div>
+
 </template>
 
 <script>
@@ -502,9 +508,7 @@ export default {
     },
     selectUseMethod(val) {
       this.baseInfo.useMethodValue = val;
-      this.baseInfo.useMethod = this.getKey(val,
-        this.useTypeList
-      );
+      this.baseInfo.useMethod = this.getKey(val, this.useTypeList);
       this.showUseMethod = false;
     },
     toSub() {
@@ -562,10 +566,7 @@ export default {
       });
     },
     calculateCost() {
-      if (
-        this.baseInfo.downPaymentAmount == null ||
-        this.baseInfo.downPaymentAmount == 0
-      ) {
+      if (this.baseInfo.downPaymentAmount == null) {
         return;
       }
       let param = Object.assign({
@@ -595,6 +596,9 @@ export default {
           this.baseInfo.repaymentMethodName = "等额本金";
         } else if (this.baseInfo.repaymentMethod == "3") {
           this.baseInfo.repaymentMethodName = "等本等息";
+        }
+        if (this.baseInfo.downPaymentAmount == null) {
+          this.baseInfo.downPaymentAmount = 0;
         }
         if (this.baseInfo.useMethod) {
           this.baseInfo.useMethodValue = this.getValue(

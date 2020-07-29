@@ -15,11 +15,15 @@ export const idNumValidator = (val) =>{
 }
 // vin码校验
 export const vin = (val) =>{
-   return /[\dA-HJ-NPR-Z]{17}/.test(val)
+  if(val.length == 17){
+    return /[\dA-HJ-NPR-Z]{17}/.test(val)
+
+  }
+  return false
 }
 // 邮箱校验
 export const isEmail = (mail) =>{
-  return /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]$/.test(mail);
+  return /^[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*@[a-zA-Z0-9]+([-_.][a-zA-Z0-9]+)*\.[a-z]{2,}$/.test(mail);
 }
 // 根据身份证号码计算生日年龄和性别
 export const idNumInfo = (val) =>{

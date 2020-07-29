@@ -124,7 +124,7 @@ export default {
         forbidClick: true,
         loadingType: "spinner"
       });
-            console.log(this.$store.state.loanNumber)
+      console.log(this.$store.state.loanNumber)
 
       submitStartTask({ loanNumber: this.$store.state.loanNumber }).then(
         res => {

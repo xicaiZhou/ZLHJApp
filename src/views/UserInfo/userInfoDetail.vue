@@ -1,506 +1,520 @@
 <template>
-  <div style="height:100%; margin-bottom: 60px;">
-    <div>
+  <div>
+    <div style="height:100%; margin-bottom: 20px;">
       <div>
-        <div class="header">基本信息</div>
-        <van-field
-          required
-          label="客户姓名:"
-          v-model="customerInfo.customerName"
-          placeholder="请填写客户姓名"
-        />
-        <van-field label="曾用名:" v-model="customerInfo.beforeName" placeholder="请填写曾用名" />
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="与承租人关系:"
-          v-model="customerInfo.relationValue"
-          placeholder="请选择与承租人关系"
-          @click="showSelectPop(1)"
-        />
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="证件类型:"
-          v-model="customerInfo.idTypeValue"
-          placeholder="请选择证件类型"
-          @click="showSelectPop(2)"
-        />
-        <van-field
-          required
-          label="证件号码:"
-          v-model="customerInfo.idNum"
-          placeholder="请填写证件号码"
-          @blur="getIdNumInfo"
-        />
         <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title">客户性别：</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="customerInfo.sex = '1'"
-                :class="customerInfo.sex == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >男</div>
-              <div
-                @click="customerInfo.sex = '2'"
-                :class="customerInfo.sex == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >女</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="婚姻状况:"
-          v-model="customerInfo.isMarryValue"
-          placeholder="请选择婚姻状况"
-          @click="showSelectPop(3)"
-        />
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="出生日期:"
-          v-model="customerInfo.birthday"
-          placeholder="请选择出生日期"
-          @click="showSelectDatePop(2)"
-        />
-        <van-field required label="年龄:" v-model="customerInfo.age" placeholder="请填写年龄" />
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="职业类型:"
-          v-model="customerInfo.occupationTypeValue"
-          placeholder="请选择职业类型"
-          @click="showSelectPop(4)"
-        />
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="国籍:"
-          v-model="customerInfo.nationalityValue"
-          placeholder="请选择国籍"
-          @click="showSelectPop(5)"
-        />
-        <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title">身份证是否长期有效：</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="customerInfo.isLongTerm = '1'"
-                :class="customerInfo.isLongTerm == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >是</div>
-              <div
-                @click="selectIsLongTerm"
-                :class="customerInfo.isLongTerm == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >否</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-        <van-field
-          required
-          v-show="customerInfo.isLongTerm == '2'"
-          is-link
-          readonly
-          clickable
-          label="证件到期日:"
-          v-model="customerInfo.certificateEndDate"
-          placeholder="请选择证件到期日"
-          @click="showSelectDatePop(1)"
-        />
-        <van-field
-          required
-          label="发证机关:"
-          v-model="customerInfo.certificationAuthority"
-          placeholder="请填写发证机关"
-        />
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="身份证地址:"
-          v-model="idCardAddress"
-          placeholder="请选择身份证地址"
-          @click="showSelectAddressPop(1)"
-        />
-        <van-field
-          required
-          label="详细地址:"
-          v-model="customerInfo.idCardAddress"
-          placeholder="请填写详细地址"
-        />
-        <van-field required label="手机号码:" v-model="customerInfo.phone" placeholder="请填写手机号码" />
-        <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title">是否本地户籍：</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="customerInfo.isLocal = '1'"
-                :class="customerInfo.isLocal == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >是</div>
-              <div
-                @click="customerInfo.isLocal = '2'"
-                :class="customerInfo.isLocal == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >否</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="客户类型:"
-          v-model="customerInfo.customerNatureValue"
-          placeholder="请选择客户类型"
-          @click="showSelectPop(6)"
-        />
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="教育程度:"
-          v-model="customerInfo.educationLevelValue"
-          placeholder="请选择教育程度"
-          @click="showSelectPop(7)"
-        />
-        <van-field
-          v-model="customerInfo.commons"
-          autosize
-          label="备注:"
-          type="textarea"
-          placeholder="请输入备注"
-        />
-      </div>
-      <div>
-        <div class="header">居住地信息</div>
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="居住状况:"
-          v-model="customerHouseProperty.liveTypeValue"
-          placeholder="请选择居住状况"
-          @click="showSelectPop(8)"
-        />
-        <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title">现居地与身份证地址相同：</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="selectWhetherIdAddr('1')"
-                :class="customerHouseProperty.whetherIdAddr == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >是</div>
-              <div
-                @click="selectWhetherIdAddr('2')"
-                :class="customerHouseProperty.whetherIdAddr == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >否</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-        <div v-show="customerHouseProperty.whetherIdAddr == '2'">
-          <van-field
-            is-link
-            required
-            readonly
-            clickable
-            label="现居住地地址:"
-            v-model="liveAddress"
-            placeholder="请选择现居住地地址"
-            @click="showSelectAddressPop(2)"
-          />
+          <div class="header">基本信息</div>
           <van-field
             required
-            label="详细地址:"
-            v-model="customerHouseProperty.liveAddress"
-            placeholder="请填写详细地址"
+            label="客户姓名:"
+            v-model="customerInfo.customerName"
+            placeholder="请填写客户姓名"
           />
-        </div>
-
-        <van-field label="固定电话:" v-model="customerHouseProperty.telephone" placeholder="请填写固定电话号码" />
-      </div>
-      <div>
-        <div class="header">主要财产信息</div>
-        <van-field
-          required
-          label="每月家庭净收入(元):"
-          v-model="customerAssets.familyMonthIncome"
-          placeholder="请填写每月家庭净收入"
-        />
-        <van-field
-          required
-          label="月平均支出(元):"
-          v-model="customerAssets.familyMonthExpenditure"
-          placeholder="请填写月平均支出"
-        />
-        <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title">家庭首次购车：</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="customerAssets.firstBuyCar = '1'"
-                :class="customerAssets.firstBuyCar == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >是</div>
-              <div
-                @click="customerAssets.firstBuyCar = '2'"
-                :class="customerAssets.firstBuyCar == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >否</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-        <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title">购车目的:</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="customerAssets.buyCarPurpose = '1'"
-                :class="customerAssets.buyCarPurpose == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >自用</div>
-              <div
-                @click="customerAssets.buyCarPurpose = '2'"
-                :class="customerAssets.buyCarPurpose == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >出租</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-
-        <van-field
-          label="社保卡号:"
-          v-model="customerAssets.socialSecurityNumber"
-          placeholder="请填写社保卡号"
-        />
-      </div>
-      <div>
-        <div class="header">房产信息</div>
-        <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title_norequired">房产类别:</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="customerHouseProperty.roomType = '1'"
-                :class="customerHouseProperty.roomType == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >住房</div>
-              <div
-                @click="customerHouseProperty.roomType = '2'"
-                :class="customerHouseProperty.roomType == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >商用房</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-        <van-field
-          is-link
-          readonly
-          clickable
-          label="房产性质:"
-          v-model="customerHouseProperty.roomNatureValue"
-          placeholder="请选择房产性质"
-          @click="showSelectPop(9)"
-        />
-        <van-field
-          is-link
-          readonly
-          clickable
-          label="房产地址:"
-          v-model="roomAddress"
-          placeholder="请选择房产地址"
-          @click="showSelectAddressPop(3)"
-        />
-        <van-field label="详细地址:" v-model="customerHouseProperty.roomAddress" placeholder="请填写详细地址" />
-        <van-field label="面积(m²):" v-model="customerHouseProperty.roomAreas" placeholder="请填写房产面积" />
-        <van-field label="房产编号:" v-model="customerHouseProperty.roomNum" placeholder="请填写房产编号" />
-      </div>
-      <div>
-        <div class="header">工作信息</div>
-        <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title">是否有工作：</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="customerJob.isWork = '1'"
-                :class="customerJob.isWork == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >有</div>
-              <div
-                @click="customerJob.isWork = '2'"
-                :class="customerJob.isWork == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >无</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-        <div v-show="customerJob.isWork == 1">
-          <van-field required label="工作单位:" v-model="customerJob.company" placeholder="请填写工作单位" />
-          <van-field
-            required
-            label="单位电话:"
-            v-model="customerJob.companyPhone"
-            placeholder="请填写单位电话"
-          />
-          <van-field label="分机号:" v-model="customerJob.companyExtension" placeholder="请填写分机号" />
+          <van-field label="曾用名:" v-model="customerInfo.beforeName" placeholder="请填写曾用名" />
           <van-field
             required
             is-link
             readonly
             clickable
-            label="单位地址:"
-            v-model="companyAddress"
-            placeholder="请选择单位地址"
-            @click="showSelectAddressPop(4)"
-          />
-          <van-field label="详细地址:" v-model="customerJob.companyAddress" placeholder="请填写详细地址" />
-          <van-field
-            required
-            is-link
-            readonly
-            clickable
-            label="单位性质:"
-            v-model="customerJob.companyTypeValue"
-            placeholder="请选择单位性质"
-            @click="showSelectPop(10)"
+            label="与承租人关系:"
+            v-model="customerInfo.relationValue"
+            placeholder="请选择与承租人关系"
+            @click="showSelectPop(1)"
           />
           <van-field
             required
             is-link
             readonly
             clickable
-            label="职务:"
-            v-model="customerJob.positionValue"
-            placeholder="请选择职务"
-            @click="showSelectPop(11)"
-          />
-        </div>
-      </div>
-      <div v-show="this.customerInfo.isMarry == '2'">
-        <div class="header">配偶信息</div>
-        <van-field
-          required
-          label="姓名:"
-          v-model="customerSpouseInfo.spouseName"
-          placeholder="请填写配偶姓名"
-        />
-        <van-field
-          required
-          label="手机号:"
-          v-model="customerSpouseInfo.spousePhone"
-          placeholder="请填写配偶手机号"
-        />
-
-        <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="证件类型:"
-          v-model="customerSpouseInfo.spouseIdTypeValue"
-          placeholder="请选择配偶证件类型"
-          @click="showSelectPop(12)"
-        />
-        <van-field
-          required
-          label="证件号码:"
-          v-model="customerSpouseInfo.spouseIdNum"
-          placeholder="请填写配偶证件号码"
-        />
-      </div>
-      <div>
-        <div class="header">其他联系方式</div>
-        <van-field
-          required
-          label="邮箱(对账单邮箱地址):"
-          v-model="customerContact.statementEmail"
-          placeholder="请填写邮箱"
-        />
-        <div>
-          <div class="zlhjRadio" style="display:flex">
-            <span class="zlhjRadio_title_norequired">是否需要对账单：</span>
-            <div class="zlhjRadio_body">
-              <div
-                @click="customerContact.isNeedStatement = '1'"
-                :class="customerContact.isNeedStatement == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >是</div>
-              <div
-                @click="customerContact.isNeedStatement = '2'"
-                :class="customerContact.isNeedStatement == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-              >否</div>
-            </div>
-          </div>
-          <div style="padding-left:10px">
-            <div class="zlhjRadioLine"></div>
-          </div>
-        </div>
-
-        <van-field label="手机一:" v-model="customerContact.firstMobilePhone" placeholder="请填写手机号" />
-        <van-field label="手机二:" v-model="customerContact.secMobilePhone" placeholder="请填写手机号" />
-        <van-field label="固话一:" v-model="customerContact.tel1" placeholder="请填写固话" />
-        <van-field label="固话二:" v-model="customerContact.tel2" placeholder="请填写固话" />
-      </div>
-      <div>
-        <div class="header">联系人信息</div>
-        <div v-for="(item,index) in customerContactPersonList" :key="index">
-          <van-field
-            required
-            label="联系人姓名:"
-            v-model="item.contactPersonName"
-            placeholder="请填写联系人姓名"
+            label="证件类型:"
+            v-model="customerInfo.idTypeValue"
+            placeholder="请选择证件类型"
+            @click="showSelectPop(2)"
           />
           <van-field
             required
-            label="联系人手机号:"
-            v-model="item.contactPersonPhone"
-            placeholder="请填写联系人手机号"
+            label="证件号码:"
+            v-model="customerInfo.idNum"
+            placeholder="请填写证件号码"
+            @blur="getIdNumInfo"
           />
           <div>
             <div class="zlhjRadio" style="display:flex">
-              <span class="zlhjRadio_title">与承租人关系：</span>
+              <span class="zlhjRadio_title">客户性别：</span>
               <div class="zlhjRadio_body">
                 <div
-                  @click="item.relation = '1'"
-                  :class="item.relation == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >亲属</div>
+                  @click="customerInfo.sex = '1'"
+                  :class="customerInfo.sex == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >男</div>
                 <div
-                  @click="item.relation = '2'"
-                  :class="item.relation == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >朋友</div>
+                  @click="customerInfo.sex = '2'"
+                  :class="customerInfo.sex == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >女</div>
               </div>
             </div>
             <div style="padding-left:10px">
               <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="婚姻状况:"
+            v-model="customerInfo.isMarryValue"
+            placeholder="请选择婚姻状况"
+            @click="showSelectPop(3)"
+          />
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="出生日期:"
+            v-model="customerInfo.birthday"
+            placeholder="请选择出生日期"
+            @click="showSelectDatePop(2)"
+          />
+          <van-field required label="年龄:" v-model="customerInfo.age" placeholder="请填写年龄" />
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="职业类型:"
+            v-model="customerInfo.occupationTypeValue"
+            placeholder="请选择职业类型"
+            @click="showSelectPop(4)"
+          />
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="国籍:"
+            v-model="customerInfo.nationalityValue"
+            placeholder="请选择国籍"
+            @click="showSelectPop(5)"
+          />
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">身份证是否长期有效：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="customerInfo.isLongTerm = '1'"
+                  :class="customerInfo.isLongTerm == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >是</div>
+                <div
+                  @click="selectIsLongTerm"
+                  :class="customerInfo.isLongTerm == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >否</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+          <van-field
+            required
+            v-show="customerInfo.isLongTerm == '2'"
+            is-link
+            readonly
+            clickable
+            label="证件到期日:"
+            v-model="customerInfo.certificateEndDate"
+            placeholder="请选择证件到期日"
+            @click="showSelectDatePop(1)"
+          />
+          <van-field
+            required
+            label="发证机关:"
+            v-model="customerInfo.certificationAuthority"
+            placeholder="请填写发证机关"
+          />
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="身份证地址:"
+            v-model="idCardAddress"
+            placeholder="请选择身份证地址"
+            @click="showSelectAddressPop(1)"
+          />
+          <van-field
+            required
+            label="详细地址:"
+            v-model="customerInfo.idCardAddress"
+            placeholder="请填写详细地址"
+          />
+          <van-field required label="手机号码:" v-model="customerInfo.phone" placeholder="请填写手机号码" />
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">是否本地户籍：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="customerInfo.isLocal = '1'"
+                  :class="customerInfo.isLocal == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >是</div>
+                <div
+                  @click="customerInfo.isLocal = '2'"
+                  :class="customerInfo.isLocal == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >否</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="客户类型:"
+            v-model="customerInfo.customerNatureValue"
+            placeholder="请选择客户类型"
+            @click="showSelectPop(6)"
+          />
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="教育程度:"
+            v-model="customerInfo.educationLevelValue"
+            placeholder="请选择教育程度"
+            @click="showSelectPop(7)"
+          />
+          <van-field
+            v-model="customerInfo.commons"
+            autosize
+            label="备注:"
+            type="textarea"
+            placeholder="请输入备注"
+          />
+        </div>
+        <div>
+          <div class="header">居住地信息</div>
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="居住状况:"
+            v-model="customerHouseProperty.liveTypeValue"
+            placeholder="请选择居住状况"
+            @click="showSelectPop(8)"
+          />
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">现居地与身份证地址相同：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="selectWhetherIdAddr('1')"
+                  :class="customerHouseProperty.whetherIdAddr == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >是</div>
+                <div
+                  @click="selectWhetherIdAddr('2')"
+                  :class="customerHouseProperty.whetherIdAddr == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >否</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+          <div v-show="customerHouseProperty.whetherIdAddr == '2'">
+            <van-field
+              is-link
+              required
+              readonly
+              clickable
+              label="现居住地地址:"
+              v-model="liveAddress"
+              placeholder="请选择现居住地地址"
+              @click="showSelectAddressPop(2)"
+            />
+            <van-field
+              required
+              label="详细地址:"
+              v-model="customerHouseProperty.liveAddress"
+              placeholder="请填写详细地址"
+            />
+          </div>
+
+          <van-field
+            label="固定电话:"
+            v-model="customerHouseProperty.telephone"
+            placeholder="请填写固定电话号码"
+          />
+        </div>
+        <div>
+          <div class="header">主要财产信息</div>
+          <van-field
+            required
+            label="每月家庭净收入(元):"
+            v-model="customerAssets.familyMonthIncome"
+            placeholder="请填写每月家庭净收入"
+          />
+          <van-field
+            required
+            label="月平均支出(元):"
+            v-model="customerAssets.familyMonthExpenditure"
+            placeholder="请填写月平均支出"
+          />
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">家庭首次购车：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="customerAssets.firstBuyCar = '1'"
+                  :class="customerAssets.firstBuyCar == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >是</div>
+                <div
+                  @click="customerAssets.firstBuyCar = '2'"
+                  :class="customerAssets.firstBuyCar == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >否</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">购车目的:</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="customerAssets.buyCarPurpose = '1'"
+                  :class="customerAssets.buyCarPurpose == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >自用</div>
+                <div
+                  @click="customerAssets.buyCarPurpose = '2'"
+                  :class="customerAssets.buyCarPurpose == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >出租</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+
+          <van-field
+            label="社保卡号:"
+            v-model="customerAssets.socialSecurityNumber"
+            placeholder="请填写社保卡号"
+          />
+        </div>
+        <div>
+          <div class="header">房产信息</div>
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title_norequired">房产类别:</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="customerHouseProperty.roomType = '1'"
+                  :class="customerHouseProperty.roomType == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >住房</div>
+                <div
+                  @click="customerHouseProperty.roomType = '2'"
+                  :class="customerHouseProperty.roomType == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >商用房</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+          <van-field
+            is-link
+            readonly
+            clickable
+            label="房产性质:"
+            v-model="customerHouseProperty.roomNatureValue"
+            placeholder="请选择房产性质"
+            @click="showSelectPop(9)"
+          />
+          <van-field
+            is-link
+            readonly
+            clickable
+            label="房产地址:"
+            v-model="roomAddress"
+            placeholder="请选择房产地址"
+            @click="showSelectAddressPop(3)"
+          />
+          <van-field
+            label="详细地址:"
+            v-model="customerHouseProperty.roomAddress"
+            placeholder="请填写详细地址"
+          />
+          <van-field
+            label="面积(m²):"
+            v-model="customerHouseProperty.roomAreas"
+            placeholder="请填写房产面积"
+          />
+          <van-field label="房产编号:" v-model="customerHouseProperty.roomNum" placeholder="请填写房产编号" />
+        </div>
+        <div>
+          <div class="header">工作信息</div>
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">是否有工作：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="customerJob.isWork = '1'"
+                  :class="customerJob.isWork == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >有</div>
+                <div
+                  @click="customerJob.isWork = '2'"
+                  :class="customerJob.isWork == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >无</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+          <div v-show="customerJob.isWork == 1">
+            <van-field required label="工作单位:" v-model="customerJob.company" placeholder="请填写工作单位" />
+            <van-field
+              required
+              label="单位电话:"
+              v-model="customerJob.companyPhone"
+              placeholder="请填写单位电话"
+            />
+            <van-field label="分机号:" v-model="customerJob.companyExtension" placeholder="请填写分机号" />
+            <van-field
+              required
+              is-link
+              readonly
+              clickable
+              label="单位地址:"
+              v-model="companyAddress"
+              placeholder="请选择单位地址"
+              @click="showSelectAddressPop(4)"
+            />
+            <van-field label="详细地址:" v-model="customerJob.companyAddress" placeholder="请填写详细地址" />
+            <van-field
+              required
+              is-link
+              readonly
+              clickable
+              label="单位性质:"
+              v-model="customerJob.companyTypeValue"
+              placeholder="请选择单位性质"
+              @click="showSelectPop(10)"
+            />
+            <van-field
+              required
+              is-link
+              readonly
+              clickable
+              label="职务:"
+              v-model="customerJob.positionValue"
+              placeholder="请选择职务"
+              @click="showSelectPop(11)"
+            />
+          </div>
+        </div>
+        <div v-show="this.customerInfo.isMarry == '2'">
+          <div class="header">配偶信息</div>
+          <van-field
+            required
+            label="姓名:"
+            v-model="customerSpouseInfo.spouseName"
+            placeholder="请填写配偶姓名"
+          />
+          <van-field
+            required
+            label="手机号:"
+            v-model="customerSpouseInfo.spousePhone"
+            placeholder="请填写配偶手机号"
+          />
+
+          <van-field
+            required
+            is-link
+            readonly
+            clickable
+            label="证件类型:"
+            v-model="customerSpouseInfo.spouseIdTypeValue"
+            placeholder="请选择配偶证件类型"
+            @click="showSelectPop(12)"
+          />
+          <van-field
+            required
+            label="证件号码:"
+            v-model="customerSpouseInfo.spouseIdNum"
+            placeholder="请填写配偶证件号码"
+          />
+        </div>
+        <div>
+          <div class="header">其他联系方式</div>
+          <van-field
+            required
+            label="邮箱(对账单邮箱地址):"
+            v-model="customerContact.statementEmail"
+            placeholder="请填写邮箱"
+          />
+          <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title_norequired">是否需要对账单：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="customerContact.isNeedStatement = '1'"
+                  :class="customerContact.isNeedStatement == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >是</div>
+                <div
+                  @click="customerContact.isNeedStatement = '2'"
+                  :class="customerContact.isNeedStatement == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >否</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+
+          <van-field label="手机一:" v-model="customerContact.firstMobilePhone" placeholder="请填写手机号" />
+          <van-field label="手机二:" v-model="customerContact.secMobilePhone" placeholder="请填写手机号" />
+          <van-field label="固话一:" v-model="customerContact.tel1" placeholder="请填写固话" />
+          <van-field label="固话二:" v-model="customerContact.tel2" placeholder="请填写固话" />
+        </div>
+        <div>
+          <div class="header">联系人信息</div>
+          <div v-for="(item,index) in customerContactPersonList" :key="index">
+            <van-field
+              required
+              label="联系人姓名:"
+              v-model="item.contactPersonName"
+              placeholder="请填写联系人姓名"
+            />
+            <van-field
+              required
+              label="联系人手机号:"
+              v-model="item.contactPersonPhone"
+              placeholder="请填写联系人手机号"
+            />
+            <div>
+              <div class="zlhjRadio" style="display:flex">
+                <span class="zlhjRadio_title">与承租人关系：</span>
+                <div class="zlhjRadio_body">
+                  <div
+                    @click="item.relation = '1'"
+                    :class="item.relation == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                  >亲属</div>
+                  <div
+                    @click="item.relation = '2'"
+                    :class="item.relation == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                  >朋友</div>
+                </div>
+              </div>
+              <div style="padding-left:10px">
+                <div class="zlhjRadioLine"></div>
+              </div>
             </div>
           </div>
         </div>
@@ -564,7 +578,7 @@ import {
   isPhoneNum,
   isEmail
 } from "../../utils/common";
-import { dateFormat } from "../../utils/formatter";
+import { dateFormat, selectDateFormat } from "../../utils/formatter";
 export default {
   data() {
     return {
@@ -835,6 +849,7 @@ export default {
         this.customerContactPersonList =
           res.data.data.customerContactPersonList;
       }
+      console.log(this.customerContactPersonList)
       this.setAddress();
     });
   },
@@ -948,9 +963,12 @@ export default {
     selectDate(date) {
       this.showDatePop = false;
       if (this.selectDateIndex == 1) {
-        this.customerInfo.certificateEndDate = dateFormat(date, "yyyy-MM-dd");
+        this.customerInfo.certificateEndDate = selectDateFormat(
+          date,
+          "yyyy-MM-dd"
+        );
       } else if (this.selectDateIndex == 2) {
-        this.customerInfo.birthday = dateFormat(date, "yyyy-MM-dd");
+        this.customerInfo.birthday = selectDateFormat(date, "yyyy-MM-dd");
       }
     },
     selectedAddress(value) {
@@ -1207,11 +1225,12 @@ export default {
             this.$toast.fail("请将'工作信息'中必填项填写完整");
             return;
           }
+          if (!isPhoneNum(this.customerJob.companyPhone)) {
+            this.$toast.fail("单位电话格式错误！");
+            return;
+          }
         }
-        if (!isPhoneNum(this.customerJob.companyPhone)) {
-          this.$toast.fail("单位电话格式错误！");
-          return;
-        }
+
         if (!isEmpty(this.customerContact.firstMobilePhone)) {
           if (!isPhoneNum(this.customerContact.firstMobilePhone)) {
             this.$toast.fail("手机一格式错误！");
@@ -1237,7 +1256,6 @@ export default {
           }
         }
       }
-      console.log(this.customerInfo.isMarry);
       if (this.customerInfo.isMarry == "2") {
         // 已婚
         if (
@@ -1247,6 +1265,18 @@ export default {
           isEmpty(this.customerSpouseInfo.spouseIdNum)
         ) {
           this.$toast.fail("请将'配偶信息'中必填项填写完整");
+          return;
+        }
+
+        if (!isPhoneNum(this.customerSpouseInfo.spousePhone)) {
+          this.$toast.fail("配偶手机格式错误！");
+          return;
+        }
+        if (
+          this.customerSpouseInfo.spouseIdType == "1" &&
+          !idNumValidator(this.customerSpouseInfo.spouseIdNum)
+        ) {
+          this.$toast.fail("配偶证件号码格式错误！");
           return;
         }
       }
@@ -1268,16 +1298,13 @@ export default {
           this.$toast.fail("请将'联系人信息'中必填项填写完整");
           return;
         }
-        if (
-          !isPhoneNum(
-            this.customerContactPersonParamList[index].contactPersonPhone
-          )
-        ) {
+        if (!isPhoneNum(this.customerContactPersonList[index].contactPersonPhone)) {
           this.$toast.fail(
             "联系人'" +
               this.customerContactPersonList[index].contactPersonName +
               "'联系方式格式错误"
           );
+          return;
         }
       }
       const toast = this.$toast.loading({
@@ -1299,7 +1326,6 @@ export default {
       if (this.customerInfo.isMarry == "2") {
         param.customerSpouseInfoParam = this.customerSpouseInfo;
       }
-      console.log("参数", param);
       updateUser(param).then(res => {
         toast.clear();
         this.$router.back();

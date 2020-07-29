@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height:10000px;">
+  <div  style="min-height:10000px;">
     <div>
       <van-popup
         v-model="showLoanStatus"
@@ -75,10 +75,10 @@
       </van-popup>
     </div>
 
-    <div class="searchContent">
+    <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div v-for="(item,index) in filterDetail" :key="index" @click="toDetail({loanNumber:''})">
+          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index">
             <div class="item">
               <div>
                 业务编号:
@@ -353,7 +353,8 @@ export default {
     sure() {
       this.showResult = false;
     }
-  }
+  },
+
 };
 </script>
 
@@ -368,7 +369,7 @@ export default {
   width: 90%;
   margin: 0 auto;
   font-size: 12px;
-  background: #cccccc;
+  background: #fff;
   height: calc(100% - 44px);
 }
 .item {

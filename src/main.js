@@ -20,8 +20,11 @@ router.beforeEach((to, from, next) => {
   }
   next()
 })
+
 router.afterEach(route => {
   // 从路由的元信息中获取 title 属性
+  window.scrollTo(0, 0);
+
   if (route.meta.title) {
     document.title = route.meta.title;
     // 如果是 iOS 设备，则使用如下 hack 的写法实现页面标题的更新

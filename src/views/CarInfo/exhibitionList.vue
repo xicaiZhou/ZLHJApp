@@ -1,18 +1,8 @@
 <template>
-<!-- 经销商列表界面 -->
+  <!-- 经销商列表界面 -->
   <div>
     <van-popup v-model="popupShow" position="top">
       <div class="search_form">
-        <van-field
-          readonly
-          clickable
-          is-link
-          style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
-          v-model="type"
-          label="渠道来源类型:"
-          placeholder="取到来源类型"
-          @click="showSheet = true"
-        />
         <van-field
           style="border-style: solid;border-color:#D5D5D5;border-width:1px;margin-top:10px"
           v-model="name"
@@ -28,10 +18,13 @@
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div class="searchContent"  v-for="(item,index) in filterDetail" :key="index" @click="exhibitionSelected(item)">
-            <div class="searchBox">
-              {{item.name}}
-            </div>
+          <div
+            class="searchContent"
+            v-for="(item,index) in filterDetail"
+            :key="index"
+            @click="exhibitionSelected(item)"
+          >
+            <div class="searchBox">{{item.name}}</div>
             <div style="width:20%">{{item.type == 1 ? "展厅" : "经销商"}}</div>
           </div>
         </van-list>
@@ -41,19 +34,19 @@
 </template>
 
 <script>
-import {ExhibitionLIst} from '../../request/api'
+import { ExhibitionLIst } from "../../request/api";
 export default {
   data() {
     return {
       popupShow: false,
-      showSheet:false,
+      showSheet: false,
       refreshing: false,
       finished: false,
       filterDetail: [],
       loading: false,
-      type:'',//取到来源类型
-      name:'',//渠道名称
-      pIndex: 0,
+      type: "", //取到来源类型
+      name: "", //渠道名称
+      pIndex: 0
     };
   },
   mounted() {
@@ -65,15 +58,14 @@ export default {
     showExhibitionSearch() {
       this.popupShow = !this.popupShow;
     },
-    exhibitionSelected(item){
+    exhibitionSelected(item) {
       this.$store.state.exhibition = item;
       this.$router.back();
     },
 
     toClear() {
       this.popupShow = false;
-      this.loanMainName = "";
-      this.managerName = "";
+      this.name = "";
       this.filterDetail = [];
       this.pIndex = 1;
       this.getData();
@@ -83,9 +75,8 @@ export default {
       this.pIndex = 1;
       this.filterDetail = [];
       this.getData();
-
     },
-     //刷新
+    //刷新
     onRefresh() {
       this.pIndex = 1;
       this.finished = false;
@@ -98,7 +89,6 @@ export default {
       this.getData();
     },
     getData() {
-
       if (this.finished) {
         this.finished = false;
         this.loading = true;
@@ -109,11 +99,11 @@ export default {
         forbidClick: true,
         loadingType: "spinner"
       });
-      var params = Object.assign(
-        
-        { pageIndex: this.pIndex },
-        { pageSize: 10 }
-      );
+      var params = Object.assign({
+        name: this.name,
+        pageIndex: this.pIndex,
+        pageSize: 10
+      });
       ExhibitionLIst(params).then(res => {
         toast.clear();
         let num = res.data.data.total;
@@ -135,7 +125,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     if (to.path == "/carInfo") {
       to.meta.keepAlive = true;
-    } 
+    }
     console.log("to", to);
     console.log("from", from);
     next();

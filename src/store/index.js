@@ -18,11 +18,12 @@ const store = new Vuex.Store({
               roleName: "",
               roleCode: ""
             },
-            token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk1OTg0MjUwLCJpYXQiOjE1OTU5NDgyNTAsImp0aSI6ImJiZDBjMjgxMDE2NzQ2ZmQ4MzYxYmY1MGRmNDM5MzBkIiwidXNlcm5hbWUiOiJkZXYzIn0.ObUqANPy_v7PtBpXjRGcgMpTW9lOpuKk3SSXeg668kA"
+            token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk2MDQ0MjQ0LCJpYXQiOjE1OTYwMDgyNDQsImp0aSI6IjU0ZjA5OGFlNWY3MDRmOGY4NzBhZWQ0N2JmMWRhM2EyIiwidXNlcm5hbWUiOiJkZXYzIn0.ipnOGsFqJKvhrf7ZZ5kJn3sOFZqDN50lLHCBilJoNZk"
           },
           loanNumber: '',
           loanStatus: 0,
           isload:false,
+          isloadCarModels:false,
         // loanNumber:'20200707153020238',
         // loanNumber:'20200703105318095',
         // loanNumber:'20200715113656719',

@@ -68,6 +68,7 @@ export default {
     
     toClear() {
       this.popupShow = false;
+      this.name = "";
       this.filterDetail = [];
       this.getData();
     },

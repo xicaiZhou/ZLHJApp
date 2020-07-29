@@ -35,7 +35,6 @@
           label="年份:"
           placeholder="请填写年份"
         />
-
         <div class="searchBtn">
           <van-button style="width:40%" block type="info" @click="toSearch">查询</van-button>
           <van-button style="width:40%" type="info" @click="toClear">重置</van-button>
@@ -86,13 +85,21 @@ export default {
       carModelName: ""
     };
   },
+
   mounted() {
     window.showCarModelSearch = res => {
       this.showCarModelSearch();
     };
-    this.yearList = getYearList(30);
   },
   watch: {
+    "$store.state.isloadCarModels": {
+      deep: false,
+      handler: function(newValue, oldValue) {
+        if (newValue) {
+          this.toClear();
+        }
+      }
+    },
     "$store.state.carModel": {
       deep: true,
       handler: function(newValue, oldValue) {
@@ -136,12 +143,14 @@ export default {
       this.year = "";
       this.$store.state.carModel = {};
       this.$store.state.cars = {};
-      this.filterDetail = [];
+      this.carModel.id = "";
+      this.cars.id = "";
       this.carModelName = "";
+      this.filterDetail = [];
       this.pIndex = 1;
-      this.getData();
       this.finished = false;
       this.loading = true;
+      this.getData();
     },
     toSearch() {
       this.popupShow = false;
@@ -162,7 +171,6 @@ export default {
     },
     //自动加载更多
     onLoad() {
-      console.log("自动加载更多");
       this.pIndex += 1;
       this.getData();
     },
@@ -208,13 +216,21 @@ export default {
     }
   },
   beforeRouteLeave(to, from, next) {
-    from.meta.keepAlive = false;
+    from.meta.keepAlive = true;
     if (to.path == "/carInfo") {
+      this.popupShow = false;
+      this.year = "";
+      this.$store.state.carModel = {};
+      this.$store.state.cars = {};
+      this.carModel.id = "";
+      this.cars.id = "";
+      this.carModelName = "";
+      this.filterDetail = [];
+      this.$store.state.isloadCarModels = false;
       to.meta.keepAlive = true;
     } else {
       to.meta.keepAlive = false;
     }
-
     next();
   }
 };

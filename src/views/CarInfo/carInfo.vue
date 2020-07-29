@@ -233,6 +233,25 @@
             v-model="loginSysUserVo.colour"
             placeholder="请填写车辆颜色"
           />
+              <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">是否进口车：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="loginSysUserVo.importFlag = '1'"
+                  :class="loginSysUserVo.importFlag == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >进口</div>
+                <div
+                  @click="loginSysUserVo.importFlag = '2'"
+                  :class="loginSysUserVo.importFlag == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >非进口</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+
           <div>
             <div class="zlhjRadio" style="display:flex">
               <span class="zlhjRadio_title">牌照类型：</span>
@@ -483,7 +502,7 @@
 
 <script>
 import { CarInfo, SaveCarInfo } from "../../request/api";
-import { dateFormat, dataYear } from "../../utils/formatter";
+import { dateFormat, dataYear,selectDateFormat } from "../../utils/formatter";
 import { idNumValidator, vin, isPhoneNum } from "../../utils/common";
 import { getValue } from "../../utils/utils";
 export default {
@@ -643,7 +662,8 @@ export default {
           this.loginSysUserVo.exOwnerName == "" ||
           this.loginSysUserVo.exOwnerIdType == "" ||
           this.loginSysUserVo.exOwnerIdNumber == "" ||
-          this.loginSysUserVo.exOwnerMobileNumber == ""
+          this.loginSysUserVo.exOwnerMobileNumber == "" ||
+          this.loginSysUserVo.importFlag == ""
         ) {
           console.log("3");
 
@@ -702,7 +722,7 @@ export default {
     // 选择上牌时间
     selectDate(value) {
       // console.log(value)
-      this.loginSysUserVo.firstRegistrationDate = dateFormat(
+      this.loginSysUserVo.firstRegistrationDate = selectDateFormat(
         value,
         "yyyy-MM-dd"
       );
@@ -743,18 +763,10 @@ export default {
     }
   },
 
-  // beforeRouteUpdate(to, from, next) {
-  //   console.log("beforeRouteUpdate", this.loginSysUserVo);
-  //   if (from.path == "/menu") {
-  //     if (this.$store.state.loanNumber) {
-  //       this.getData();
-  //     }
-  //   }
-  //   next();
-  // },
-
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
+    this.$store.state.CarModels = false;
+
     if (to.path == "/menu") {
       this.$store.state.isload = false;
       this.loginSysUserVo.businessType = ""; //业务类型 1-车抵贷，2-二手车,3-新车
@@ -786,6 +798,10 @@ export default {
       this.loginSysUserVo.importFlag = ""; //进口标志 1:进口 2:非进口
       this.loginSysUserVo.hasDrivingLicense = ""; //是否有驾照 1:有 2:没有
       from.meta.keepAlive = true;
+    } else if (to.path == "/carModels") {
+      to.meta.keepAlive = true;
+              this.$store.state.isloadCarModels = true;
+
     } else {
       from.meta.keepAlive = true;
     }

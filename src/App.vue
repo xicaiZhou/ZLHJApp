@@ -10,7 +10,7 @@
 <script>
 export default {
   name: "App",
-  created(){
+  created() {
     // window.screenHeight = res =>{
     //   this.$store.state.screenHeight = res
     // }
@@ -19,6 +19,25 @@ export default {
 </script>
 
 <style>
+ html,
+body {
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  position: relative;
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  overflow: scroll;
+  -webkit-overflow-scrolling: touch;
+  position: absolute;
+  left: 0;
+  top: 0;
+  padding-bottom: 0.9rem;
+} 
 
 .systemAppColor {
   background: #00ff00;
@@ -35,7 +54,8 @@ export default {
   font-size: 12px;
 }
 .subBtn {
-  position: fixed;
+  position: fixed !important;
+  left: 0 !important;
   bottom: 0px !important;
   width: 100% !important;
   background: #fff !important;

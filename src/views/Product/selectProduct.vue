@@ -76,7 +76,7 @@
           label="经销商贴息(元):"
           placeholder="请填写经销商贴息"
           v-model="loanInfo.dealerAmount"
-        /> -->
+        />-->
         <div>
           <div class="zlhjRadio" style="display:flex">
             <span class="zlhjRadio_title">签署《新信息确认书》：</span>
@@ -163,7 +163,13 @@
           label="还款周期:"
           v-model="loanInfo.repaymentCycleTypeValue"
         />
-        <van-field required clickable label="每期租金(元):" v-model="loanInfo.monthRent" />
+        <van-field
+          class="readOnly"
+          required
+          clickable
+          label="每期租金(元):"
+          v-model="loanInfo.monthRent"
+        />
       </div>
       <div>
         <div class="header">支付信息</div>
@@ -263,6 +269,7 @@ import {
   calculationFinancingAmount,
   updateLoanDetail
 } from "../../request/api";
+import {isEmpty} from "../../utils/utils";
 
 export default {
   data() {
@@ -379,9 +386,9 @@ export default {
             financingChannelId: this.loanInfo.fcId
           }
         });
-      }else{
+      } else {
         this.$toast.fail("请选择资方");
-        return
+        return;
       }
     },
     toSub() {
@@ -461,9 +468,9 @@ export default {
         case 90:
           str += "其他费用";
           break;
-        case 100 :
-            str += '合计';
-            break;
+        case 100:
+          str += "合计";
+          break;
       }
       return str;
     },
@@ -531,9 +538,10 @@ export default {
     // 选择付款账号
     selectAccount(val) {
       for (let index in this.account) {
-        if (this.account[index].accountNumber == val) {
-          this.loanInfo.fcId = this.fcList[account].accountNumber; //资方ID
-          this.loanInfo.fcName = val; //资方名称
+        console.log(this.account[index].bankName, val)
+        if (this.account[index].bankName == val) {
+          this.loanInfo.fcaId = this.account[index].id;
+          this.accountInfo = this.account[index];
           break;
         }
       }
@@ -549,7 +557,7 @@ export default {
         this.loanInfo.repaymentCycleType = "1";
         this.loanInfo.repaymentCycleTypeValue = "按月";
         if (this.loanInfo.productId) {
-          console.log("产品ID",this.loanInfo.productId)
+          console.log("产品ID", this.loanInfo.productId);
           // 获取产品详情
           this.getProductDetail(this.loanInfo.productId, false);
           // 获取产品贴息方案
@@ -629,7 +637,7 @@ export default {
         console.log("付款账户列表：", res);
         this.account = res.data.data;
         for (let index in this.account) {
-          this.accountList.push(this.fcList[index].name);
+          this.accountList.push(this.account[index].bankName);
         }
       });
     },

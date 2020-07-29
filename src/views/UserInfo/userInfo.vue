@@ -71,7 +71,7 @@
     <div>
       <van-popup
         v-model="showAddUser"
-        :style="{ height: '428px', width: '93%'}"
+        :style="{ height: '452px', width: '93%'}"
         get-container="body"
       >
         <div>
