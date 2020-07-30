@@ -17,7 +17,7 @@
                 <div style="margin-left:20px">{{item.relationValue}}</div>
               </div>
               <div class="itemR">
-                <div>{{licenseType == "1" ? "自然人" : "企业"}}</div>
+                <div>{{item.customerType == "1" ? "自然人" : "企业"}}</div>
                 <van-icon
                   v-if="item.saveFlag == 1"
                   color="#0066FF"
@@ -322,6 +322,34 @@ export default {
       }
     },
     toSub() {
+
+      if(this.mainListData.length == 0){
+        this.$toast.fail("请添加承接人");
+        return
+      }
+
+      // var temp = false
+      // if(this.licenseType == "2"){
+
+      //   for(let index in this.mainListData){
+      //     if(this.mainListData[index].customerType == "2"){
+      //       temp = true;
+      //     }
+      //   }
+      //   if (!temp){
+      //     for(let index in this.danbaoListData){
+      //     if(this.danbaoListData[index].customerType == "2"){
+      //       temp = true;
+      //     }
+      //   }
+      //   }
+      // }
+      // if (temp){
+              this.$router.back();
+
+      // }else{
+
+      // }
       this.$router.back();
     },
     showCustomerTypeAction() {
@@ -329,7 +357,8 @@ export default {
         if (this.licenseType == "1") {
           this.customerList = ["自然人"];
         } else {
-          this.customerList = ["企业"];
+          //当拍照类型为公牌时 
+          this.customerList = ["自然人","企业"];
         }
       } else {
         this.customerList = ["自然人", "企业"];
@@ -356,9 +385,7 @@ export default {
       }
       this.showRole = false;
     },
-    realtion(val) {
-      console.log("val", val);
-    },
+
     selectRelation(val) {
       console.log(val);
       if (this.addUserInfo.customerType == "1") {

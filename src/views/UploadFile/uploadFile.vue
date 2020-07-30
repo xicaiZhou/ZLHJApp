@@ -180,13 +180,13 @@ export default {
 }
 /* .van-uploader__preview {
   width: 30%;
-}
+} */
 .van-uploader__preview .van-image {
   position: static;
 }
 .van-uploader {
   display: inline;
-} */
+}
 </style>
 <style scoped>
 .section-top {
