@@ -140,7 +140,7 @@
             v-model="loanInfo.totalAmount"
           />
           <van-field class="readOnly" required clickable label="租赁期限(月):" v-model="loanInfo.term" />
-          <van-field required clickable label="首付金额(元):" v-model="loanInfo.downPaymentAmount" />
+          <van-field type="number" required clickable label="首付金额(元):" v-model="loanInfo.downPaymentAmount" />
           <van-field
             class="readOnly"
             required
@@ -163,6 +163,8 @@
             v-model="loanInfo.netAmount"
           />
           <van-field class="readOnly" required clickable label="租赁成数(%):" v-model="loanInfo.rate" />
+          <van-field class="readOnly" required clickable label="执行利率(%):" v-model="loanInfo.executeRate" />
+
           <van-field
             class="readOnly"
             required
@@ -372,10 +374,28 @@ export default {
         this.loanInfo.productId = newValue.id;
         this.getProductDetail(this.loanInfo.productId, true);
       }
+    },
+    "loanInfo.downPaymentAmount": {
+      deep: true,
+      handler: function(newValue, oldValue) {
+        console.log(newValue, oldValue);
+        if (this.loanInfo.productId) {
+          this.getCalculationFinancingAmount();
+        }
+      }
     }
   },
   methods: {
     reimbursementPlan() {
+      if (!this.loanInfo.fcId) {
+        this.$toast.fail("请选择资方");
+        return;
+      }
+      if (!this.loanInfo.productId) {
+        this.$toast.fail("请选择产品");
+        return;
+      }
+
       this.$router.push({
         name: "reimbursementPlan",
         params: {

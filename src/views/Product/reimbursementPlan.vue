@@ -43,6 +43,14 @@ export default {
     console.log("还款计划表参数：", this.$route.params);
     this.getRepaymentPlan();
   },
+    beforeRouteLeave(to, from, next) {
+    if (to.path == "/selectProduct") {
+      to.meta.keepAlive = true;
+    } else {
+      to.meta.keepAlive = false;
+    }
+    next();
+  },
   methods: {
     getRepaymentPlan() {
       repaymentPlan(this.$route.params).then(res => {

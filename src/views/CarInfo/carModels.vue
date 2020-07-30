@@ -30,6 +30,7 @@
           placeholder="请填写车型"
         />
         <van-field
+          type="digit"
           style="border-style: solid;border-color:#D5D5D5;border-width:1px;margin-top:10px"
           v-model="year"
           label="年份:"

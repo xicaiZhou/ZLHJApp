@@ -71,7 +71,7 @@
             label="开票价格(元):"
             v-model="loginSysUserVo.purchasePrice"
             name
-            type="digit"
+            type="number"
             placeholder="请填写开票价格"
           />
           <van-field
@@ -208,13 +208,13 @@
           <van-field
             required
             label="里程数(公里):"
-            type="digit"
+            type="number"
             v-model="loginSysUserVo.mileage"
             placeholder="请填写里程数"
           />
           <van-field
             required
-            type="digit"
+            type="number"
             v-model="loginSysUserVo.appraisalPrice"
             label="评估价格(元):"
             placeholder="请填写评估价格"
@@ -229,7 +229,6 @@
           <van-field
             required
             label="车辆颜色:"
-            name
             v-model="loginSysUserVo.colour"
             placeholder="请填写车辆颜色"
           />

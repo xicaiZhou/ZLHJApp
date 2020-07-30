@@ -1,56 +1,60 @@
 <template>
-<div>
-  <div style="height:100%; margin-bottom: 60px;">
-    <div class="section-top">
-      <div class="header">人员列表</div>
-      <div class="userlist">
-        <div style="margin-top:10px" v-for="(item,index) in this.dataList" :key="index" @click="changeUser(index)">
-          <span
-            :class="currentIndex == index ? 'user-item-selected' :'user-item'"
-          >{{item.customerName}}</span>
+  <div>
+    <div style="height:100%; margin-bottom: 60px;">
+      <div class="section-top">
+        <div class="header">人员列表</div>
+        <div class="userlist">
+          <div
+            style="margin-top:10px"
+            v-for="(item,index) in this.dataList"
+            :key="index"
+            @click="changeUser(index)"
+          >
+            <span
+              :class="currentIndex == index ? 'user-item-selected' :'user-item'"
+            >{{item.customerName}}</span>
+          </div>
+        </div>
+      </div>
+      <div class="content">
+        <div class="header">文件列表</div>
+        <div class="filelist">
+          <van-collapse accordion :value="activeName" @change="onChange">
+            <div class="file-item">
+              <van-collapse-item
+                v-for="(item,index) in this.loanFileVoList"
+                :key="index"
+                :name="index"
+              >
+                <div class="file-item-title" slot="title">
+                  {{item.loanFileName}}
+                  <span>{{item.required == "1" ? "(必填)" :""}}</span>
+                </div>
+                <div slot="value">
+                  <img src="../../assets/ljt.png" class="updata" @click.stop="delAll(item)" />
+                  <img
+                    src="../../assets/shangchuan.png"
+                    class="updata"
+                    @click.stop="updataimage(item)"
+                  />
+                </div>
+
+                <van-uploader
+                  max-count="20"
+                  accept="image"
+                  :file-list="item.fileList"
+                  @delete="delected"
+                />
+              </van-collapse-item>
+            </div>
+          </van-collapse>
         </div>
       </div>
     </div>
-    <div class="content">
-      <div class="header">文件列表</div>
-      <div class="filelist">
-        <van-collapse accordion :value="activeName" @change="onChange">
-          <div class="file-item">
-            <van-collapse-item
-              v-for="(item,index) in this.loanFileVoList"
-              :key="index"
-              :name="index"
-            >
-              <div class="file-item-title" slot="title">
-                {{item.loanFileName}}
-                <span>{{item.required == "1" ? "(必填)" :""}}</span>
-              </div>
-              <div slot="value">
-                <img src="../../assets/ljt.png" class="updata" @click.stop="delAll(item)" />
-                <img
-                  src="../../assets/shangchuan.png"
-                  class="updata"
-                  @click.stop="updataimage(item)"
-                />
-              </div>
-
-              <van-uploader
-                max-count="20"
-                accept="image"
-                :file-list="item.fileList"
-                @delete="delected"
-              />
-            </van-collapse-item>
-          </div>
-        </van-collapse>
-      </div>
-    </div>
-  </div>
-      <div class="subBtn">
+    <div class="subBtn">
       <van-button class="subBtn_body" block type="info" @click="toSub">完 成</van-button>
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>
@@ -75,6 +79,21 @@ export default {
   },
   methods: {
     toSub() {
+      for (let i in this.dataList) {
+        for (let j in this.dataList[i].loanFileVoList) {
+          let temp = this.dataList[i].loanFileVoList[j];
+          if (temp.required == "1" && temp.fileList.length == 0) {
+            this.$toast.fail(
+              "请将人员：‘" +
+                this.dataList[i].customerName + "的" +
+                temp.loanFileName +
+                "’文件上传完整"
+            );
+            return;
+          }
+        }
+      }
+
       this.$router.back();
     },
     changeUser(val) {
@@ -94,8 +113,7 @@ export default {
       });
     },
     delected(val) {
-      console.log(val);
-      deleteFile({ id: val.id }).then(res => {
+      deleteFile({loanNumber:this.$store.state.loanNumber, id: val.id }).then(res => {
         console.log(res);
         this.getAllFileList();
       });
@@ -160,7 +178,7 @@ export default {
 .van-uploader__upload {
   display: none;
 }
-.van-uploader__preview {
+/* .van-uploader__preview {
   width: 30%;
 }
 .van-uploader__preview .van-image {
@@ -168,7 +186,7 @@ export default {
 }
 .van-uploader {
   display: inline;
-}
+} */
 </style>
 <style scoped>
 .section-top {
