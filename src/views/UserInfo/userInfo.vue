@@ -327,29 +327,6 @@ export default {
         this.$toast.fail("请添加承接人");
         return
       }
-
-      // var temp = false
-      // if(this.licenseType == "2"){
-
-      //   for(let index in this.mainListData){
-      //     if(this.mainListData[index].customerType == "2"){
-      //       temp = true;
-      //     }
-      //   }
-      //   if (!temp){
-      //     for(let index in this.danbaoListData){
-      //     if(this.danbaoListData[index].customerType == "2"){
-      //       temp = true;
-      //     }
-      //   }
-      //   }
-      // }
-      // if (temp){
-              this.$router.back();
-
-      // }else{
-
-      // }
       this.$router.back();
     },
     showCustomerTypeAction() {

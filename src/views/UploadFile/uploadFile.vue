@@ -176,7 +176,7 @@ export default {
 </script>
 <style>
 .van-uploader__upload {
-  display: none;
+  display: none !important;
 }
 /* .van-uploader__preview {
   width: 30%;
