@@ -1,11 +1,15 @@
 <template>
   <div>
     <div class="content">
-      <span>录单</span>
-
+      <div>录 单</div>
       <van-grid clickable>
         <van-grid-item icon="coupon-o" text="录单" @click="toMenu" />
         <van-grid-item icon="search" text="查询" to="/search" />
+      </van-grid>
+
+      <span>贷后管理</span>
+      <van-grid clickable>
+        <van-grid-item icon="search" text="逾期查询" to="/overdueList" />
       </van-grid>
     </div>
     <div>

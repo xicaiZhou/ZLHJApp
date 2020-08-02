@@ -308,6 +308,15 @@ export function updatePassword(param) {
         data:param
     })
  }
+ //  =========================逾期查询========================
+ // 逾期查询列表
+ export function overdueList(param){
+     return request({
+        method:'post',
+        url:'/api/loanRepaymentDetail/getOverDueLoanPageList',
+        data:param
+     })
+ }
 //  =========================其他数据========================
 // 1.省市区数据
 export function getAddress(){

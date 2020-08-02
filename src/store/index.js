@@ -18,7 +18,7 @@ const store = new Vuex.Store({
               roleName: "",
               roleCode: ""
             },
-            token: ""
+            token: "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk2MzA4MDc2LCJpYXQiOjE1OTYyNzIwNzYsImp0aSI6IjAzNWNiZGU0MjFkOTQ0MGFhZGU3MTMxYzhkOGFkOGIxIiwidXNlcm5hbWUiOiJkZXYzIn0.qnNwQzxE3tyGkOFwyd2Wv7eAQFeTrB9xHqiEVCuQ0oo"
           },
           loanNumber: '',
           loanStatus: 0,

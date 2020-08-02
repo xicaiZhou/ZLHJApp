@@ -48,6 +48,11 @@ import reimbursementPlan from '@/views/Product/reimbursementPlan'
 // 文件上传
 import uploadFile from '@/views/UploadFile/uploadFile'
 
+
+// 逾期列表
+import overdueList from '@/views/overdue/index'
+
+
 Vue.use(Router)
 
 export default new Router({
@@ -59,6 +64,15 @@ export default new Router({
       meta:{
         keepAlive:false,
         title: '材料'
+      }
+    },
+    {
+      path: '/overdueList',
+      name: 'overdueList',
+      component: overdueList,
+      meta:{
+        keepAlive:false,
+        title: '逾期查询'
       }
     },
     {
