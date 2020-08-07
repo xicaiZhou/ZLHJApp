@@ -46,6 +46,7 @@ export default {
     toMenu(){
       //情况订单编号
       this.$store.state.loanNumber = ''
+      this.$store.state.loanStatus = 0
       this.$router.push({
         path:'/menu'
       })

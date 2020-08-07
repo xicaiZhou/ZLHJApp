@@ -140,7 +140,13 @@
             v-model="loanInfo.totalAmount"
           />
           <van-field class="readOnly" required clickable label="租赁期限(月):" v-model="loanInfo.term" />
-          <van-field type="number" required clickable label="首付金额(元):" v-model="loanInfo.downPaymentAmount" />
+          <van-field
+            type="number"
+            required
+            clickable
+            label="首付金额(元):"
+            v-model="loanInfo.downPaymentAmount"
+          />
           <van-field
             class="readOnly"
             required
@@ -163,7 +169,13 @@
             v-model="loanInfo.netAmount"
           />
           <van-field class="readOnly" required clickable label="租赁成数(%):" v-model="loanInfo.rate" />
-          <van-field class="readOnly" required clickable label="执行利率(%):" v-model="loanInfo.executeRate" />
+          <van-field
+            class="readOnly"
+            required
+            clickable
+            label="执行利率(%):"
+            v-model="loanInfo.executeRate"
+          />
 
           <van-field
             class="readOnly"
@@ -621,7 +633,7 @@ export default {
     getProductDetail(id, type) {
       var param = {
         productId: id,
-        netAmount: this.loanInfo.amount, //净融资金额
+        netAmount: this.loanInfo.netAmount, //净融资金额
         loanNumber: this.$store.state.loanNumber
       };
       productDetail(param).then(res => {
@@ -694,10 +706,10 @@ export default {
   },
 
   mounted() {
-    // 获取界面数据
-    this.getLoanDetailAndRepaymentPlan();
     // 资方列表
     this.getFinancingChannelList();
+    // 获取界面数据
+    this.getLoanDetailAndRepaymentPlan();
   },
   beforeRouteLeave(to, from, next) {
     from.meta.keepAlive = false;

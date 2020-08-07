@@ -54,8 +54,8 @@ body {
   background: #00ff00;
 }
 .readOnly {
-  pointer-events: none;
-  background-color: #f7f7f7;
+  pointer-events: none !important;
+  background-color: #f7f7f7 !important;
 }
 .van-field__body input {
   text-align: right;

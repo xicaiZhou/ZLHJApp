@@ -1,5 +1,5 @@
 <template>
-  <div  style="min-height:10000px;">
+  <div>
     <div>
       <van-popup
         v-model="showLoanStatus"

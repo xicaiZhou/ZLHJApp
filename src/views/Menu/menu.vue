@@ -58,12 +58,16 @@ export default {
     };
   },
   mounted() {
+    console.log("loanNumber:",this.$store.state.loanNumber)
     if (this.$store.state.loanNumber) {
       CarInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
         console.log("menu:", res);
         this.$store.state.loanStatus = parseInt(res.data.data.loanStatus);
         this.loanStatus = parseInt(res.data.data.loanStatus);
       });
+    }else{
+      this.$store.state.loanStatus = 0
+      this.loanStatus = 0
     }
   },
   beforeRouteLeave(to, from, next) {

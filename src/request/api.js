@@ -317,6 +317,22 @@ export function updatePassword(param) {
         data:param
      })
  }
+ // 逾期详情
+ export function overdueDetail(param){
+     return request({
+         method:'get',
+         url:'/api/collection/info/' + param.loanNumber,
+         data:param
+     })
+ }
+ 
+ export function addCollectionNotes(param){
+     return request({
+         method:'post',
+         url:'/api/collection/addCollectionNotes',
+         data:param
+     })
+ }
 //  =========================其他数据========================
 // 1.省市区数据
 export function getAddress(){

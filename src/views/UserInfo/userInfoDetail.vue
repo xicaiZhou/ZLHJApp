@@ -849,7 +849,7 @@ export default {
         this.customerContactPersonList =
           res.data.data.customerContactPersonList;
       }
-      console.log(this.customerContactPersonList)
+      console.log(this.customerContactPersonList);
       this.setAddress();
     });
   },
@@ -893,8 +893,8 @@ export default {
         }
         case 2: {
           //证件类型:
-          this.customerInfo.idType = getKey(value, this.popList);
-          this.customerInfo.idTypeValue = value;
+          this.customerInfo.idType = "1";
+          this.customerInfo.idTypeValue = "身份证";
           break;
         }
         case 3: {
@@ -1043,12 +1043,12 @@ export default {
         }
         case 2: {
           //证件类型:
-          if (this.customerInfo.customerType == "1") {
-            this.popList = ["身份证"];
-          } else {
-            //与承租人关系:
-            this.popList = ["社会统一信用代码"];
-          }
+          // if (this.customerInfo.customerType == "1") {
+          this.popList = ["身份证"];
+          // } else {
+          //   //证件类型:
+          //   this.popList = ["社会统一信用代码"];
+          // }
           break;
         }
         case 3: {
@@ -1298,7 +1298,9 @@ export default {
           this.$toast.fail("请将'联系人信息'中必填项填写完整");
           return;
         }
-        if (!isPhoneNum(this.customerContactPersonList[index].contactPersonPhone)) {
+        if (
+          !isPhoneNum(this.customerContactPersonList[index].contactPersonPhone)
+        ) {
           this.$toast.fail(
             "联系人'" +
               this.customerContactPersonList[index].contactPersonName +

@@ -337,6 +337,7 @@ import {
 export default {
   data() {
     return {
+      
       addCostAmount: "",
       addCostType: "",
       addCostTypeValue: "",
@@ -566,14 +567,12 @@ export default {
       });
     },
     calculateCost() {
-      if (this.baseInfo.downPaymentAmount == null) {
-        return;
-      }
+
       let param = Object.assign({
         term: this.baseInfo.term,
         rate: this.rate,
         repaymentMethod: this.baseInfo.repaymentMethod,
-        downPaymentAmount: this.baseInfo.downPaymentAmount,
+        downPaymentAmount: !this.baseInfo.downPaymentAmount ? 0 : this.baseInfo.downPaymentAmount,
         loanNumber: this.$store.state.loanNumber
       });
       console.log(param);

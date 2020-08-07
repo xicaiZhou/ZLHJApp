@@ -1,5 +1,5 @@
 <template>
-  <div style="min-height:10000px;">
+  <div>
     <div>
       <van-popup
         v-model="showfinancingChannelList"
@@ -54,7 +54,12 @@
     <div class="contentBox">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
         <van-list v-model="loading" :finished="finished" finished-text="没有更多了!" @load="onLoad">
-          <div class="searchContent" v-for="(item,index) in filterDetail" :key="index">
+          <div
+            class="searchContent"
+            v-for="(item,index) in filterDetail"
+            :key="index"
+            @click="toDetail(item)"
+          >
             <div class="item">
               <div>
                 业务编号:
@@ -65,9 +70,19 @@
                   承租人姓名:
                   <span>{{item.customerName}}</span>
                 </div>
-                <div>
+                <div style="width:50%">
+                  业务类型:
+                  <span>{{item.businessType == '1' ? "新车" : "二手车"}}</span>
+                </div>
+              </div>
+              <div style="display:flex">
+                <div style="width:50%">
                   资方:
                   <span>{{item.fcName}}</span>
+                </div>
+                <div style="width:50%">
+                  产品:
+                  <span>{{item.productName}}</span>
                 </div>
               </div>
               <div style="display:flex">
@@ -82,52 +97,12 @@
               </div>
               <div style="display:flex">
                 <div style="width:50%">
-                  当前期数:
-                  <span>{{item.term}} 元</span>
+                  逾期金额:
+                  <span>{{item.dueAmount}} 元</span>
                 </div>
                 <div>
                   逾期天数:
-                  <span>{{item.dueDays}} 月</span>
-                </div>
-              </div>
-              <div style="display:flex">
-                <div style="width:50%">
-                  应还日期:
-                  <span>{{item.dueDate}}</span>
-                </div>
-                <div>
-                  应还金额:
-                  <span>{{item.totalAmount}}</span>
-                </div>
-              </div>
-              <div style="display:flex">
-                <div style="width:50%">
-                  实还金额:
-                  <span>{{item.repayment}}</span>
-                </div>
-                <div>
-                  逾期金额:
-                  <span>{{item.dueAmount}}</span>
-                </div>
-              </div>
-              <div style="display:flex">
-                <div style="width:50%">
-                  本金:
-                  <span>{{item.capital}}</span>
-                </div>
-                <div>
-                  利息:
-                  <span>{{item.compound}}</span>
-                </div>
-              </div>
-              <div style="display:flex">
-                <div style="width:50%">
-                  复利:
-                  <span>{{item.interest}}</span>
-                </div>
-                <div>
-                  罚金:
-                  <span>{{item.penalty}}</span>
+                  <span>{{item.dueDays}} 天</span>
                 </div>
               </div>
             </div>
@@ -170,7 +145,7 @@ export default {
       zfList: [],
       loading: false,
       pIndex: 0,
-      popupShow: true,
+      popupShow: false,
       // 条件
       loanNumber: "", // 申请编号 业务主键
       customerName: "", //客户名称
@@ -186,8 +161,8 @@ export default {
 
   mounted() {
     //js与原生app交互  //原生掉JS
-    window.showoverdueListSearch = res => {
-      this.showSearch();
+    window.showCovedueListSearch = res => {
+      this.popupShow = !this.popupShow;
     };
     financingChannelList().then(res => {
       console.log("资方列表：", res);
@@ -198,27 +173,30 @@ export default {
     });
   },
   methods: {
+    // 选择资方
     selectFinancingChannelList(val) {
-        this.financingChannelValue = val
-        this.showfinancingChannelList = false
-        for (let index in this.zfList){
-            console.log(this.zfList[index].name)
-            if(val == this.zfList[index].name){
-                this.financingChannel = this.zfList[index].id
-                break;
-            }
+      this.financingChannelValue = val;
+      this.showfinancingChannelList = false;
+      for (let index in this.zfList) {
+        console.log(this.zfList[index].name);
+        if (val == this.zfList[index].name) {
+          this.financingChannel = this.zfList[index].id;
+          break;
         }
+      }
     },
-    getValue() {},
-    showSearch() {
-      this.popupShow = !this.popupShow;
-    },
+
+    // 逾期详情
     toDetail(item) {
-      this.$store.state.loanNumber = item.loanNumber;
       this.$router.push({
-        path: "/menu"
+        name: "overdueDetail",
+        params: {
+          loanNumber: item.loanNumber,
+          overDays:item.dueDays
+        }
       });
     },
+
     //查询
     toSearch() {
       this.popupShow = false;

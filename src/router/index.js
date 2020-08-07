@@ -48,9 +48,9 @@ import reimbursementPlan from '@/views/Product/reimbursementPlan'
 // 文件上传
 import uploadFile from '@/views/UploadFile/uploadFile'
 
-
 // 逾期列表
 import overdueList from '@/views/overdue/index'
+import overdueDetail from '@/views/overdue/detail'
 
 
 Vue.use(Router)
@@ -73,6 +73,15 @@ export default new Router({
       meta:{
         keepAlive:false,
         title: '逾期查询'
+      }
+    },
+    {
+      path: '/overdueDetail',
+      name: 'overdueDetail',
+      component: overdueDetail,
+      meta:{
+        keepAlive:false,
+        title: '逾期详情'
       }
     },
     {

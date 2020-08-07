@@ -13,8 +13,8 @@ const path = require('path')
 //备用环境
 // var baseUrl = 'http://192.168.88.93:8888'
 
-var baseUrl = 'http://dacsit.vipgz1.idcfengye.com'
-// var baseUrl = 'http://tuoyan.vipgz1.idcfengye.com'
+// var baseUrl = 'http://dacsit.vipgz1.idcfengye.com'
+var baseUrl = 'http://tuoyan.vipgz1.idcfengye.com'
 module.exports = {
   dev: {
 
