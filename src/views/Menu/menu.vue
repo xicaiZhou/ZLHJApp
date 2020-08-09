@@ -77,6 +77,8 @@ export default {
       } else {
         this.$store.state.isload = false;
       }
+    }else if(to.path == "/selectProduct"){
+      this.$store.state.isloadProduct = true;
     }
     next();
   },

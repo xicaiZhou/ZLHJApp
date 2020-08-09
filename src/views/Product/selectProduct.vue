@@ -376,6 +376,7 @@ export default {
       deep: false,
       handler: function(newValue, oldValue) {
         console.log(newValue, oldValue);
+        console.log("loanInfo", loanInfo);
         this.loanInfo.productName = newValue.name;
         this.loanInfo.productId = newValue.id;
         this.getProductDetail(this.loanInfo.productId, true);
@@ -387,6 +388,17 @@ export default {
         console.log(newValue, oldValue);
         if (this.loanInfo.productId) {
           this.getCalculationFinancingAmount();
+        }
+      }
+    },
+    "$store.state.isloadProduct": {
+      handler: function(newValue, oldValue) {
+        if (newValue) {
+          console.log(this.$route.fullPath)
+          // 资方列表
+          this.getFinancingChannelList();
+          // 获取界面数据
+          this.getLoanDetailAndRepaymentPlan();
         }
       }
     }
@@ -414,6 +426,7 @@ export default {
     },
     toSelectProduct() {
       if (this.loanInfo.fcId) {
+        console.log("loanInfo:", this.loanInfo);
         this.$router.push({
           name: "productList",
           params: {
@@ -641,12 +654,12 @@ export default {
           this.loanInfo.dealerAmount = 0;
           this.loanInfo.executeRate = this.productDetailInfo.executeRate;
           this.loanInfo.packFlag = this.productDetailInfo.packFlag;
+          // this.loanInfo.totalAmount = this.productDetailInfo.expenseTotalAmount;
           // 从新获取贴息方案
           // this.getProductDiscountInterest();
           //计算金额
         }
         this.getCalculationFinancingAmount();
-
       });
     },
     // 资方列表
@@ -707,10 +720,31 @@ export default {
     // 获取界面数据
     this.getLoanDetailAndRepaymentPlan();
   },
+  //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
-    from.meta.keepAlive = false;
+    if (to.path == "/menu") {
+      this.$store.state.isloadProduct = false;
+      this.showProductAdditionalInfo= ["1"];
+      this.zfList= [];
+      this.fcList=[];
+      this.accountList= [];
+      this.account= [];
+      this.TXPlan= [];
+      this.TXPlanList= [];
+      this.showZF = false;
+      this.showTXPlan = false;
+      this.showAccount = false;
+      this.productDetailInfo = {};
+      this.accountInfo = {};
+      this.loanInfo = {};
+    }
+    from.meta.keepAlive = true;
     next();
   }
+  // beforeRouteLeave(to, from, next) {
+  //   from.meta.keepAlive = false;
+  //   next();
+  // }
 };
 </script>
 

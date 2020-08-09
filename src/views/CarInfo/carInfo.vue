@@ -572,9 +572,9 @@ export default {
     }
   },
   mounted() {
-    // if (this.$store.state.loanNumber) {
-    //   this.getData();
-    // }
+    if (this.$store.state.loanNumber) {
+      this.getData();
+    }
   },
   methods: {
     onSubmit() {
@@ -678,7 +678,6 @@ export default {
             return false;
           }
         }
-
         if (!vin(this.loginSysUserVo.vin)) {
           this.$toast.fail("车架号格式错误！");
           return false;
@@ -763,7 +762,6 @@ export default {
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
     this.$store.state.CarModels = false;
-
     if (to.path == "/menu") {
       this.$store.state.isload = false;
       this.showDate = false;

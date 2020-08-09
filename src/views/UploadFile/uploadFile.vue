@@ -132,8 +132,9 @@ export default {
       }
     },
     updataimage(item) {
-      console.log("1111");
       item.loanNumber = this.$store.state.loanNumber;
+      console.log("item:",item);
+
       updataInfo(item);
     },
     getAllFileList() {
