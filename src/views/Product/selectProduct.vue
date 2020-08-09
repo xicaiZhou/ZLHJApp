@@ -376,7 +376,6 @@ export default {
       deep: false,
       handler: function(newValue, oldValue) {
         console.log(newValue, oldValue);
-        console.log("loanInfo", loanInfo);
         this.loanInfo.productName = newValue.name;
         this.loanInfo.productId = newValue.id;
         this.getProductDetail(this.loanInfo.productId, true);
