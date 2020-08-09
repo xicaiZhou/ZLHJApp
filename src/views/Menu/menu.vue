@@ -58,7 +58,7 @@ export default {
     };
   },
   mounted() {
-    console.log("loanNumber:",this.$store.state.loanNumber)
+    console.log("ppppppppppppploanNumber:",this.$store.state.loanNumber)
     if (this.$store.state.loanNumber) {
       CarInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
         console.log("menu:", res);

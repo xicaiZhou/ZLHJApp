@@ -2,7 +2,7 @@
   <div>
     <div style="height:100%; margin-bottom: 60px;">
       <div>
-        <div>
+        <div :class="(loanStatus >= 0 && loanStatus < 60) ? '' : 'readOnly'">
           <div class="header">资方信息</div>
           <van-field
             required
@@ -16,181 +16,174 @@
           />
         </div>
         <div>
-          <div style="display:flex;   justify-content: space-between;">
+          <div style="display:flex; justify-content: space-between;">
             <div class="header">产品信息</div>
             <div
               style="color:#ffffff; height:30px;background-color:#ff9900;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
               @click="reimbursementPlan"
             >还款计划表</div>
           </div>
-          <van-field
-            required
-            is-link
-            readonly
-            clickable
-            label="产品:"
-            placeholder="请选择产品"
-            v-model="loanInfo.productName"
-            @click="toSelectProduct"
-          />
-          <van-collapse v-model="showProductAdditionalInfo">
-            <van-collapse-item title="产品附加费用项:" name="1">
-              <div class="ProductAdditionalBody">
-                <div class="ProductAdditionalitem van-hairline--surround">
-                  <div class="ProductAdditionalitem_left van-hairline--right">产品附加费用</div>
-                  <div class="ProductAdditionalitem_right">金额（元）</div>
+          <div :class="(loanStatus >= 0 && loanStatus < 60) ? '' : 'readOnly'">
+            <van-field
+              required
+              is-link
+              readonly
+              clickable
+              label="产品:"
+              placeholder="请选择产品"
+              v-model="loanInfo.productName"
+              @click="toSelectProduct"
+            />
+            <van-collapse v-model="showProductAdditionalInfo">
+              <van-collapse-item title="产品附加费用项:" name="1">
+                <div class="ProductAdditionalBody">
+                  <div class="ProductAdditionalitem van-hairline--surround">
+                    <div class="ProductAdditionalitem_left van-hairline--right">产品附加费用</div>
+                    <div class="ProductAdditionalitem_right">金额（元）</div>
+                  </div>
                 </div>
-              </div>
 
-              <div
-                class="ProductAdditionalBody"
-                v-for="(item, index) in productDetailInfo.expenseList"
-                :key="index"
-              >
-                <div class="ProductAdditionalitem">
+                <div
+                  class="ProductAdditionalBody"
+                  v-for="(item, index) in productDetailInfo.expenseList"
+                  :key="index"
+                >
+                  <div class="ProductAdditionalitem">
+                    <div
+                      class="ProductAdditionalitem_left van-hairline--right"
+                    >{{expenseType(item.expenseType)}}</div>
+                    <div class="ProductAdditionalitem_right">{{item.expense.toFixed(2)}}</div>
+                  </div>
+                </div>
+              </van-collapse-item>
+            </van-collapse>
+
+            <div>
+              <div class="zlhjRadio" style="display:flex">
+                <span class="zlhjRadio_title">签署《新信息确认书》：</span>
+                <div class="zlhjRadio_body">
                   <div
-                    class="ProductAdditionalitem_left van-hairline--right"
-                  >{{expenseType(item.expenseType)}}</div>
-                  <div class="ProductAdditionalitem_right">{{item.expense}}</div>
+                    @click="loanInfo.isSign = '1'"
+                    :class="loanInfo.isSign == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                  >是</div>
+                  <div
+                    @click="loanInfo.isSign = '2'"
+                    :class="loanInfo.isSign == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                  >否</div>
                 </div>
               </div>
-            </van-collapse-item>
-          </van-collapse>
-          <!-- <van-field
-          required
-          is-link
-          readonly
-          clickable
-          label="贴息方案:"
-          v-model="TXPlanDetail.name"
-          placeholder="请选择贴息方案"
-          @click="showTXPlan=true"
-        />
-        <van-field
-          clickable
-          label="厂商贴息(元):"
-          placeholder="请填写厂商贴息"
-          v-model="loanInfo.manufacturerAmount"
-        />
-        <van-field
-          clickable
-          label="经销商贴息(元):"
-          placeholder="请填写经销商贴息"
-          v-model="loanInfo.dealerAmount"
-          />-->
-          <div>
-            <div class="zlhjRadio" style="display:flex">
-              <span class="zlhjRadio_title">签署《新信息确认书》：</span>
-              <div class="zlhjRadio_body">
-                <div
-                  @click="loanInfo.isSign = '1'"
-                  :class="loanInfo.isSign == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >是</div>
-                <div
-                  @click="loanInfo.isSign = '2'"
-                  :class="loanInfo.isSign == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >否</div>
+              <div style="padding-left:10px">
+                <div class="zlhjRadioLine"></div>
               </div>
             </div>
-            <div style="padding-left:10px">
-              <div class="zlhjRadioLine"></div>
-            </div>
-          </div>
-          <div class="readOnly">
-            <div class="zlhjRadio" style="display:flex">
-              <span class="zlhjRadio_title">是否打包:</span>
-              <div class="zlhjRadio_body">
-                <div
-                  @click="loanInfo.packFlag = '1'"
-                  :class="loanInfo.packFlag == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >是</div>
-                <div
-                  @click="loanInfo.packFlag = '2'"
-                  :class="loanInfo.packFlag == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >否</div>
+            <div class="readOnly">
+              <div class="zlhjRadio" style="display:flex">
+                <span class="zlhjRadio_title">是否打包:</span>
+                <div class="zlhjRadio_body">
+                  <div
+                    @click="loanInfo.packFlag = '1'"
+                    :class="loanInfo.packFlag == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                  >是</div>
+                  <div
+                    @click="loanInfo.packFlag = '2'"
+                    :class="loanInfo.packFlag == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                  >否</div>
+                </div>
+              </div>
+              <div style="padding-left:10px">
+                <div class="zlhjRadioLine"></div>
               </div>
             </div>
-            <div style="padding-left:10px">
-              <div class="zlhjRadioLine"></div>
-            </div>
-          </div>
-          <div class="readOnly">
-            <div class="zlhjRadio" style="display:flex">
-              <span class="zlhjRadio_title">是否需要安装GPS:</span>
-              <div class="zlhjRadio_body">
-                <div
-                  @click="loanInfo.hasGps = '1'"
-                  :class="loanInfo.hasGps == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >是</div>
-                <div
-                  @click="loanInfo.hasGps = '2'"
-                  :class="loanInfo.hasGps == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >否</div>
+            <div class="readOnly">
+              <div class="zlhjRadio" style="display:flex">
+                <span class="zlhjRadio_title">是否需要安装GPS:</span>
+                <div class="zlhjRadio_body">
+                  <div
+                    @click="loanInfo.hasGps = '1'"
+                    :class="loanInfo.hasGps == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                  >是</div>
+                  <div
+                    @click="loanInfo.hasGps = '2'"
+                    :class="loanInfo.hasGps == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                  >否</div>
+                </div>
+              </div>
+              <div style="padding-left:10px">
+                <div class="zlhjRadioLine"></div>
               </div>
             </div>
-            <div style="padding-left:10px">
-              <div class="zlhjRadioLine"></div>
-            </div>
-          </div>
-          <van-field
-            class="readOnly"
-            required
-            clickable
-            label="项目总额(元):"
-            v-model="loanInfo.totalAmount"
-          />
-          <van-field class="readOnly" required clickable label="租赁期限(月):" v-model="loanInfo.term" />
-          <van-field
-            type="number"
-            required
-            clickable
-            label="首付金额(元):"
-            v-model="loanInfo.downPaymentAmount"
-          />
-          <van-field
-            class="readOnly"
-            required
-            clickable
-            label="首付比例(%):"
-            v-model="loanInfo.downPaymentRate"
-          />
-          <van-field
-            class="readOnly"
-            required
-            clickable
-            label="融资金额(元):"
-            v-model="loanInfo.amount"
-          />
-          <van-field
-            class="readOnly"
-            required
-            clickable
-            label="净融资额(元):"
-            v-model="loanInfo.netAmount"
-          />
-          <van-field class="readOnly" required clickable label="租赁成数(%):" v-model="loanInfo.rate" />
-          <van-field
-            class="readOnly"
-            required
-            clickable
-            label="执行利率(%):"
-            v-model="loanInfo.executeRate"
-          />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="项目总额(元):"
+              v-model="loanInfo.totalAmount"
+            />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="租赁期限(月):"
+              v-model="loanInfo.term"
+            />
+            <van-field
+              type="number"
+              required
+              clickable
+              label="首付金额(元):"
+              v-model="loanInfo.downPaymentAmount"
+            />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="首付比例(%):"
+              v-model="loanInfo.downPaymentRate.toFixed(2)"
+            />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="融资金额(元):"
+              v-model="loanInfo.amount"
+            />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="净融资额(元):"
+              v-model="loanInfo.netAmount"
+            />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="租赁成数(%):"
+              v-model="loanInfo.rate.toFixed(2)"
+            />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="执行利率(%):"
+              v-model="loanInfo.executeRate.toFixed(2)"
+            />
 
-          <van-field
-            class="readOnly"
-            required
-            clickable
-            label="还款周期:"
-            v-model="loanInfo.repaymentCycleTypeValue"
-          />
-          <van-field
-            class="readOnly"
-            required
-            clickable
-            label="每期租金(元):"
-            v-model="loanInfo.monthRent"
-          />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="还款周期:"
+              v-model="loanInfo.repaymentCycleTypeValue"
+            />
+            <van-field
+              class="readOnly"
+              required
+              clickable
+              label="每期租金(元):"
+              v-model="loanInfo.monthRent"
+            />
+          </div>
         </div>
         <div>
           <div class="header">支付信息</div>
@@ -229,7 +222,7 @@
         </div>
       </div>
     </div>
-    <div class="subBtn">
+    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
       <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
     <div>
@@ -296,6 +289,7 @@ import { isEmpty } from "../../utils/utils";
 export default {
   data() {
     return {
+      loanStatus: this.$store.state.loanStatus,
       showProductAdditionalInfo: ["1"],
       zfList: [],
       fcList: [],
@@ -650,8 +644,9 @@ export default {
           // 从新获取贴息方案
           // this.getProductDiscountInterest();
           //计算金额
-          this.getCalculationFinancingAmount();
         }
+        this.getCalculationFinancingAmount();
+
       });
     },
     // 资方列表
@@ -698,6 +693,7 @@ export default {
       calculationFinancingAmount(param).then(res => {
         console.log("计算金额：", res);
         this.loanInfo.amount = res.data.data.amount;
+        this.loanInfo.rate = res.data.data.rate;
         this.loanInfo.downPaymentRate = res.data.data.downPaymentRate;
         this.loanInfo.netAmount = res.data.data.netAmount;
         this.loanInfo.monthRent = res.data.data.monthRent;

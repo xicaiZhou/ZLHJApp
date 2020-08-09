@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="(loanStatus >= 0 && loanStatus < 60) ? '' : 'readOnly'">
     <div style="height:100%; margin-bottom: 20px;">
       <div>
         <div>
@@ -520,7 +520,7 @@
         </div>
       </div>
     </div>
-    <div class="subBtn">
+    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
       <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
     <!-- pop -->
@@ -582,6 +582,7 @@ import { dateFormat, selectDateFormat } from "../../utils/formatter";
 export default {
   data() {
     return {
+      loanStatus:this.$store.state.loanStatus,
       showPop: false,
       popList: [],
       selectIndex: 0,

@@ -16,6 +16,23 @@ export function bridge(type) {
         android.setLocal(type);
     }
 }
+export function log(type) {
+    /**
+                       * js 跟APP交互
+                       * */
+    var AppData = Object.assign(
+        { type: type },
+    );
+    var u = navigator.userAgent,
+        app = navigator.appVersion;
+    var isAndroid = u.indexOf('Android') > -1 || u.indexOf('Linux') > -1; //android终端或者uc浏览器
+    var isiOS = !!u.match(/(i[^;]+;( U;)? CPU.+Mac OS X)/); //ios终端
+    if (isiOS) {
+        window.webkit.messageHandlers.log.postMessage(type);
+    } else if (isAndroid) {
+        android.log(type);
+    }
+}
 export function updataInfo(value) {
     /**
                        * js 跟APP交互

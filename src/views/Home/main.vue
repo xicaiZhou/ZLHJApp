@@ -34,8 +34,10 @@ export default {
     };
   },
   mounted() {
-      // this.$toast.success(this.$store.state.screenHeight);
-      // this.$refs.tabBar.style.top = this.$store.state.screenHeight - 80  + "px";
+      this.$store.state.loanNumber = ''
+      this.$store.state.loanStatus = 0
+            // this.address();
+
   },
   created() {
     window.userInfo = res => {

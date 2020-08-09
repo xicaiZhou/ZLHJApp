@@ -1,6 +1,6 @@
 <template>
   <!-- 车辆信息界面 -->
-  <div>
+  <div :class="(loanStatus >= 0 && loanStatus < 60) ? '' : 'readOnly'">
     <div class="content" style="height:100%; margin-bottom: 60px;">
       <van-form ref="form" @submit="onSubmit">
         <div class="header">渠道信息</div>
@@ -15,7 +15,6 @@
           name
           placeholder="请选择展厅"
         />
-
         <!-- 新车 -->
         <template v-if="this.loginSysUserVo.businessType == '1'">
           <div class="header">贷款信息</div>
@@ -226,13 +225,8 @@
             v-model="loginSysUserVo.engineNumber"
             placeholder="请填写发动机号"
           />
-          <van-field
-            required
-            label="车辆颜色:"
-            v-model="loginSysUserVo.colour"
-            placeholder="请填写车辆颜色"
-          />
-              <div>
+          <van-field required label="车辆颜色:" v-model="loginSysUserVo.colour" placeholder="请填写车辆颜色" />
+          <div>
             <div class="zlhjRadio" style="display:flex">
               <span class="zlhjRadio_title">是否进口车：</span>
               <div class="zlhjRadio_body">
@@ -450,7 +444,7 @@
         </template>
       </van-form>
     </div>
-    <div class="subBtn">
+    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
       <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
     <van-popup
@@ -501,12 +495,13 @@
 
 <script>
 import { CarInfo, SaveCarInfo } from "../../request/api";
-import { dateFormat, dataYear,selectDateFormat } from "../../utils/formatter";
+import { dateFormat, dataYear, selectDateFormat } from "../../utils/formatter";
 import { idNumValidator, vin, isPhoneNum } from "../../utils/common";
 import { getValue } from "../../utils/utils";
 export default {
   data() {
     return {
+      loanStatus: this.$store.state.loanStatus,
       showDate: false,
       showIdType: false,
       maxDate: new Date(),
@@ -559,6 +554,7 @@ export default {
       deep: false,
       handler: function(newValue, oldValue) {
         if (newValue) {
+          this.loanStatus = this.$store.state.loanStatus;
           this.getData();
         }
       }
@@ -576,9 +572,9 @@ export default {
     }
   },
   mounted() {
-    if (this.$store.state.loanNumber) {
-      this.getData();
-    }
+    // if (this.$store.state.loanNumber) {
+    //   this.getData();
+    // }
   },
   methods: {
     onSubmit() {
@@ -599,7 +595,7 @@ export default {
     },
 
     clear() {
-        (this.loginSysUserVo.businessType = ""), //业务类型 1-车抵贷，2-二手车,3-新车
+      (this.loginSysUserVo.businessType = ""), //业务类型 1-车抵贷，2-二手车,3-新车
         (this.loginSysUserVo.businessTypeName = ""), //自己加的 界面初始化和手动修改业务类型时需要手动修改
         (this.loginSysUserVo.seriesId = ""), //车系ID
         (this.loginSysUserVo.seriesName = ""), // 车系名字
@@ -676,11 +672,11 @@ export default {
           this.$toast.fail("原有车辆所有人证件号格式错误！");
           return false;
         }
-        if(this.loginSysUserVo.exOwnerMobileNumber.length > 0){
-        if (!isPhoneNum(this.loginSysUserVo.exOwnerMobileNumber)) {
-          this.$toast.fail("原有车辆所有人手机号格式错误！");
-          return false;
-        }
+        if (this.loginSysUserVo.exOwnerMobileNumber.length > 0) {
+          if (!isPhoneNum(this.loginSysUserVo.exOwnerMobileNumber)) {
+            this.$toast.fail("原有车辆所有人手机号格式错误！");
+            return false;
+          }
         }
 
         if (!vin(this.loginSysUserVo.vin)) {
@@ -694,7 +690,7 @@ export default {
     getData() {
       // 数据校验
       CarInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
-        console.log("res");
+        console.log("res:", res);
         this.loginSysUserVo = res.data.data;
         if (this.loginSysUserVo.businessType == "3") {
           this.loginSysUserVo.businessTypeName = "车抵贷";
@@ -770,6 +766,10 @@ export default {
 
     if (to.path == "/menu") {
       this.$store.state.isload = false;
+      this.showDate = false;
+      this.showIdType = false;
+      this.showBusiness = false;
+      this.loginSysUserVo.loanNumber = "";
       this.loginSysUserVo.businessType = ""; //业务类型 1-车抵贷，2-二手车,3-新车
       this.loginSysUserVo.dealerId = ""; //经销商ID
       this.loginSysUserVo.dealerName = "";
@@ -802,7 +802,6 @@ export default {
     } else if (to.path == "/carModels") {
       to.meta.keepAlive = true;
       this.$store.state.isloadCarModels = true;
-
     } else {
       from.meta.keepAlive = true;
     }

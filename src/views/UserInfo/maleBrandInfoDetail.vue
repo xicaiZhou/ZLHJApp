@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :class="(loanStatus >= 0 && loanStatus < 60) ? '' : 'readOnly'">
     <div style="height:100%; margin-bottom: 60px;">
       <div>
         <div>
@@ -136,7 +136,7 @@
         </div>
       </div>
     </div>
-    <div class="subBtn">
+    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
       <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
     <div>
@@ -179,6 +179,7 @@ import { dateFormat } from "../../utils/formatter";
 export default {
   data() {
     return {
+      loanStatus: this.$store.state.loanStatus,
       customerInfo: {
         customerId: "", // 客户id
         customerName: "", // 客户姓名/企业名称

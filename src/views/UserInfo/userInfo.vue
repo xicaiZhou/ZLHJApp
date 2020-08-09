@@ -4,7 +4,7 @@
       <div style="margin-top:20px">
         <div class="headerAndBtn">
           <div class="header">承租人信息</div>
-          <div style="width:40px;margin-top:18px;" @click="showAddUser = true, isMainUser = true">
+          <div style="width:40px;margin-top:18px;" @click=" showAddUser = true, isMainUser = true" v-show="(loanStatus >= 0 && loanStatus < 60)">
             <van-icon color="#ff9900" size="20px" name="add-o" />
           </div>
         </div>
@@ -28,8 +28,8 @@
                 <van-icon v-else style="margin-left:4px" name="info-o" size="18" />
               </div>
             </div>
-            <template #right>
-              <van-button square type="danger" text="删除" @click="delectClick(item)" />
+            <template #right v-if="(loanStatus >= 0 && loanStatus < 60)">
+              <van-button  square type="danger" text="删除" @click="delectClick(item)" />
             </template>
           </van-swipe-cell>
         </div>
@@ -37,7 +37,7 @@
       <div style="margin-top:20px">
         <div class="headerAndBtn">
           <div class="header">担保人信息</div>
-          <div style="width:40px;margin-top:18px;" @click="showAddUser = true, isMainUser = false">
+          <div style="width:40px;margin-top:18px;" @click="showAddUser = true, isMainUser = false" v-show="(loanStatus >= 0 && loanStatus < 60)">
             <van-icon color="#ff9900" size="20px" name="add-o" />
           </div>
         </div>
@@ -61,7 +61,7 @@
                 <van-icon v-else style="margin-left:4px" name="info-o" size="18" />
               </div>
             </div>
-            <template #right>
+            <template #right v-if="(loanStatus >= 0 && loanStatus < 60)">
               <van-button square type="danger" text="删除" @click="delectClick(item)" />
             </template>
           </van-swipe-cell>
@@ -208,6 +208,7 @@ import { idNumValidator } from "../../utils/common";
 export default {
   data() {
     return {
+      loanStatus:this.$store.state.loanStatus,
       addUserInfo: {
         loanNumber: this.$store.state.loanNumber, //订单号
         customerName: "", //名字 企业名称
@@ -220,8 +221,8 @@ export default {
         idType: "", // 证件类型
         idTypeValue: "", // 自己添加的
         idNum: "", //证件号码
-        createdBy: "zxc", //创建人
-        createdTime: "2020-07-08" // 创建时间
+        createdBy: "APP", //创建人
+        createdTime: new Date() // 创建时间
       },
       isMainUser: false,
       licenseType: "", //1-私牌 2-公牌
@@ -256,8 +257,8 @@ export default {
             idType: "", // 证件类型
             idTypeValue: "", // 自己添加的
             idNum: "", //证件号码
-            createdBy: "", //创建人
-            createdTime: "" // 创建时间
+            createdBy: "APP", //创建人
+            createdTime: new Date() // 创建时间
           };
         }
       }

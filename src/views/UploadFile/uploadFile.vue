@@ -31,8 +31,14 @@
                   <span>{{item.required == "1" ? "(必填)" :""}}</span>
                 </div>
                 <div slot="value">
-                  <img src="../../assets/ljt.png" class="updata" @click.stop="delAll(item)" />
                   <img
+                    v-show="(loanStatus >= 0 && loanStatus < 60)"
+                    src="../../assets/ljt.png"
+                    class="updata"
+                    @click.stop="delAll(item)"
+                  />
+                  <img
+                    v-show="(loanStatus >= 0 && loanStatus < 60)"
                     src="../../assets/shangchuan.png"
                     class="updata"
                     @click.stop="updataimage(item)"
@@ -51,7 +57,7 @@
         </div>
       </div>
     </div>
-    <div class="subBtn">
+    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
       <van-button class="subBtn_body" block type="info" @click="toSub">完 成</van-button>
     </div>
   </div>
@@ -69,6 +75,7 @@ import { updataInfo } from "../../utils/bridge";
 export default {
   data() {
     return {
+      loanStatus: this.$store.state.loanStatus,
       dataList: [],
       customerId: 0,
       loanFileVoList: [],
@@ -85,7 +92,8 @@ export default {
           if (temp.required == "1" && temp.fileList.length == 0) {
             this.$toast.fail(
               "请将人员：‘" +
-                this.dataList[i].customerName + "的" +
+                this.dataList[i].customerName +
+                "的" +
                 temp.loanFileName +
                 "’文件上传完整"
             );
@@ -113,10 +121,15 @@ export default {
       });
     },
     delected(val) {
-      deleteFile({loanNumber:this.$store.state.loanNumber, id: val.id }).then(res => {
-        console.log(res);
-        this.getAllFileList();
-      });
+      if (this.loanStatus >= 0 && this.loanStatus < 60) {
+        deleteFile({
+          loanNumber: this.$store.state.loanNumber,
+          id: val.id
+        }).then(res => {
+          console.log(res);
+          this.getAllFileList();
+        });
+      }
     },
     updataimage(item) {
       console.log("1111");
