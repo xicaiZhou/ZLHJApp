@@ -42,9 +42,11 @@ export default {
 
       if (this.oldPassword != this.$store.state.systemInfo.password) {
         this.$toast.fail("旧密码错误");
+        return;
       }
       if (this.newPassword != this.confirmPassword) {
         this.$toast.fail("新密码与确认密码不一致");
+        return;
       }
       let params = {
         userId: this.$store.state.userInfo.loginSysUserVo.id ? this.$store.state.userInfo.loginSysUserVo.id : this.$store.state.userInfo.loginSysUserVo.Id,

@@ -18,7 +18,30 @@
             v-for="(item,index) in productList"
             :key="index"
             @click="selected(item)"
-          >{{item.name}}</div>
+          >
+            <div style="display:flex">
+              <div>产品名称:</div>
+              <div >{{item.name}}</div>
+            </div>
+            <div style="display:flex">
+              <div>资方编号:</div>
+              <div>{{item.financingChannelCode}}</div>
+            </div>
+            <div>是否打包:{{item.packFlag == 1 ? '是' : '否'}}</div>
+
+            <div style="display:flex">
+              <div style="flex:1">最小期数:{{item.minLoanTerm}} 期</div>
+              <div style="flex:1">最大期数:{{item.maxLoanTerm}} 期</div>
+            </div>
+            <div style="display:flex">
+              <div style="flex:1">最小成数:{{item.minLtv}} %</div>
+              <div style="flex:1">最大成数:{{item.maxLtv}} %</div>
+            </div>
+            <div style="display:flex">
+              <div style="flex:1">最小金额:{{item.minLoanAmount}} 元</div>
+              <div style="flex:1">最大金额:{{item.maxLoanAmount}} 元</div>
+            </div>
+          </div>
         </van-list>
       </van-pull-refresh>
     </div>
@@ -122,4 +145,5 @@ export default {
   padding: 3%;
   height: calc(100% - 44px);
 }
+
 </style>

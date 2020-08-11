@@ -41,7 +41,7 @@
                     v-show="(loanStatus >= 0 && loanStatus < 60)"
                     src="../../assets/shangchuan.png"
                     class="updata"
-                    @click.stop="updataimage(item)"
+                    @click="updataimage(item)"
                   />
                 </div>
 
