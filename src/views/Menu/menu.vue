@@ -3,7 +3,13 @@
     <div class="title">新车正审材料提交</div>
     <div class="listItem" v-for="(item,index) in listData" :key="index" @click="toDetail(item)">
       <div class="itemL">
-        <van-icon name="https://b.yzcdn.cn/vant/icon-demo-1126.png" size="20" />
+        <!-- <van-icon v-if="index == 0" name="user-circle-o" size="20" />
+        <van-icon v-else-if="index == 1" name="refund-o" size="20" />
+        <van-icon v-else-if="index == 2" name="user-circle-o" size="20" />
+        <van-icon v-else-if="index == 3" name="user-circle-o" size="20" />
+        <van-icon v-else-if="index == 4" name="user-circle-o" size="20" />
+        <van-icon v-else-if="index == 5" name="user-circle-o" size="20" /> -->
+
         <div style="margin-left:4px">{{item.name}}</div>
       </div>
       <div class="itemR" v-if="item.state <= loanStatus">
