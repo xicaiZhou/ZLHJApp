@@ -15,7 +15,7 @@
             @click="showZF = true"
           />
         </div>
-        <div>
+         <div>
           <div style="display:flex; justify-content: space-between;">
             <div class="header">产品信息</div>
             <div
@@ -138,7 +138,7 @@
               required
               clickable
               label="首付比例(%):"
-              v-model="loanInfo.downPaymentRate.toFixed(2)"
+              v-model="loanInfo.downPaymentRate"
             />
             <van-field
               class="readOnly"
@@ -159,14 +159,14 @@
               required
               clickable
               label="租赁成数(%):"
-              v-model="loanInfo.rate.toFixed(2)"
+              v-model="loanInfo.rate"
             />
             <van-field
               class="readOnly"
               required
               clickable
               label="执行利率(%):"
-              v-model="loanInfo.executeRate.toFixed(2)"
+              v-model="loanInfo.executeRate"
             />
 
             <van-field
@@ -393,7 +393,7 @@ export default {
     "$store.state.isloadProduct": {
       handler: function(newValue, oldValue) {
         if (newValue) {
-          console.log(this.$route.fullPath)
+          console.log(this.$route.fullPath);
           // 资方列表
           this.getFinancingChannelList();
           // 获取界面数据
@@ -704,16 +704,18 @@ export default {
       };
       calculationFinancingAmount(param).then(res => {
         console.log("计算金额：", res);
-        this.loanInfo.amount = res.data.data.amount;
-        this.loanInfo.rate = res.data.data.rate;
-        this.loanInfo.downPaymentRate = res.data.data.downPaymentRate;
-        this.loanInfo.netAmount = res.data.data.netAmount;
-        this.loanInfo.monthRent = res.data.data.monthRent;
+        this.loanInfo.amount = res.data.data.amount.toFixed(2);
+        this.loanInfo.rate = res.data.data.rate.toFixed(2);
+        this.loanInfo.downPaymentRate = res.data.data.downPaymentRate.toFixed(2);
+        this.loanInfo.netAmount = res.data.data.netAmount.toFixed(2);
+        this.loanInfo.monthRent = res.data.data.monthRent.toFixed(2);
       });
     }
   },
 
   mounted() {
+    console.log("zoule");
+
     // 资方列表
     this.getFinancingChannelList();
     // 获取界面数据
@@ -722,17 +724,18 @@ export default {
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
   beforeRouteLeave(to, from, next) {
     if (to.path == "/menu") {
-      this.$store.state.isloadProduct = false;
-      this.showProductAdditionalInfo= ["1"];
-      this.zfList= [];
-      this.fcList=[];
-      this.accountList= [];
-      this.account= [];
-      this.TXPlan= [];
-      this.TXPlanList= [];
+      console.log(this.showZF);
       this.showZF = false;
       this.showTXPlan = false;
       this.showAccount = false;
+      this.$store.state.isloadProduct = false;
+      this.showProductAdditionalInfo = ["1"];
+      this.zfList = [];
+      this.fcList = [];
+      this.accountList = [];
+      this.account = [];
+      this.TXPlan = [];
+      this.TXPlanList = [];
       this.productDetailInfo = {};
       this.accountInfo = {};
       this.loanInfo = {};
