@@ -7,7 +7,8 @@ const store = new Vuex.Store({
         // screenHeight:200,
         userInfo: {
             loginSysUserVo: {
-              id: 0,
+              id: 0, //iOS传id
+              Id:0,  //Android传Id
               username: "",
               nickname: "",
               gender: 0,
@@ -18,7 +19,8 @@ const store = new Vuex.Store({
               roleName: "",
               roleCode: ""
             },
-            token:'',
+            token:''
+            // token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk3MDk1NjQ5LCJpYXQiOjE1OTcwNTk2NDksImp0aSI6IjMzMzFkNzkxMzRhYjRlZmNiNDcyMmFmOTUwN2NmMDJkIiwidXNlcm5hbWUiOiJkZXYzIn0.UXO6ECZsKoxso7fKUrGyz3VSHqY6MioITerX1bdgEPE',
           },
           loanNumber: '',
           loanStatus: 0,

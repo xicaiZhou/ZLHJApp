@@ -212,7 +212,7 @@ export default {
       addUserInfo: {
         loanNumber: this.$store.state.loanNumber, //订单号
         customerName: "", //名字 企业名称
-        customerRole: "", //客户角色(1-自然人 2-企业)
+        customerRole: "", //客户角色(1-承租人 3-担保人)
         customerRoleValue: "", // 自己添加的
         customerType: "", //客户类型(1=自然人，2=法人)
         customerTypeValue: "", // 自己添加的
@@ -248,7 +248,7 @@ export default {
           this.addUserInfo = {
             loanNumber: this.$store.state.loanNumber, //订单号
             customerName: "", //名字 企业名称
-            customerRole: "", //客户角色(1-承租人 2-担保人)
+            customerRole: "", //客户角色(1-承租人 3-担保人)
             customerRoleValue: "", // 自己添加的
             customerType: "", //客户类型(1=自然人，2=法人)
             customerTypeValue: "", // 自己添加的
@@ -353,13 +353,13 @@ export default {
       this.showIdType = false;
     },
     selectRole(val) {
-      // 1-承借人 2-担保人
+      // 1-承借人 3-担保人
       if (val == "承租人") {
         this.addUserInfo.customerRoleValue = val;
         this.addUserInfo.customerRole = "1";
       } else {
         this.addUserInfo.customerRoleValue = val;
-        this.addUserInfo.customerRole = "2";
+        this.addUserInfo.customerRole = "3";
       }
       this.showRole = false;
     },
@@ -469,7 +469,7 @@ export default {
         for (let item in users) {
           let index = users[item].relation;
           var relationValue = "";
-          if (item.customerType == "1") {
+          if (users[item].customerType == "1") {
             switch (parseInt(index)) {
               case 1: {
                 relationValue = "本人";

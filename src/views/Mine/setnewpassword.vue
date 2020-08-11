@@ -14,6 +14,8 @@
 
 <script>
 import { updatePassword } from "../../request/api";
+import { bridge } from "../../utils/bridge";
+
 export default {
   data() {
     return {
@@ -44,16 +46,18 @@ export default {
       if (this.newPassword != this.confirmPassword) {
         this.$toast.fail("新密码与确认密码不一致");
       }
-
-      updatePassword({
-        userId: this.$store.state.userInfo.loginSysUserVo.id,
+      let params = {
+        userId: this.$store.state.userInfo.loginSysUserVo.id ? this.$store.state.userInfo.loginSysUserVo.id : this.$store.state.userInfo.loginSysUserVo.Id,
         oldPassword: this.oldPassword,
         newPassword: this.newPassword,
         confirmPassword: this.confirmPassword
-      }).then(res => {
-        this.huancun(4);
+      }
+      updatePassword(params).then(res => {
+        this.$toast.success("修改密码成功！")
+        bridge(4);
       });
-    }
+    },
+
   }
 };
 </script>

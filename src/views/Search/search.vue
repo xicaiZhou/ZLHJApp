@@ -161,7 +161,7 @@
                 <van-button
                   v-if="item.loanStatus >= -150 && item.loanStatus <= -110"
                   style="flex:1"
-                  @click="jujue"
+                  @click="jujue(item)"
                 >拒绝原因</van-button>
                 <van-button v-else style="flex:1">-</van-button>
               </div>
