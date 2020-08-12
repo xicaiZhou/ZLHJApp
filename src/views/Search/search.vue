@@ -144,15 +144,10 @@
             <div>
               <div class="line"></div>
               <div class="edit">
-                <van-button
-                  v-if="item.loanStatus > 0 || item.loanStatus < 110"
-                  style="flex:1"
-                  @click="toDetail(item)"
-                >操作</van-button>
-                <van-button v-else style="flex:1">-</van-button>
+                <van-button style="flex:1" @click="toDetail(item)">操作</van-button>
 
                 <van-button
-                  v-if="(item.loanStatus > 0 || item.loanStatus < 110) && item.isReturn == '1'"
+                  v-if="(item.loanStatus > 0 && item.loanStatus < 110) && item.isReturn == '1'"
                   style="flex:1"
                   @click="tuihui(item)"
                 >退回原因</van-button>
@@ -163,6 +158,13 @@
                   style="flex:1"
                   @click="jujue(item)"
                 >拒绝原因</van-button>
+                <van-button v-else style="flex:1">-</van-button>
+
+                <van-button
+                  v-if="(item.loanStatus < 0 && item.riskFlag == '1')"
+                  style="flex:1"
+                  @click="copyLoan(item)"
+                >复单</van-button>
                 <van-button v-else style="flex:1">-</van-button>
               </div>
             </div>
@@ -179,12 +181,12 @@
 </template>
 
 <script>
-import { searchInfo, codeList, getWhy } from "../../request/api";
+import { searchInfo, codeList, getWhy, copy } from "../../request/api";
 import { getUrlParam } from "../../utils/common.js";
 export default {
   data() {
     return {
-      active:1,
+      active: 1,
       refreshing: false,
       finished: false,
       filterDetail: [],
@@ -236,6 +238,14 @@ export default {
       this.message = "";
       getWhy({ loanNumber: item.loanNumber }).then(res => {
         this.message = res.data.data.approveDesc;
+      });
+    },
+    copyLoan(item) {
+      copy({ loanNumber: item.loanNumber }).then(res => {
+        this.$store.state.loanNumber = res.data.data.loanNumber;
+        this.$router.push({
+          path: "/menu"
+        });
       });
     },
     getValue() {
@@ -314,7 +324,6 @@ export default {
       this.getData();
     },
     getData() {
-      
       if (this.finished) {
         this.finished = false;
         this.loading = true;
@@ -353,8 +362,7 @@ export default {
     sure() {
       this.showResult = false;
     }
-  },
-
+  }
 };
 </script>
 

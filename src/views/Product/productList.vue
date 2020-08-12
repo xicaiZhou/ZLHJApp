@@ -1,14 +1,16 @@
 <template>
   <div>
     <div class="search van-hairline--surround">
-      <van-search
-        style="text-align: left;"
-        v-model="value"
-        placeholder="请输入搜索关键词"
-        input-align="center"
-        @search="onSearch"
-        @cancel="onCancel"
-      />
+      <form action>
+        <van-search
+          style="text-align: left;"
+          v-model="value"
+          placeholder="请输入搜索关键词"
+          input-align="center"
+          @search="onSearch"
+          @cancel="onCancel"
+        />
+      </form>
     </div>
     <div class="productListBody">
       <van-pull-refresh v-model="refreshing" @refresh="onRefresh">
@@ -21,7 +23,7 @@
           >
             <div style="display:flex">
               <div>产品名称:</div>
-              <div >{{item.name}}</div>
+              <div>{{item.name}}</div>
             </div>
             <div style="display:flex">
               <div>资方编号:</div>
@@ -62,8 +64,17 @@ export default {
     };
   },
   methods: {
-    onSearch() {},
-    onCancel() {},
+    onSearch() {
+      this.pageIndex = 1;
+      this.productList = [];
+      this.getData();
+    },
+    onCancel() {
+      this.value = "";
+      this.pageIndex = 1;
+      this.productList = [];
+      this.getData();
+    },
     selected(item) {
       this.$store.state.productItem = item;
 
@@ -92,7 +103,7 @@ export default {
         pageIndex: this.pageIndex,
         pageSize: 10,
         financingChannelId: this.$route.params.financingChannelId,
-        keyword: this.value
+        name: this.value
       });
       console.log("参数:", params);
       productList(params).then(res => {
@@ -145,5 +156,4 @@ export default {
   padding: 3%;
   height: calc(100% - 44px);
 }
-
 </style>

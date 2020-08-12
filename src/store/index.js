@@ -19,7 +19,8 @@ const store = new Vuex.Store({
               roleName: "",
               roleCode: ""
             },
-            token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk3MTk0NTcyLCJpYXQiOjE1OTcxNTg1NzIsImp0aSI6IjliYjlkOTlkODU1MjRmZWU4ZjYyYzA2YmUyNDIzYTMwIiwidXNlcm5hbWUiOiJkZXYzIn0.yCU5cMYcTWfRgwy7naMf-xUR5HVtBEO_nWxQb_XzpFs'
+            token:'',
+            // token:'eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJ3ZWIiLCJpc3MiOiJzcHJpbmctYm9vdC1wbHVzIiwiZXhwIjoxNTk3MTk0NTcyLCJpYXQiOjE1OTcxNTg1NzIsImp0aSI6IjliYjlkOTlkODU1MjRmZWU4ZjYyYzA2YmUyNDIzYTMwIiwidXNlcm5hbWUiOiJkZXYzIn0.yCU5cMYcTWfRgwy7naMf-xUR5HVtBEO_nWxQb_XzpFs'
           },
           loanNumber: '',
           loanStatus: 0,

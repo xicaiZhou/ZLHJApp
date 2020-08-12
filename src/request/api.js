@@ -292,6 +292,14 @@ export function getWhy(param) {
         data:param
     })
 }
+// 复单
+export function copy(param){
+    return request({
+        method:"get",
+        url:'/api/loan/cope/'+ param.loanNumber,
+        data:param
+    })
+}
 //  =========================系统功能========================
 // 登出
 export function logout(param) {

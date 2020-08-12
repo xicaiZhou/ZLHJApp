@@ -5,7 +5,7 @@
         <div class="header">人员列表</div>
         <div class="userlist">
           <div
-            style="margin-top:10px"
+            style="margin-top:10px;margin-left:10px;" class="van-hairline--surround"
             v-for="(item,index) in this.dataList"
             :key="index"
             @click="changeUser(index)"
@@ -209,6 +209,7 @@ export default {
 }
 .userlist {
   width: 90%;
+  display: flex;
   margin: auto;
   box-sizing: border-box;
   overflow: scroll;

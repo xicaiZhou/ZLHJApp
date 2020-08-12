@@ -196,7 +196,7 @@
         />
       </van-popup>
     </div>
-    <div class="subBtn">
+    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
       <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
   </div>

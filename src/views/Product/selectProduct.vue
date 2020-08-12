@@ -394,6 +394,8 @@ export default {
       handler: function(newValue, oldValue) {
         if (newValue) {
           console.log(this.$route.fullPath);
+          this.loanStatus = this.$store.state.loanStatus;
+
           // 资方列表
           this.getFinancingChannelList();
           // 获取界面数据
@@ -715,7 +717,6 @@ export default {
 
   mounted() {
     console.log("zoule");
-
     // 资方列表
     this.getFinancingChannelList();
     // 获取界面数据
