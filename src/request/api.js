@@ -333,6 +333,14 @@ export function updatePassword(param) {
          data:param
      })
  }
+ // 更新节点状态
+ export function updateStatus(param){
+     return request({
+         method:"post",
+         url:'/api/loanHead/updateStatus',
+         data:param
+     })
+ }
  
  export function addCollectionNotes(param){
      return request({

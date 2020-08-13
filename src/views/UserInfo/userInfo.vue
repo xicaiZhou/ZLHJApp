@@ -4,7 +4,11 @@
       <div style="margin-top:20px">
         <div class="headerAndBtn">
           <div class="header">承租人信息</div>
-          <div style="width:40px;margin-top:18px;" @click=" showAddUser = true, isMainUser = true" v-show="(loanStatus >= 0 && loanStatus < 60)">
+          <div
+            style="width:40px;margin-top:18px;"
+            @click=" showAddUser = true, isMainUser = true"
+            v-show="(loanStatus >= 0 && loanStatus < 60)"
+          >
             <van-icon color="#ff9900" size="20px" name="add-o" />
           </div>
         </div>
@@ -29,7 +33,7 @@
               </div>
             </div>
             <template #right v-if="(loanStatus >= 0 && loanStatus < 60)">
-              <van-button  square type="danger" text="删除" @click="delectClick(item)" />
+              <van-button square type="danger" text="删除" @click="delectClick(item)" />
             </template>
           </van-swipe-cell>
         </div>
@@ -37,7 +41,11 @@
       <div style="margin-top:20px">
         <div class="headerAndBtn">
           <div class="header">担保人信息</div>
-          <div style="width:40px;margin-top:18px;" @click="showAddUser = true, isMainUser = false" v-show="(loanStatus >= 0 && loanStatus < 60)">
+          <div
+            style="width:40px;margin-top:18px;"
+            @click="showAddUser = true, isMainUser = false"
+            v-show="(loanStatus >= 0 && loanStatus < 60)"
+          >
             <van-icon color="#ff9900" size="20px" name="add-o" />
           </div>
         </div>
@@ -203,12 +211,12 @@
 </template>
 
 <script>
-import { userList, addUser, delUser } from "../../request/api";
+import { userList, addUser, delUser,updateStatus } from "../../request/api";
 import { idNumValidator } from "../../utils/common";
 export default {
   data() {
     return {
-      loanStatus:this.$store.state.loanStatus,
+      loanStatus: this.$store.state.loanStatus,
       addUserInfo: {
         loanNumber: this.$store.state.loanNumber, //订单号
         customerName: "", //名字 企业名称
@@ -323,20 +331,28 @@ export default {
       }
     },
     toSub() {
-
-      if(this.mainListData.length == 0){
+      if (this.mainListData.length == 0) {
         this.$toast.fail("请添加承接人");
-        return
+        return;
       }
-      this.$router.back();
+      const toast = this.$toast.loading({
+        duration: 0,
+        message: "保存中...",
+        forbidClick: true,
+        loadingType: "spinner"
+      });
+      updateStatus({ loanNumber: this.$store.state.loanNumber, loanStatus: "30" }).then(res => {
+        toast.clear();
+        this.$router.back();
+      });
     },
     showCustomerTypeAction() {
       if (this.isMainUser) {
         if (this.licenseType == "1") {
           this.customerList = ["自然人"];
         } else {
-          //当拍照类型为公牌时 
-          this.customerList = ["自然人","企业"];
+          //当拍照类型为公牌时
+          this.customerList = ["自然人", "企业"];
         }
       } else {
         this.customerList = ["自然人", "企业"];
@@ -500,7 +516,7 @@ export default {
                 break;
               }
             }
-          }else{
+          } else {
             switch (parseInt(index)) {
               case 1: {
                 relationValue = "本人";

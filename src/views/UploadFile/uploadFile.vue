@@ -68,7 +68,8 @@ import {
   allFileList,
   fileDetail,
   deleteAllFile,
-  deleteFile
+  deleteFile,
+  updateStatus
 } from "../../request/api";
 import { updataInfo } from "../../utils/bridge";
 
@@ -102,7 +103,16 @@ export default {
         }
       }
 
-      this.$router.back();
+       const toast = this.$toast.loading({
+        duration: 0,
+        message: "保存中...",
+        forbidClick: true,
+        loadingType: "spinner"
+      });
+      updateStatus({ loanNumber: this.$store.state.loanNumber, loanStatus: "30" }).then(res => {
+        toast.clear();
+        this.$router.back();
+      });
     },
     changeUser(val) {
       this.currentIndex = val;
