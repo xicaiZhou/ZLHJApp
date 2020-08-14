@@ -1,232 +1,231 @@
 <template>
-<div :class="(loanStatus >= 0 && loanStatus < 60) ? '' : 'readOnly'">
-  <div style="height:100%; margin-bottom: 60px;">
-    <div>
-      <div class="header">贷款信息</div>
-      <van-field
-        class="readOnly"
-        required
-        readonly
-        label="业务模式:"
-        v-model="baseInfo.businessModel == '1' ? '租赁' : '贷款' "
-      />
+  <div :class="(loanStatus >= 0 && loanStatus < 60) ? '' : 'readOnly'">
+    <div style="height:100%; margin-bottom: 60px;">
+      <div>
+        <div class="header">贷款信息</div>
+        <van-field
+          class="readOnly"
+          required
+          readonly
+          label="业务模式:"
+          v-model="baseInfo.businessModel == '1' ? '租赁' : '贷款' "
+        />
 
-      <div>
-        <div class="zlhjRadio" style="display:flex">
-          <span class="zlhjRadio_title">安装GPS：</span>
-          <div class="zlhjRadio_body">
-            <div
-              @click="baseInfo.hasGps = '1'"
-              :class="baseInfo.hasGps == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-            >是</div>
-            <div
-              @click="baseInfo.hasGps = '2'"
-              :class="baseInfo.hasGps == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-            >否</div>
-          </div>
-        </div>
-        <div style="padding-left:10px">
-          <div class="zlhjRadioLine"></div>
-        </div>
-      </div>
-      <div>
-        <div class="zlhjRadio" style="display:flex">
-          <span class="zlhjRadio_title">产险推荐：</span>
-          <div class="zlhjRadio_body">
-            <div
-              @click="baseInfo.isCs = '1'"
-              :class="baseInfo.isCs == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-            >是</div>
-            <div
-              @click="baseInfo.isCs = '2'"
-              :class="baseInfo.isCs == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-            >否</div>
-          </div>
-        </div>
-        <div style="padding-left:10px">
-          <div class="zlhjRadioLine"></div>
-        </div>
-      </div>
-      <div>
-        <div class="zlhjRadio" style="display:flex">
-          <span class="zlhjRadio_title">聚家客推荐：</span>
-          <div class="zlhjRadio_body">
-            <div
-              @click="baseInfo.isJjk = '1'"
-              :class="baseInfo.isJjk == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-            >是</div>
-            <div
-              @click="baseInfo.isJjk = '2'"
-              :class="baseInfo.isJjk == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-            >否</div>
-          </div>
-        </div>
-        <div style="padding-left:10px">
-          <div class="zlhjRadioLine"></div>
-        </div>
-      </div>
-      <div class="headerAndBtn">
-        <div class="header">费用信息</div>
-        <div style="width:40px;margin-top:18px;" @click="showAddCost = true">
-          <van-icon color="#ff9900" size="20px" name="add-o" />
-        </div>
-      </div>
-      <div class="costBox">
-        <div
-          style="display:inline-block;margin:0 8px"
-          v-for="(item, index) in cosList"
-          :key="index"
-        >
-          <div class="costBox_item">
-            <div class="costBox_item_body">
-              <div>费用类型: {{getValue(item.expenseType,cosTypeList)}}</div>
-              <div style="margin-top:5px">实际金额: {{item.amount}} 元</div>
-            </div>
-            <div v-if="item.expenseType != '1'" class="costBox_item_action">
-              <van-button style="height:100%;width:100%;" type="info" @click="delectCost(item)">删除</van-button>
-            </div>
-            <div v-else class="costBox_item_action">
-              <van-button style="height:100%;width:100%;" type="info">-</van-button>
+        <div>
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title">安装GPS：</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="baseInfo.hasGps = '1'"
+                :class="baseInfo.hasGps == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >是</div>
+              <div
+                @click="baseInfo.hasGps = '2'"
+                :class="baseInfo.hasGps == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >否</div>
             </div>
           </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
         </div>
+        <div>
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title">产险推荐：</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="baseInfo.isCs = '1'"
+                :class="baseInfo.isCs == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >是</div>
+              <div
+                @click="baseInfo.isCs = '2'"
+                :class="baseInfo.isCs == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >否</div>
+            </div>
+          </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
+        </div>
+        <div>
+          <div class="zlhjRadio" style="display:flex">
+            <span class="zlhjRadio_title">聚家客推荐：</span>
+            <div class="zlhjRadio_body">
+              <div
+                @click="baseInfo.isJjk = '1'"
+                :class="baseInfo.isJjk == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >是</div>
+              <div
+                @click="baseInfo.isJjk = '2'"
+                :class="baseInfo.isJjk == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+              >否</div>
+            </div>
+          </div>
+          <div style="padding-left:10px">
+            <div class="zlhjRadioLine"></div>
+          </div>
+        </div>
+        <div class="headerAndBtn">
+          <div class="header">费用信息</div>
+          <div style="width:40px;margin-top:18px;" @click="showAddCost = true">
+            <van-icon color="#ff9900" size="20px" name="add-o" />
+          </div>
+        </div>
+        <div class="costBox">
+          <div
+            style="display:inline-block;margin:0 8px"
+            v-for="(item, index) in cosList"
+            :key="index"
+          >
+            <div class="costBox_item">
+              <div class="costBox_item_body">
+                <div>费用类型: {{getValue(item.expenseType,cosTypeList)}}</div>
+                <div style="margin-top:5px">实际金额: {{item.amount}} 元</div>
+              </div>
+              <div v-if="item.expenseType != '1'" class="costBox_item_action">
+                <van-button style="height:100%;width:100%;" type="info" @click="delectCost(item)">删除</van-button>
+              </div>
+              <div v-else class="costBox_item_action">
+                <van-button style="height:100%;width:100%;" type="info">-</van-button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="header">租赁信息</div>
+        <van-field
+          class="readOnly"
+          required
+          v-show="baseInfo.businessModel == '1'"
+          readonly
+          label="租赁模式:"
+          v-model="baseInfo.leaseTypeName"
+        />
+        <van-field
+          class="readOnly"
+          v-show="baseInfo.businessModel == '1'"
+          type="digit"
+          label="项目总额(元):"
+          v-model="totalAmount"
+          placeholder="请填写项目金额"
+        />
+        <van-field
+          class="readOnly"
+          v-show="baseInfo.businessModel == '2'"
+          type="digit"
+          label="标的物价格(元):"
+          v-model="totalAmount"
+          placeholder="请填写标的物价格"
+        />
+        <van-field
+          label="首付金额(元):"
+          type="digit"
+          v-model="baseInfo.downPaymentAmount"
+          placeholder="请填写首付金额"
+        />
+        <van-field
+          v-show="baseInfo.businessModel == '1'"
+          class="readOnly"
+          label="融资金额(元):"
+          type="digit"
+          placeholder="请填写融资金额"
+          v-model="amount"
+        />
+        <van-field
+          v-show="baseInfo.businessModel == '2'"
+          class="readOnly"
+          label="贷款金额(元):"
+          type="digit"
+          placeholder="请填写贷款金额"
+          v-model="amount"
+        />
+        <van-field
+          is-link
+          readonly
+          clickable
+          v-show="baseInfo.businessModel == '2'"
+          label="贷款期限(月):"
+          v-model="baseInfo.term"
+          placeholder="请选择贷款期限"
+          @click="showTerm = true"
+        />
+        <van-field
+          is-link
+          readonly
+          clickable
+          v-show="baseInfo.businessModel == '1'"
+          label="租赁期限(月):"
+          v-model="baseInfo.term"
+          placeholder="请选择租赁期限"
+          @click="showTerm = true"
+        />
+        <van-field
+          is-link
+          readonly
+          clickable
+          label="还款方式:"
+          v-model="baseInfo.repaymentMethodName"
+          placeholder="请选择还款方式"
+          @click="showRepaymentMethod = true"
+        />
+        <van-field
+          is-link
+          readonly
+          clickable
+          v-show="baseInfo.businessModel == '1'"
+          label="租赁用途:"
+          v-model="baseInfo.useMethodValue"
+          placeholder="请选择租赁用途"
+          @click="showUseMethod = true"
+        />
+        <van-field
+          is-link
+          readonly
+          clickable
+          v-show="baseInfo.businessModel == '2'"
+          label="贷款用途:"
+          v-model="baseInfo.useMethodValue"
+          placeholder="请选择贷款用途"
+          @click="showUseMethod = true"
+        />
+        <van-field
+          class="readOnly"
+          v-show="baseInfo.businessModel == '1'"
+          label="租赁成数(%):"
+          type="digit"
+          v-model="rate"
+          placeholder="请填写租赁成数"
+        />
+        <van-field
+          class="readOnly"
+          v-show="baseInfo.businessModel == '2'"
+          label="贷款成数(%):"
+          type="digit"
+          v-model="rate"
+          placeholder="请填写贷款成数"
+        />
+        <van-field
+          class="readOnly"
+          label="GPS金额(元):"
+          type="digit"
+          v-model="gpsAmount"
+          placeholder="请填写首付金额"
+        />
+        <div class="header">录单人信息</div>
+        <van-field
+          class="readOnly"
+          label="销售姓名:"
+          v-model="baseInfo.managerName"
+          placeholder="请填写销售姓名"
+        />
+        <van-field
+          class="readOnly"
+          label="销售联系方式:"
+          v-model="baseInfo.managerMobileNumber"
+          placeholder="请填写销售联系方式"
+        />
       </div>
-      <div class="header">租赁信息</div>
-      <van-field
-        class="readOnly"
-        required
-        v-show="baseInfo.businessModel == '1'"
-        readonly
-        label="租赁模式:"
-        v-model="baseInfo.leaseTypeName"
-      />
-      <van-field
-        class="readOnly"
-        v-show="baseInfo.businessModel == '1'"
-        type="digit"
-        label="项目总额(元):"
-        v-model="totalAmount"
-        placeholder="请填写项目金额"
-      />
-      <van-field
-        class="readOnly"
-        v-show="baseInfo.businessModel == '2'"
-        type="digit"
-        label="标的物价格(元):"
-        v-model="totalAmount"
-        placeholder="请填写标的物价格"
-      />
-      <van-field
-        label="首付金额(元):"
-        type="digit"
-        v-model="baseInfo.downPaymentAmount"
-        placeholder="请填写首付金额"
-      />
-      <van-field
-        v-show="baseInfo.businessModel == '1'"
-        class="readOnly"
-        label="融资金额(元):"
-        type="digit"
-        placeholder="请填写融资金额"
-        v-model="amount"
-      />
-      <van-field
-        v-show="baseInfo.businessModel == '2'"
-        class="readOnly"
-        label="贷款金额(元):"
-        type="digit"
-        placeholder="请填写贷款金额"
-        v-model="amount"
-      />
-      <van-field
-        is-link
-        readonly
-        clickable
-        v-show="baseInfo.businessModel == '2'"
-        label="贷款期限(月):"
-        v-model="baseInfo.term"
-        placeholder="请选择贷款期限"
-        @click="showTerm = true"
-      />
-      <van-field
-        is-link
-        readonly
-        clickable
-        v-show="baseInfo.businessModel == '1'"
-        label="租赁期限(月):"
-        v-model="baseInfo.term"
-        placeholder="请选择租赁期限"
-        @click="showTerm = true"
-      />
-      <van-field
-        is-link
-        readonly
-        clickable
-        label="还款方式:"
-        v-model="baseInfo.repaymentMethodName"
-        placeholder="请选择还款方式"
-        @click="showRepaymentMethod = true"
-      />
-      <van-field
-        is-link
-        readonly
-        clickable
-        v-show="baseInfo.businessModel == '1'"
-        label="租赁用途:"
-        v-model="baseInfo.useMethodValue"
-        placeholder="请选择租赁用途"
-        @click="showUseMethod = true"
-      />
-      <van-field
-        is-link
-        readonly
-        clickable
-        v-show="baseInfo.businessModel == '2'"
-        label="贷款用途:"
-        v-model="baseInfo.useMethodValue"
-        placeholder="请选择贷款用途"
-        @click="showUseMethod = true"
-      />
-      <van-field
-        class="readOnly"
-        v-show="baseInfo.businessModel == '1'"
-        label="租赁成数(%):"
-        type="digit"
-        v-model="rate"
-        placeholder="请填写租赁成数"
-      />
-      <van-field
-        class="readOnly"
-        v-show="baseInfo.businessModel == '2'"
-        label="贷款成数(%):"
-        type="digit"
-        v-model="rate"
-        placeholder="请填写贷款成数"
-      />
-      <van-field
-        class="readOnly"
-        label="GPS金额(元):"
-        type="digit"
-        v-model="gpsAmount"
-        placeholder="请填写首付金额"
-      />
-      <div class="header">录单人信息</div>
-      <van-field
-        class="readOnly"
-        label="销售姓名:"
-        v-model="baseInfo.managerName"
-        placeholder="请填写销售姓名"
-      />
-      <van-field
-        class="readOnly"
-        label="销售联系方式:"
-        v-model="baseInfo.managerMobileNumber"
-        placeholder="请填写销售联系方式"
-      />
     </div>
-
-  </div>
-      <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
+    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
       <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
     </div>
     <div>
@@ -320,8 +319,7 @@
         />
       </van-popup>
     </div>
-</div>
-
+  </div>
 </template>
 
 <script>
@@ -337,7 +335,7 @@ import {
 export default {
   data() {
     return {
-      loanStatus:this.$store.state.loanStatus,
+      loanStatus: this.$store.state.loanStatus,
       addCostAmount: "",
       addCostType: "",
       addCostTypeValue: "",
@@ -567,12 +565,13 @@ export default {
       });
     },
     calculateCost() {
-
       let param = Object.assign({
         term: this.baseInfo.term,
         rate: this.rate,
         repaymentMethod: this.baseInfo.repaymentMethod,
-        downPaymentAmount: !this.baseInfo.downPaymentAmount ? 0 : this.baseInfo.downPaymentAmount,
+        downPaymentAmount: !this.baseInfo.downPaymentAmount
+          ? 0
+          : this.baseInfo.downPaymentAmount,
         loanNumber: this.$store.state.loanNumber
       });
       console.log(param);
@@ -589,13 +588,20 @@ export default {
         console.log("BusinessInfo", res);
         this.baseInfo = res.data.data;
         // 1-等额本息，2-等额本金，3-等本等息
-        if (this.baseInfo.repaymentMethod == "1") {
+
+        if (this.baseInfo.repaymentMethod) {
+          if (this.baseInfo.repaymentMethod == "1") {
+            this.baseInfo.repaymentMethodName = "等额本息";
+          } else if (this.baseInfo.repaymentMethod == "2") {
+            this.baseInfo.repaymentMethodName = "等额本金";
+          } else if (this.baseInfo.repaymentMethod == "3") {
+            this.baseInfo.repaymentMethodName = "等本等息";
+          }
+        } else { // 默认等额本息
+          this.baseInfo.repaymentMethod = '1';
           this.baseInfo.repaymentMethodName = "等额本息";
-        } else if (this.baseInfo.repaymentMethod == "2") {
-          this.baseInfo.repaymentMethodName = "等额本金";
-        } else if (this.baseInfo.repaymentMethod == "3") {
-          this.baseInfo.repaymentMethodName = "等本等息";
         }
+
         if (this.baseInfo.downPaymentAmount == null) {
           this.baseInfo.downPaymentAmount = 0;
         }
@@ -604,6 +610,9 @@ export default {
             this.baseInfo.useMethod,
             this.useTypeList
           );
+        }else{ // 默认消费性购车
+          this.baseInfo.useMethod = "1";
+          this.baseInfo.useMethodValue = "消费性购车"
         }
 
         this.baseInfo.businessModel = "1";

@@ -582,7 +582,7 @@ import { dateFormat, selectDateFormat } from "../../utils/formatter";
 export default {
   data() {
     return {
-      loanStatus:this.$store.state.loanStatus,
+      loanStatus: this.$store.state.loanStatus,
       showPop: false,
       popList: [],
       selectIndex: 0,
@@ -792,10 +792,16 @@ export default {
           "4",
           this.customerInfo.occupationType
         );
-        this.customerInfo.nationalityValue = getValue(
-          "5",
-          this.customerInfo.nationality
-        );
+        if (this.customerInfo.nationality) {
+          this.customerInfo.nationalityValue = getValue(
+            "5",
+            this.customerInfo.nationality
+          );
+        } else {
+          this.customerInfo.nationalityValue = "中华人民共和国";
+          this.customerInfo.nationality = "1";
+        }
+
         this.customerInfo.customerNatureValue = getValue(
           "14",
           this.customerInfo.customerNature

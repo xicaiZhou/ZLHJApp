@@ -6,7 +6,7 @@
           <div class="header">承租人信息</div>
           <div
             style="width:40px;margin-top:18px;"
-            @click=" showAddUser = true, isMainUser = true"
+            @click="addMainUser()"
             v-show="(loanStatus >= 0 && loanStatus < 60)"
           >
             <van-icon color="#ff9900" size="20px" name="add-o" />
@@ -43,7 +43,7 @@
           <div class="header">担保人信息</div>
           <div
             style="width:40px;margin-top:18px;"
-            @click="showAddUser = true, isMainUser = false"
+            @click="addDanBaoUser()"
             v-show="(loanStatus >= 0 && loanStatus < 60)"
           >
             <van-icon color="#ff9900" size="20px" name="add-o" />
@@ -211,7 +211,7 @@
 </template>
 
 <script>
-import { userList, addUser, delUser,updateStatus } from "../../request/api";
+import { userList, addUser, delUser, updateStatus } from "../../request/api";
 import { idNumValidator } from "../../utils/common";
 export default {
   data() {
@@ -273,6 +273,22 @@ export default {
     }
   },
   methods: {
+    addMainUser() {
+      this.showAddUser = true;
+      this.isMainUser = true;
+      this.addUserInfo.customerRole = "1"; //客户角色(1-承租人 3-担保人)
+      this.addUserInfo.customerRoleValue = "承租人";
+      this.addUserInfo.relation = "1"; //与主借人关系
+      this.addUserInfo.relationValue = "本人"; // 自己添加的
+    },
+    addDanBaoUser() {
+      this.showAddUser = true;
+      this.isMainUser = false;
+      this.addUserInfo.customerRole = "3"; //客户角色(1-承租人 3-担保人)
+      this.addUserInfo.customerRoleValue = "担保人";
+      this.addUserInfo.relation = ""; //与主借人关系
+      this.addUserInfo.relationValue = ""; // 自己添加的
+    },
     popIdType() {
       if (this.addUserInfo.customerType == "") {
         this.$toast.fail("请先选择客户类型");
@@ -341,7 +357,10 @@ export default {
         forbidClick: true,
         loadingType: "spinner"
       });
-      updateStatus({ loanNumber: this.$store.state.loanNumber, loanStatus: "30" }).then(res => {
+      updateStatus({
+        loanNumber: this.$store.state.loanNumber,
+        loanStatus: "30"
+      }).then(res => {
         toast.clear();
         this.$router.back();
       });
@@ -369,11 +388,21 @@ export default {
       this.showIdType = false;
     },
     selectRole(val) {
+      this.addUserInfo.customerType = ""; //客户类型(1=自然人，2=企业)
+      this.addUserInfo.customerTypeValue = ""; // 自己添加的
+      this.addUserInfo.relation = ""; //与主借人关系
+      this.addUserInfo.relationValue = ""; // 自己添加的
+      this.addUserInfo.idType = ""; // 证件类型
+      this.addUserInfo.idTypeValue = ""; // 自己添加的
+      this.addUserInfo.idNum = ""; //证件号码
       // 1-承借人 3-担保人
       if (val == "承租人") {
         this.addUserInfo.customerRoleValue = val;
         this.addUserInfo.customerRole = "1";
+        this.addUserInfo.relationValue = "本人";
+        this.addUserInfo.relation = "1";
       } else {
+        //担保人
         this.addUserInfo.customerRoleValue = val;
         this.addUserInfo.customerRole = "3";
       }
@@ -433,12 +462,19 @@ export default {
     },
     selectCustomerType(val) {
       // 1-自然人 2-企业
+      this.addUserInfo.idType = ""; // 证件类型
+      this.addUserInfo.idTypeValue = ""; // 自己添加的
+      this.addUserInfo.idNum = ""; //证件号码
       if (val == "自然人") {
         this.addUserInfo.customerTypeValue = val;
         this.addUserInfo.customerType = "1";
+        this.addUserInfo.idType = "1"; // 证件类型
+        this.addUserInfo.idTypeValue = "身份证"; // 自己添加的
       } else {
         this.addUserInfo.customerTypeValue = val;
         this.addUserInfo.customerType = "2";
+        this.addUserInfo.idType = "2"; // 证件类型
+        this.addUserInfo.idTypeValue = "社会统一信用代码"; // 自己添加的
       }
       this.showCustomerType = false;
     },

@@ -241,12 +241,19 @@ export default {
       });
     },
     copyLoan(item) {
-      copy({ loanNumber: item.loanNumber }).then(res => {
-        this.$store.state.loanNumber = res.data.data.loanNumber;
-        this.$router.push({
-          path: "/menu"
+      this.$dialog.confirm({
+        title: "提示",
+        message: "您确定要进行复单操作吗？"
+      }).then(() => {
+          copy({ loanNumber: item.loanNumber }).then(res => {
+            this.$store.state.loanNumber = res.data.data.loanNumber;
+            this.$router.push({
+              path: "/menu"
+            });
+          });
+        })
+        .catch(() => {
         });
-      });
     },
     getValue() {
       switch (this.loanStatus) {
@@ -374,7 +381,7 @@ export default {
   background: #f3eeee;
 }
 .searchContent {
-  width: 90%;
+  width: 96%;
   margin: 0 auto;
   font-size: 12px;
   background: #fff;

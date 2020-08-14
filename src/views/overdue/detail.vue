@@ -89,7 +89,6 @@
           </van-collapse-item>
         </van-collapse>
       </div>
-
       <div>
         <van-collapse v-model="collectionNotesActiveNames">
           <van-collapse-item name="1">
