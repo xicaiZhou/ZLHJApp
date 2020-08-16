@@ -295,7 +295,7 @@ export function getWhy(param) {
 // 复单
 export function copy(param){
     return request({
-        method:"get",
+        method:"post",
         url:'/api/loan/cope/'+ param.loanNumber,
         data:param
     })

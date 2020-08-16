@@ -319,10 +319,10 @@ export default {
         this.$toast.fail("请将'基本信息'中必填项填写完整");
         return;
       }
-      if (!isPhoneNum(this.customerInfo.phone)) {
-        this.$toast.fail("企业联系电话格式错误！");
-        return;
-      }
+      // if (!isPhoneNum(this.customerInfo.phone)) {
+      //   this.$toast.fail("企业联系电话格式错误！");
+      //   return;
+      // }
       if (
         isEmpty(this.customerCompany.legalRepresentative) ||
         isEmpty(this.customerCompany.legalRepresentativePhone) ||

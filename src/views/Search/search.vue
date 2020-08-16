@@ -159,7 +159,7 @@
                   @click="jujue(item)"
                 >拒绝原因</van-button>
                 <van-button v-else style="flex:1">-</van-button>
-
+                <!-- <van-button style="flex:1" @click="copyLoan(item)">复单</van-button> -->
                 <van-button
                   v-if="(item.loanStatus < 0 && item.riskFlag == '1')"
                   style="flex:1"
@@ -220,6 +220,7 @@ export default {
       this.showSearch();
     };
     codeList({ codeType: "node" }).then(res => {
+      console.log("res:",res)
       this.statusCodeList = res.data.data;
     });
   },
@@ -241,19 +242,20 @@ export default {
       });
     },
     copyLoan(item) {
-      this.$dialog.confirm({
-        title: "提示",
-        message: "您确定要进行复单操作吗？"
-      }).then(() => {
+      this.$dialog
+        .confirm({
+          title: "提示",
+          message: "您确定要进行复单操作吗？"
+        })
+        .then(() => {
           copy({ loanNumber: item.loanNumber }).then(res => {
-            this.$store.state.loanNumber = res.data.data.loanNumber;
+            this.$store.state.loanNumber = res.data.data;
             this.$router.push({
               path: "/menu"
             });
           });
         })
-        .catch(() => {
-        });
+        .catch(() => {});
     },
     getValue() {
       switch (this.loanStatus) {
