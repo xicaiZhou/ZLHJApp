@@ -395,7 +395,6 @@ export default {
         if (newValue) {
           console.log(this.$route.fullPath);
           this.loanStatus = this.$store.state.loanStatus;
-
           // 资方列表
           this.getFinancingChannelList();
           // 获取界面数据
