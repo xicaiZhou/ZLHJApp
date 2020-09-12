@@ -725,6 +725,7 @@ export default {
   beforeRouteLeave(to, from, next) {
     if (to.path == "/menu") {
       console.log(this.showZF);
+      // Object.assign(this.data, this.options.data())
       this.showZF = false;
       this.showTXPlan = false;
       this.showAccount = false;

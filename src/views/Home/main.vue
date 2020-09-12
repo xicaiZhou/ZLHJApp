@@ -11,6 +11,7 @@
       <van-grid clickable>
         <van-grid-item icon="search" text="逾期查询" to="/overdueList" />
       </van-grid>
+
     </div>
     <div>
       <van-tabbar route v-model="active" @change="onChange">
@@ -29,7 +30,7 @@ export default {
   data() {
     return {
       active: 0,
-      info: {},
+      info: {token:""},
       token:this.$store.state.userInfo
     };
   },
@@ -54,7 +55,6 @@ export default {
       })
     },
     userInfo1(info) {
-      this.info = info.token;
       this.$store.commit("updateParam", info);
       this.address();
     },

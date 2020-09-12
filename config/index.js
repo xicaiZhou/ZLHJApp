@@ -4,15 +4,6 @@
 
 const path = require('path')
 
-
-// sit Environment
-// var baseUrl = 'http://10.1.3.89:8060'
-
-// test Environment  准生产
-// var baseUrl = 'http://192.168.90.100'
-//备用环境
-// var baseUrl = 'http://192.168.88.93:8888'
-
 // var baseUrl = 'http://dacsit.vipgz1.idcfengye.com'
 var baseUrl = 'http://tuoyan.vipgz1.idcfengye.com'
 module.exports = {
