@@ -1,5 +1,35 @@
 <template>
   <div>
+    <van-popup
+      v-model="showZF"
+      position="bottom"
+      :style="{ height: '300px', width: '100%'}"
+      get-container="body"
+    >
+      <van-picker title show-toolbar :columns="zfList" @confirm="selectZF" @cancel="showZF=false" />
+    </van-popup>
+    <van-popup v-model="showProduct" :style="{ height: '250px', width: '90%'}" get-container="body">
+      <div>
+        <div style="text-align: center;margin-top:30px;color:#ff9900">请选择资方</div>
+        <van-field
+          readonly
+          clickable
+          is-link
+          style="width:90%; border-style: solid;border-color:#D5D5D5;border-width:1px; margin:0 auto;margin-top:30px"
+          label="资方:"
+          placeholder="请选择资方"
+          v-model="fcName"
+          @click="selectZF=true"
+        />
+        <van-button
+          style="width:90%;background:#ff9900;border:none;margin:0 auto; margin-top:50px"
+          block
+          type="info"
+          @click="toProductInfo"
+        >确 认</van-button>
+      </div>
+    </van-popup>
+
     <div class="title">新车正审材料提交</div>
     <div class="listItem" v-for="(item,index) in listData" :key="index" @click="toDetail(item)">
       <div class="itemL">
@@ -8,7 +38,7 @@
         <van-icon v-else-if="index == 2" name="user-circle-o" size="20" />
         <van-icon v-else-if="index == 3" name="user-circle-o" size="20" />
         <van-icon v-else-if="index == 4" name="user-circle-o" size="20" />
-        <van-icon v-else-if="index == 5" name="user-circle-o" size="20" /> -->
+        <van-icon v-else-if="index == 5" name="user-circle-o" size="20" />-->
 
         <div style="margin-left:4px">{{item.name}}</div>
       </div>
@@ -34,46 +64,52 @@
 </template>
 
 <script>
-import { submitStartTask, CarInfo } from "../../request/api";
+import { submitStartTask, CarInfo, BusinessInfo } from "../../request/api";
 export default {
   data() {
     return {
       loanStatus: 0,
+      showProduct: false,
+      showZF: false,
+      fcId: 0,
+      fcName: "",
+      fcList: [],
+      zfList: [],
       listData: [
         {
           name: "车辆信息",
-          state: 10
+          state: 10,
         },
         {
           name: "融资信息",
-          state: 20
+          state: 20,
         },
         {
           name: "人员信息",
-          state: 30
+          state: 30,
         },
         {
           name: "产品信息",
-          state: 40
+          state: 40,
         },
         {
           name: "文件信息",
-          state: 50
-        }
-      ]
+          state: 50,
+        },
+      ],
     };
   },
   mounted() {
-    console.log("ppppppppppppploanNumber:",this.$store.state.loanNumber)
+    console.log("ppppppppppppploanNumber:", this.$store.state.loanNumber);
     if (this.$store.state.loanNumber) {
-      CarInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
+      CarInfo({ loanNumber: this.$store.state.loanNumber }).then((res) => {
         console.log("menu:", res);
         this.$store.state.loanStatus = parseInt(res.data.data.loanStatus);
         this.loanStatus = parseInt(res.data.data.loanStatus);
       });
-    }else{
-      this.$store.state.loanStatus = 0
-      this.loanStatus = 0
+    } else {
+      this.$store.state.loanStatus = 0;
+      this.loanStatus = 0;
     }
   },
   beforeRouteLeave(to, from, next) {
@@ -83,16 +119,39 @@ export default {
       } else {
         this.$store.state.isload = false;
       }
-    }else if(to.path == "/selectProduct"){
+    } else if (to.path == "/selectProduct") {
       this.$store.state.isloadProduct = true;
     }
     next();
   },
   methods: {
+    selectProductList() {},
+    selectZF(val) {
+      for (let index in this.fcList) {
+        if (this.fcList[index].name == val) {
+          this.loanInfo.fcId = this.fcList[index].id; //资方ID
+          this.loanInfo.fcName = val; //资方名称
+          break;
+        }
+      }
+    },
+    toProductInfo() {
+      if (!fcName) {
+        this.$toast.fail("请先选择资方！");
+        return;
+      }
+
+      this.$router.push({
+        path: "/PAProductInfo",
+      });
+      // this.$router.push({
+      //   path: "/selectProduct"
+      // });
+    },
     toDetail(val) {
       if (val.name === "车辆信息") {
         this.$router.push({
-          path: "/carInfo"
+          path: "/carInfo",
         });
       } else if (val.name === "融资信息") {
         if (this.loanStatus + 10 < val.state) {
@@ -100,7 +159,7 @@ export default {
           return;
         }
         this.$router.push({
-          path: "/business"
+          path: "/business",
         });
       } else if (val.name === "人员信息") {
         if (this.loanStatus + 10 < val.state) {
@@ -108,23 +167,44 @@ export default {
           return;
         }
         this.$router.push({
-          path: "/userInfo"
+          path: "/userInfo",
         });
       } else if (val.name === "产品信息") {
         if (this.loanStatus + 10 < val.state) {
           this.$toast.fail("请先录入人员信息");
           return;
         }
-        this.$router.push({
-          path: "/selectProduct"
-        });
+        BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(
+          (res) => {
+            let financingChannel = res.data.data.fcId;
+            console.log("有fcId吗：", financingChannel);
+
+            if (!financingChannel) {
+              //没有fcid
+              // 资方列表
+              financingChannelList().then((res) => {
+                console.log("资方列表：", res);
+                this.fcList = res.data.data;
+                for (let index in this.fcList) {
+                  this.zfList.push(this.fcList[index].name);
+                }
+                this.showProduct = true;
+              });
+            } else {
+              this.showProduct = false;
+              this.$router.push({
+                path: "/PAProductInfo",
+              });
+            }
+          }
+        );
       } else if (val.name === "文件信息") {
         if (this.loanStatus + 10 < val.state) {
           this.$toast.fail("请先录入产品信息");
           return;
         }
         this.$router.push({
-          path: "/uploadFile"
+          path: "/uploadFile",
         });
       }
     },
@@ -134,19 +214,19 @@ export default {
         duration: 0,
         message: "提交中...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
-      console.log(this.$store.state.loanNumber)
+      console.log(this.$store.state.loanNumber);
 
       submitStartTask({ loanNumber: this.$store.state.loanNumber }).then(
-        res => {
+        (res) => {
           toast.clear();
-          this.$toast.success("申请提交成功！")
+          this.$toast.success("申请提交成功！");
           this.$router.back();
         }
       );
-    }
-  }
+    },
+  },
 };
 </script>
 <style scoped>

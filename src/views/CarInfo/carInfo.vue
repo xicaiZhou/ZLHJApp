@@ -283,6 +283,33 @@
             </div>
           </div>
           <van-field
+            label="驾照类型:"
+            required
+            is-link
+            readonly
+            clickable
+            placeholder="请选择驾照类型"
+            @click="showDrivingLicenseType = true"
+          />
+                    <div>
+            <div class="zlhjRadio" style="display:flex">
+              <span class="zlhjRadio_title">购车目的：</span>
+              <div class="zlhjRadio_body">
+                <div
+                  @click="loginSysUserVo.buyPurpose = '1'"
+                  :class="loginSysUserVo.buyPurpose == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >自用</div>
+                <div
+                  @click="loginSysUserVo.buyPurpose = '2'"
+                  :class="loginSysUserVo.buyPurpose == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
+                >经营</div>
+              </div>
+            </div>
+            <div style="padding-left:10px">
+              <div class="zlhjRadioLine"></div>
+            </div>
+          </div>
+          <van-field
             required
             v-model="loginSysUserVo.exOwnerName"
             label="原有车辆所有人姓名:"
@@ -310,138 +337,7 @@
             placeholder="请填写原有车辆所有人证件号码"
           />
         </template>
-        <!-- 车抵贷 -->
-        <template v-else>
-          <div class="header">贷款信息</div>
-          <van-field
-            required
-            is-link
-            readonly
-            clickable
-            label="业务类型:"
-            v-model="loginSysUserVo.businessTypeName"
-            name
-            placeholder="请选择业务类型"
-            @click="showBusiness = true"
-          />
-          <div class="header">车辆信息</div>
-          <van-field
-            is-link
-            required
-            readonly
-            clickable
-            label="品牌车型:"
-            v-model="loginSysUserVo.modelName"
-            placeholder="请选择品牌车型"
-            @click="selectCarModel"
-          />
-          <van-field
-            readonly
-            required
-            label="车系:"
-            v-model="loginSysUserVo.seriesName"
-            placeholder="请填写车系"
-          />
-          <van-field
-            readonly
-            required
-            label="车辆指导价(万元):"
-            v-model="this.loginSysUserVo.guidancePrice"
-            placeholder="请填写车辆指导价"
-          />
-          <van-field
-            required
-            readonly
-            label="年份:"
-            v-model="loginSysUserVo.year"
-            name
-            placeholder="请填写年份"
-          />
-
-          <van-field
-            required
-            label="首次上牌时间:"
-            is-link
-            readonly
-            clickable
-            placeholder="请选择首次上牌时间"
-            v-model="loginSysUserVo.firstRegistrationDate"
-            @click="showDate = true"
-          />
-          <van-field
-            required
-            v-model="loginSysUserVo.usedTime"
-            readonly
-            label="车龄:"
-            name
-            placeholder="请填写车龄"
-          />
-          <van-field
-            required
-            label="里程数(公里):"
-            type="digit"
-            v-model="loginSysUserVo.mileage"
-            placeholder="请填写里程数"
-          />
-          <van-field
-            required
-            type="digit"
-            v-model="loginSysUserVo.appraisalPrice"
-            label="评估价格(元):"
-            placeholder="请填写评估价格"
-          />
-          <van-field required label="车架号:" v-model="loginSysUserVo.vin" placeholder="请填写车架号" />
-          <van-field
-            required
-            label="发动机号:"
-            v-model="loginSysUserVo.engineNumber"
-            placeholder="请填写发动机号"
-          />
-          <van-field
-            required
-            label="车辆颜色:"
-            name
-            v-model="loginSysUserVo.colour"
-            placeholder="请填写车辆颜色"
-          />
-          <div>
-            <div class="zlhjRadio" style="display:flex">
-              <span class="zlhjRadio_title">牌照类型：</span>
-              <div class="zlhjRadio_body">
-                <div
-                  @click="loginSysUserVo.licenseType = '1'"
-                  :class="loginSysUserVo.licenseType == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >私牌</div>
-                <div
-                  @click="loginSysUserVo.licenseType = '2'"
-                  :class="loginSysUserVo.licenseType == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >公牌</div>
-              </div>
-            </div>
-            <div style="padding-left:10px">
-              <div class="zlhjRadioLine"></div>
-            </div>
-          </div>
-          <van-field required label="牌照号:" v-model="loginSysUserVo.license" placeholder="请填写牌照号" />
-          <div>
-            <div class="zlhjRadio" style="display:flex">
-              <span class="zlhjRadio_title">承租人/担保人是否有驾照：</span>
-              <div class="zlhjRadio_body">
-                <div
-                  @click="loginSysUserVo.hasDrivingLicense = '1'"
-                  :class="loginSysUserVo.hasDrivingLicense == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >有</div>
-                <div
-                  @click="loginSysUserVo.hasDrivingLicense = '2'"
-                  :class="loginSysUserVo.hasDrivingLicense == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >没有</div>
-              </div>
-            </div>
-            <div style="padding-left:10px">
-              <div class="zlhjRadioLine"></div>
-            </div>
-          </div>
-        </template>
+        
       </van-form>
     </div>
     <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
@@ -507,6 +403,7 @@ export default {
       maxDate: new Date(),
       radio: 1,
       showBusiness: false,
+      showDrivingLicenseType:false,
       businessList: ["新车", "二手车"],
       idTypeList: ["身份证", "社会统一信用代码"],
       loginSysUserVo: {
@@ -538,38 +435,40 @@ export default {
         exOwnerMobileNumber: "", //原车辆所有人手机
         licenseType: "", //车牌类型 1:私牌 2:公牌
         importFlag: "", //进口标志 1:进口 2:非进口
-        hasDrivingLicense: "" //是否有驾照 1:有 2:没有
-      }
+        hasDrivingLicense: "", //是否有驾照 1:有 2:没有
+        buyPurpose:"", //1-自用 2-经营
+
+      },
     };
   },
   watch: {
     "$store.state.exhibition": {
       deep: false,
-      handler: function(newValue, oldValue) {
+      handler: function (newValue, oldValue) {
         this.loginSysUserVo.dealerId = newValue.id;
         this.loginSysUserVo.dealerName = newValue.name;
-      }
+      },
     },
     "$store.state.isload": {
       deep: false,
-      handler: function(newValue, oldValue) {
+      handler: function (newValue, oldValue) {
         if (newValue) {
           this.loanStatus = this.$store.state.loanStatus;
           this.getData();
         }
-      }
+      },
     },
     "$store.state.carInfo": {
       deep: false,
-      handler: function(newValue, oldValue) {
+      handler: function (newValue, oldValue) {
         this.loginSysUserVo.modelId = newValue.id;
         this.loginSysUserVo.modelName = newValue.name;
         this.loginSysUserVo.guidancePrice = newValue.guidancePrice;
         this.loginSysUserVo.seriesId = newValue.seriesId;
         this.loginSysUserVo.seriesName = newValue.seriesName;
         this.loginSysUserVo.year = newValue.year;
-      }
-    }
+      },
+    },
   },
   mounted() {
     if (this.$store.state.loanNumber) {
@@ -585,9 +484,9 @@ export default {
         duration: 0,
         message: "保存中...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
-      SaveCarInfo(this.loginSysUserVo).then(res => {
+      SaveCarInfo(this.loginSysUserVo).then((res) => {
         toast.clear();
         this.$store.state.loanNumber = res.data.data.loanNumber;
         this.$router.back();
@@ -688,7 +587,7 @@ export default {
 
     getData() {
       // 数据校验
-      CarInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
+      CarInfo({ loanNumber: this.$store.state.loanNumber }).then((res) => {
         console.log("res:", res);
         this.loginSysUserVo = res.data.data;
         if (this.loginSysUserVo.businessType == "3") {
@@ -745,18 +644,18 @@ export default {
 
     selectExhibition() {
       this.$router.push({
-        path: "/exhibitionList"
+        path: "/exhibitionList",
       });
     },
     /// 选择车型
     selectCarModel() {
       this.$router.push({
-        path: "/carModels"
+        path: "/carModels",
       });
     },
     toSub() {
       this.$refs.form.submit();
-    }
+    },
   },
 
   //修改form的keepAlive值为false时，再次进入页面会重新请求数据，即刷新页面
@@ -764,6 +663,7 @@ export default {
     this.$store.state.CarModels = false;
     if (to.path == "/menu") {
       this.$store.state.isload = false;
+      this.showDrivingLicenseType = false;
       this.showDate = false;
       this.showIdType = false;
       this.showBusiness = false;
@@ -804,7 +704,7 @@ export default {
       from.meta.keepAlive = true;
     }
     next();
-  }
+  },
 };
 </script>
 

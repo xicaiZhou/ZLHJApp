@@ -40,6 +40,7 @@ import maleBrandInfoDetail from '@/views/UserInfo/maleBrandInfoDetail'
 
 // 选择产品
 import selectProduct from '@/views/Product/selectProduct'
+import PAProductInfo from '@/views/Product/PAProductInfo'
 // 产品列表
 import productList from '@/views/Product/productList'
 // 还款计划表-试算
@@ -223,6 +224,15 @@ export default new Router({
       path:'/selectProduct',
       name:'selectProduct',
       component:selectProduct,
+      meta:{
+        keepAlive:true,
+        title: '产品信息'
+      }
+    },
+    {
+      path:'/PAProductInfo',
+      name:'PAProductInfo',
+      component:PAProductInfo,
       meta:{
         keepAlive:true,
         title: '产品信息'
