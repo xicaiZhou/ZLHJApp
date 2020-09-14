@@ -1,5 +1,13 @@
 import request from './request'
 
+//根据订单id绑定fcid资方
+export function updateFinancingChannel(param){
+    return request({
+        method:'post',
+        url:'/api/loan/financingChannel/update',
+        data:param
+    })
+}
 // 选择经销商
 export function ExhibitionLIst(param){
     return request({
@@ -316,6 +324,31 @@ export function updatePassword(param) {
         data:param
     })
  }
+
+ //平安贷款信息头表
+ export function loanHeadPazl(param) { 
+    return request({
+        method:'get',
+        url:'/api/loanHeadPazl/info/' + param.loanNumber,
+        data:param
+    })
+}
+// 平安线上征信
+export function getMainCustomerInfo(param) { 
+    return request({
+        method:'get',
+        url:'/api/customerInfoPazl/getMainCustomerInfoPazl/' + param.loanNumber,
+        data:param
+    })
+}
+// 预审批申请
+export function creditApply(param){
+    return request({
+       method:'post',
+       url:'/api/loanHeadPazl/credit/apply',
+       data:param
+    })
+}
  //  =========================逾期查询========================
  // 逾期查询列表
  export function overdueList(param){

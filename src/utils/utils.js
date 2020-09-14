@@ -287,6 +287,60 @@ export function getValue(type,index){
                 break;
               }
           }
+      }else if(type == "15"){
+        switch(parseInt(index)){
+          case 1: {
+            return "承租人";
+            break;
+          }
+          case 2: {
+            return "配偶";
+            break;
+          }
+          case 3: {
+            return "担保人";
+            break;
+          }
+          case 4: {
+            return "共借人";
+            break;
+          }
+          case 6: {
+            return "共借人与配偶";
+            break;
+          }
+        }
+      }else if(type == "16"){
+          var str = '';
+          switch (parseInt(index)) {
+              case 2 :
+                  str += '待人工征信查询';
+                  break;
+              case 3 :
+                  str += '人工征信退回';
+                  break;
+              case 4 :
+                  str += '人行征信审核拒绝';
+                  break;
+              case 5 :
+                  str += '人行征信审核通过';
+                  break;
+              case 6:
+                  str += '反欺诈校验中';
+                  break;
+              case 7 :
+                  str += '预审拒绝';
+                  break;
+              case 8 :
+                  str += '预审通过';
+                  break;
+              case 9 :
+                  str += '已创建申请';
+                  break;
+              default:
+                  str += "";
+          }
+          return str;
       }
 }
 export function getKey(value,list){

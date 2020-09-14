@@ -64,7 +64,12 @@
 </template>
 
 <script>
-import { submitStartTask, CarInfo, BusinessInfo } from "../../request/api";
+import {
+  submitStartTask,
+  CarInfo,
+  BusinessInfo,
+  updateFinancingChannel,
+} from "../../request/api";
 export default {
   data() {
     return {
@@ -140,13 +145,21 @@ export default {
         this.$toast.fail("请先选择资方！");
         return;
       }
-
-      this.$router.push({
-        path: "/PAProductInfo",
+      updateFinancingChannel({
+        loanNumber: this.$store.state.loanNumber,
+        fcId: this.fcId,
+        fcName: this.fcName,
+      }).then((res) => {
+        if (!res.data.success) {
+          this.$toast.fail("保存失败！");
+        } else {
+          if (this.fcId == 1) {
+            this.$router.push({
+              path: "/PAProductInfo",
+            });
+          }
+        }
       });
-      // this.$router.push({
-      //   path: "/selectProduct"
-      // });
     },
     toDetail(val) {
       if (val.name === "车辆信息") {
@@ -192,9 +205,15 @@ export default {
               });
             } else {
               this.showProduct = false;
-              this.$router.push({
-                path: "/PAProductInfo",
-              });
+              if (financingChannel == 1) {
+                this.$router.push({
+                  path: "/PAProductInfo",
+                });
+              } else {
+                this.$router.push({
+                  path: "/selectProduct",
+                });
+              }
             }
           }
         );

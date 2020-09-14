@@ -330,7 +330,7 @@ import {
   addCost,
   delCost,
   saveBussinessInfo,
-  codeList
+  codeList,
 } from "../../request/api";
 export default {
   data() {
@@ -372,31 +372,31 @@ export default {
         repaymentMethod: "", //还款方式 1-等额本息，2-等额本金，3-等本等息
         repaymentMethodName: "", //还款方式 1-等额本息，2-等额本金，3-等本等息
         useMethod: "", //融资用途 数据字典-贷款用途
-        useMethodValue: "" // 自己加的
+        useMethodValue: "", // 自己加的
       },
       amount: 0, //融资金额
-      cosList: [] //费用信息列表
+      cosList: [], //费用信息列表
     };
   },
   watch: {
     "baseInfo.downPaymentAmount": {
       deep: true,
-      handler: function(newValue, oldValue) {
+      handler: function (newValue, oldValue) {
         console.log(newValue, oldValue);
         this.calculateCost();
-      }
+      },
     },
     showAddCost: {
       deep: true,
-      handler: function(newValue, oldValue) {
+      handler: function (newValue, oldValue) {
         if (!newValue) {
           this.addCostId = 0;
           this.addCostType = "";
           this.addCostAmount = "";
           this.addCostTypeValue = "";
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     getPickData(list) {
@@ -422,13 +422,13 @@ export default {
         duration: 0,
         message: "保存中...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
       let param = Object.assign({
         id: this.addCostId,
         loanNumber: this.$store.state.loanNumber,
         expenseType: this.addCostType,
-        amount: this.addCostAmount
+        amount: this.addCostAmount,
       });
 
       if (this.addCostType == "" || this.addCostAmount == "") {
@@ -436,7 +436,7 @@ export default {
         return;
       }
       console.log("保存费用：", param);
-      addCost(param).then(res => {
+      addCost(param).then((res) => {
         toast.clear();
         this.getCostList();
       });
@@ -448,12 +448,12 @@ export default {
         duration: 0,
         message: "删除中...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
       let param = Object.assign({
-        id: item.id
+        id: item.id,
       });
-      delCost(param).then(res => {
+      delCost(param).then((res) => {
         toast.clear();
         this.getCostList();
       });
@@ -516,7 +516,7 @@ export default {
         duration: 0,
         message: "保存中...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
       if (this.baseInfo.businessModel == "1") {
         this.baseInfo.leaseType = "2";
@@ -538,7 +538,7 @@ export default {
         repaymentMethod: this.baseInfo.repaymentMethod,
         useMethod: this.baseInfo.useMethod,
         rate: this.rate,
-        gpsAmount: this.gpsAmount
+        gpsAmount: this.gpsAmount,
       });
       console.log(param);
       if (
@@ -559,7 +559,7 @@ export default {
         this.$toast.fail("请将必填项填写完整");
         return;
       }
-      saveBussinessInfo(param).then(res => {
+      saveBussinessInfo(param).then((res) => {
         toast.clear();
         this.$router.back();
       });
@@ -572,10 +572,10 @@ export default {
         downPaymentAmount: !this.baseInfo.downPaymentAmount
           ? 0
           : this.baseInfo.downPaymentAmount,
-        loanNumber: this.$store.state.loanNumber
+        loanNumber: this.$store.state.loanNumber,
       });
       console.log(param);
-      CalculateCost(param).then(res => {
+      CalculateCost(param).then((res) => {
         console.log(res);
         this.totalAmount = res.data.data.totalAmount;
         this.amount = res.data.data.amount;
@@ -584,7 +584,7 @@ export default {
       });
     },
     getBusinessInfo() {
-      BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(res => {
+      BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then((res) => {
         console.log("BusinessInfo", res);
         this.baseInfo = res.data.data;
         // 1-等额本息，2-等额本金，3-等本等息
@@ -597,8 +597,9 @@ export default {
           } else if (this.baseInfo.repaymentMethod == "3") {
             this.baseInfo.repaymentMethodName = "等本等息";
           }
-        } else { // 默认等额本息
-          this.baseInfo.repaymentMethod = '1';
+        } else {
+          // 默认等额本息
+          this.baseInfo.repaymentMethod = "1";
           this.baseInfo.repaymentMethodName = "等额本息";
         }
 
@@ -610,9 +611,10 @@ export default {
             this.baseInfo.useMethod,
             this.useTypeList
           );
-        }else{ // 默认消费性购车
+        } else {
+          // 默认消费性购车
           this.baseInfo.useMethod = "1";
-          this.baseInfo.useMethodValue = "消费性购车"
+          this.baseInfo.useMethodValue = "消费性购车";
         }
 
         this.baseInfo.businessModel = "1";
@@ -626,7 +628,7 @@ export default {
     },
     // 费用列表
     getCostList() {
-      CostList({ loanNumber: this.$store.state.loanNumber }).then(res => {
+      CostList({ loanNumber: this.$store.state.loanNumber }).then((res) => {
         console.log(res);
         this.cosList = res.data.data;
 
@@ -648,19 +650,19 @@ export default {
     // 获取码值列表
     getCode() {
       // 获取费用类型
-      codeList({ codeType: "expenseType" }).then(res => {
+      codeList({ codeType: "expenseType" }).then((res) => {
         this.cosTypeList = res.data.data;
-        codeList({ codeType: "useType" }).then(res => {
+        codeList({ codeType: "useType" }).then((res) => {
           this.useTypeList = res.data.data;
           this.getBusinessInfo();
         });
       });
-    }
+    },
   },
   mounted() {
     // 获取码值
     this.getCode();
-  }
+  },
 };
 </script>
 
