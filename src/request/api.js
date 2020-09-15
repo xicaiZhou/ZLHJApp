@@ -349,6 +349,31 @@ export function creditApply(param){
        data:param
     })
 }
+// 结果查询
+export function SearchResult(param){
+    return request({
+       method:'get',
+       url:'/api/loanHeadPazl/credit/result/' + param.loanNumber,
+       data:param
+    })
+}
+
+// 预审批申请
+export function confirmAuthorization(param){
+    return request({
+       method:'post',
+       url:'/api/loanPazl/credit/confirm',
+       data:param
+    })
+}
+// pa车辆详情
+export function SearchResult(param){
+    return request({
+       method:'get',
+       url:'/api/carDetailPazl/info/' + param.loanNumber,
+       data:param
+    })
+}
  //  =========================逾期查询========================
  // 逾期查询列表
  export function overdueList(param){

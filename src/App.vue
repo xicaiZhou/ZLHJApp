@@ -57,6 +57,11 @@ body {
   pointer-events: none !important;
   background-color: #f7f7f7 !important;
 }
+.read{
+  pointer-events: auto !important;
+  background-color:#fff !important;
+}
+
 .van-field__body input {
   text-align: right;
   overflow: hidden;
