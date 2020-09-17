@@ -291,7 +291,7 @@
             placeholder="请选择驾照类型"
             @click="showDrivingLicenseType = true"
           />
-                    <div>
+          <div>
             <div class="zlhjRadio" style="display:flex">
               <span class="zlhjRadio_title">购车目的：</span>
               <div class="zlhjRadio_body">
@@ -337,7 +337,6 @@
             placeholder="请填写原有车辆所有人证件号码"
           />
         </template>
-        
       </van-form>
     </div>
     <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
@@ -403,7 +402,7 @@ export default {
       maxDate: new Date(),
       radio: 1,
       showBusiness: false,
-      showDrivingLicenseType:false,
+      showDrivingLicenseType: false,
       businessList: ["新车", "二手车"],
       idTypeList: ["身份证", "社会统一信用代码"],
       loginSysUserVo: {
@@ -436,8 +435,7 @@ export default {
         licenseType: "", //车牌类型 1:私牌 2:公牌
         importFlag: "", //进口标志 1:进口 2:非进口
         hasDrivingLicense: "", //是否有驾照 1:有 2:没有
-        buyPurpose:"", //1-自用 2-经营
-
+        buyPurpose: "", //1-自用 2-经营
       },
     };
   },

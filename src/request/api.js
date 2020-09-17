@@ -366,8 +366,8 @@ export function confirmAuthorization(param){
        data:param
     })
 }
-// pa车辆详情
-export function SearchResult(param){
+// 车辆详情
+export function paCarDetailInfo(param){
     return request({
        method:'get',
        url:'/api/carDetailPazl/info/' + param.loanNumber,
