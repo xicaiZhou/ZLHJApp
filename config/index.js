@@ -4,8 +4,8 @@
 
 const path = require('path')
 
-var baseUrl = 'http://dacsit.vipgz1.idcfengye.com'
-// var baseUrl = 'http://tuoyan.vipgz1.idcfengye.com'
+// var baseUrl = 'http://dacsit.vipgz1.idcfengye.com'
+var baseUrl = 'http://tuoyan.vipgz1.idcfengye.com'
 module.exports = {
   dev: {
 
