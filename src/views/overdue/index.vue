@@ -44,8 +44,8 @@
             placeholder="请填写展厅名称"
           />
           <div class="searchBtn">
-            <van-button style="width:40%" block type="info" @click="toSearch">查询</van-button>
-            <van-button style="width:40%" type="info" @click="toClear">重置</van-button>
+            <van-button style="width:40%" color="#385783"  block type="info" @click="toSearch">查 询</van-button>
+            <van-button style="width:40%" color="#385783" type="info" @click="toClear">重 置</van-button>
           </div>
         </div>
       </van-popup>
@@ -303,10 +303,10 @@ export default {
   margin-top: 5px;
   height: 1px;
   width: 100%;
-  background: #ff9900;
+  background: #385783;
 }
 
-span {
+.item span {
   color: #333333;
 }
 .edit {

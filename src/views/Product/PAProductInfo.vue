@@ -83,12 +83,12 @@
               <div class="zlhjRadio_body" style="height:30px;">
                 <van-button
                   v-show="loanInfo.flag == 0"
-                  style="color:#ffffff;background:#ff9900;height:30px;"
+                  style="color:#ffffff;background:#385783;height:30px;"
                   @click="upload(1)"
                 >上传</van-button>
                 <van-button
                   v-show="mainCustomerInfo.authorizationUrl"
-                  style="color:#ffffff;;background:#ff9900;height:30px;"
+                  style="color:#ffffff;;background:#385783;height:30px;"
                   @click="seeFile(1)"
                 >查看</van-button>
               </div>
@@ -98,12 +98,12 @@
               <div class="zlhjRadio_body" style="height:30px;">
                 <van-button
                   v-show="loanInfo.flag == 0"
-                  style="color:#ffffff;;background:#ff9900;height:30px;"
+                  style="color:#ffffff;;background:#385783;height:30px;"
                   @click="upload(2)"
                 >上传</van-button>
                 <van-button
                   v-show="mainCustomerInfo.pictureUrl"
-                  style="color:#ffffff;;background:#ff9900;height:30px;"
+                  style="color:#ffffff;;background:#385783;height:30px;"
                   @click="seeFile(2)"
                 >查看</van-button>
               </div>
@@ -114,12 +114,12 @@
                 style="width:90%; margin:0 auto;display:flex;height:40px"
               >
                 <van-button
-                  style="flex:1; color:#ffffff; height:40px;background-color:#ff9900;"
+                  style="flex:1; color:#ffffff; height:40px;background-color:#385783;"
                   @click="toApply"
                 >预审批申请</van-button>
                 <van-button
                   v-show="!loanInfo.status"
-                  style="flex:1; color:#ffffff; height:40px;background-color:#ff9900;"
+                  style="flex:1; color:#ffffff; height:40px;background-color:#385783;"
                   @click="toSearchResult"
                 >结果查询</van-button>
               </div>
@@ -145,7 +145,7 @@
             <div>
               <van-button
                 v-if="isShowAuthorizationBtn"
-                style="width:90%; margin-left:5%;color:#fff;background:#ff9900;height:40px;"
+                style="width:90%; margin-left:5%;color:#fff;background:#385783;height:40px;"
                 @click="authorization"
               >确认授权</van-button>
               <van-field v-else class="readOnly" required readonly label="授权结果:" v-model="value"></van-field>
@@ -160,7 +160,7 @@
           <div style="display:flex; justify-content: space-between;">
             <div class="header">车辆信息（新车）</div>
             <div
-              style="color:#ffffff; height:30px;background-color:#ff9900;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
+              style="color:#ffffff; height:30px;background-color:#385783;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
             >选择车型</div>
           </div>
           <van-field required is-link readonly clickable label="品牌车型:" placeholder="请选择品牌车型" />
@@ -187,7 +187,7 @@
           <div style="display:flex; justify-content: space-between;">
             <div class="header">车辆信息（二手车）</div>
             <div
-              style="color:#ffffff; height:30px;background-color:#ff9900;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
+              style="color:#ffffff; height:30px;background-color:#385783;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
             >查询车型</div>
           </div>
         </div>
@@ -216,7 +216,7 @@
         <div style="display:flex; justify-content: space-between;">
           <div class="header">产品信息</div>
           <div
-            style="color:#ffffff; height:30px;background-color:#ff9900;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
+            style="color:#ffffff; height:30px;background-color:#385783;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
           >还款计划表</div>
         </div>
         <van-field

@@ -10,7 +10,7 @@
     </van-popup>
     <van-popup v-model="showProduct" :style="{ height: '250px', width: '90%'}" get-container="body">
       <div>
-        <div style="text-align: center;margin-top:30px;color:#ff9900">请选择资方</div>
+        <div style="text-align: center;margin-top:30px;color:#385783">请选择资方</div>
         <van-field
           readonly
           clickable
@@ -22,7 +22,7 @@
           @click="selectZF=true"
         />
         <van-button
-          style="width:90%;background:#ff9900;border:none;margin:0 auto; margin-top:50px"
+          style="width:90%;background:#385783;border:none;margin:0 auto; margin-top:50px"
           block
           type="info"
           @click="toProductInfo"
@@ -43,7 +43,7 @@
         <div style="margin-left:4px">{{item.name}}</div>
       </div>
       <div class="itemR" v-if="item.state <= loanStatus">
-        <van-icon name="checked" color="#ff9900" size="22" />
+        <van-icon name="checked" color="#385783" size="22" />
         <div style="margin-left:10px;">已完成</div>
       </div>
       <div class="itemR" v-else>
@@ -54,7 +54,7 @@
     <div class="tips">提交审核后，审核人员会根据您提交的材料反馈审核结果，请耐心等待！</div>
     <div v-show="loanStatus <= 50" class="subBtn1" ref="subBtn">
       <van-button
-        style="width:100%;background:#ff9900;border:none"
+        style="width:100%;background:#385783;border:none"
         block
         type="info"
         @click="toSub"
@@ -187,36 +187,39 @@ export default {
           this.$toast.fail("请先录入人员信息");
           return;
         }
-        BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(
-          (res) => {
-            let financingChannel = res.data.data.fcId;
-            console.log("有fcId吗：", financingChannel);
+        this.$router.push({
+          path: "/selectProduct",
+        });
+        //  BusinessInfo({ loanNumber: this.$store.state.loanNumber }).then(
+        //   (res) => {
+        //     let financingChannel = res.data.data.fcId;
+        //     console.log("有fcId吗：", financingChannel);
 
-            if (!financingChannel) {
-              //没有fcid
-              // 资方列表
-              financingChannelList().then((res) => {
-                console.log("资方列表：", res);
-                this.fcList = res.data.data;
-                for (let index in this.fcList) {
-                  this.zfList.push(this.fcList[index].name);
-                }
-                this.showProduct = true;
-              });
-            } else {
-              this.showProduct = false;
-              if (financingChannel == 1) {
-                this.$router.push({
-                  path: "/PAProductInfo",
-                });
-              } else {
-                this.$router.push({
-                  path: "/selectProduct",
-                });
-              }
-            }
-          }
-        );
+        //     if (!financingChannel) {
+        //       //没有fcid
+        //       // 资方列表
+        //       financingChannelList().then((res) => {
+        //         console.log("资方列表：", res);
+        //         this.fcList = res.data.data;
+        //         for (let index in this.fcList) {
+        //           this.zfList.push(this.fcList[index].name);
+        //         }
+        //         this.showProduct = true;
+        //       });
+        //     } else {
+        //       this.showProduct = false;
+        //       if (financingChannel == 1) {
+        //         this.$router.push({
+        //           path: "/PAProductInfo",
+        //         });
+        //       } else {
+        //         this.$router.push({
+        //           path: "/selectProduct",
+        //         });
+        //       }
+        //     }
+        //   }
+        // );
       } else if (val.name === "文件信息") {
         if (this.loanStatus + 10 < val.state) {
           this.$toast.fail("请先录入产品信息");

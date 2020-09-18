@@ -19,7 +19,7 @@
           <div style="display:flex; justify-content: space-between;">
             <div class="header">产品信息</div>
             <div
-              style="color:#ffffff; height:30px;background-color:#ff9900;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
+              style="color:#ffffff; height:30px;background-color:#385783;padding:0 10px;margin-right:10px; margin-top:10px;line-height:30px"
               @click="reimbursementPlan"
             >还款计划表</div>
           </div>

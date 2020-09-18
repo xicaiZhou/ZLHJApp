@@ -47,7 +47,7 @@
       />
     </van-cell-group>
     <div style="padding:30px">
-      <van-button type="primary" size="large" color="#ff9900" @click="goLogout">登 出</van-button>
+      <van-button type="primary" size="large" color="#385783" @click="goLogout">登 出</van-button>
     </div>
   </div>
 </template>

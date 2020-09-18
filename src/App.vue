@@ -72,7 +72,7 @@ body {
 .subBtn {
   position: fixed !important;
   left: 0 !important;
-  bottom: 0px !important;
+  bottom: 5px !important;
   width: 100% !important;
   background: #fff !important;
 }
@@ -80,7 +80,7 @@ body {
 .subBtn_body {
   width: 90% !important;
   margin: auto !important;
-  background: #ff9900 !important;
+  background: #385783 !important;
   border: none !important;
 }
 .zlhjRadio {
@@ -124,7 +124,7 @@ body {
   line-height: 27px;
   padding: 0 8px;
   height: 27px;
-  background-color: #ff9900;
+  background-color: #385783;
   color: #fff;
   margin-right: 8px;
 }
@@ -137,7 +137,7 @@ body {
   padding: 0 16px;
   font-size: 17px;
   font-weight: bold;
-  color: #ff9900;
+  color: #385783;
   height: 40px;
   line-height: 50px;
 }

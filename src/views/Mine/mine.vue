@@ -29,7 +29,7 @@
       />
   </van-cell-group>
     <div>
-      <van-tabbar route v-model="active" @change="onChange">
+      <van-tabbar route v-model="active" @change="onChange" active-color="#385783" inactive-color="#C7C7C7">
         <van-tabbar-item replace to="/" icon="home-o">首页</van-tabbar-item>
         <van-tabbar-item replace to="/search" icon="search">查询</van-tabbar-item>
         <van-tabbar-item replace to="/mine" icon="friends-o">我的</van-tabbar-item>
@@ -60,7 +60,7 @@ export default {
 
 <style scoped>
 .bgView {
-  background: #ff9900;
+  background: #385783;
   display: flex;
   height: 150px;
   width: 100%;

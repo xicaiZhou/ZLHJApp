@@ -68,7 +68,7 @@
         <div class="headerAndBtn">
           <div class="header">费用信息</div>
           <div style="width:40px;margin-top:18px;" @click="showAddCost = true">
-            <van-icon color="#ff9900" size="20px" name="add-o" />
+            <van-icon color="#385783" size="20px" name="add-o" />
           </div>
         </div>
         <div class="costBox">
@@ -83,10 +83,10 @@
                 <div style="margin-top:5px">实际金额: {{item.amount}} 元</div>
               </div>
               <div v-if="item.expenseType != '1'" class="costBox_item_action">
-                <van-button style="height:100%;width:100%;" type="info" @click="delectCost(item)">删除</van-button>
+                <van-button color="#385783" style="height:100%;width:100%;" type="info" @click="delectCost(item)">删除</van-button>
               </div>
               <div v-else class="costBox_item_action">
-                <van-button style="height:100%;width:100%;" type="info">-</van-button>
+                <van-button color="#385783" style="height:100%;width:100%;" type="info">-</van-button>
               </div>
             </div>
           </div>

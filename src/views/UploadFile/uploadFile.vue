@@ -109,7 +109,7 @@ export default {
         forbidClick: true,
         loadingType: "spinner"
       });
-      updateStatus({ loanNumber: this.$store.state.loanNumber, loanStatus: "30" }).then(res => {
+      updateStatus({ loanNumber: this.$store.state.loanNumber, loanStatus: "50" }).then(res => {
         toast.clear();
         this.$router.back();
       });
@@ -238,7 +238,7 @@ export default {
   border: 1px solid #fff;
   box-shadow: 0px 5px 5px #ebedf0;
   background: #fff;
-  color: #ff9900;
+  color: #385783;
   font-weight: bold;
   padding: 10px;
 }
@@ -248,9 +248,9 @@ export default {
   margin-top: 10px;
   line-height: 40px;
   text-align: center;
-  border: 1px solid #ff9900;
+  border: 1px solid #385783;
   box-shadow: 0px 5px 5px #ebedf0;
-  background: #ff9900;
+  background: #385783;
   color: #333333;
   font-weight: bold;
 }

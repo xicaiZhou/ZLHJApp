@@ -377,7 +377,7 @@ export default {
   width: 20%;
 }
 .file-item-title {
-  color: #ff9900;
+  color: #385783;
   font-size: 17px;
   font-weight: bold;
 }

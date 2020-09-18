@@ -254,12 +254,14 @@
           <div class="header">主要财产信息</div>
           <van-field
             required
+            type="number"
             label="每月家庭净收入(元):"
             v-model="customerAssets.familyMonthIncome"
             placeholder="请填写每月家庭净收入"
           />
           <van-field
             required
+            type="number"
             label="月平均支出(元):"
             v-model="customerAssets.familyMonthExpenditure"
             placeholder="请填写月平均支出"
@@ -430,6 +432,7 @@
           <van-field
             required
             label="手机号:"
+            type="tel"
             v-model="customerSpouseInfo.spousePhone"
             placeholder="请填写配偶手机号"
           />
@@ -496,6 +499,7 @@
               required
               label="联系人手机号:"
               v-model="item.contactPersonPhone"
+              type="tel"
               placeholder="请填写联系人手机号"
             />
             <div>

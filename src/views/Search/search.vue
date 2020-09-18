@@ -56,8 +56,8 @@
             placeholder="请填写展厅名称"
           />
           <div class="searchBtn">
-            <van-button style="width:40%" block type="info" @click="toSearch">查询</van-button>
-            <van-button style="width:40%" type="info" @click="toClear">重置</van-button>
+            <van-button style="width:40%;" color="#385783" type="info" @click="toSearch">查 询</van-button>
+            <van-button style="width:40%;" color="#385783" type="info" @click="toClear">重 置</van-button>
           </div>
         </div>
       </van-popup>
@@ -172,7 +172,7 @@
         </van-list>
       </van-pull-refresh>
     </div>
-    <van-tabbar route v-model="active">
+    <van-tabbar route v-model="active" active-color="#385783" inactive-color="#C7C7C7">
       <van-tabbar-item replace to="/" icon="home-o">首页</van-tabbar-item>
       <van-tabbar-item replace to="/search" icon="search">查询</van-tabbar-item>
       <van-tabbar-item replace to="/mine" icon="friends-o">我的</van-tabbar-item>
@@ -406,6 +406,7 @@ export default {
 .searchBtn {
   display: flex;
   margin-top: 20px;
+  color: #fff;
   justify-content: space-between;
 }
 
@@ -413,10 +414,10 @@ export default {
   margin-top: 5px;
   height: 1px;
   width: 100%;
-  background: #ff9900;
+  background: #385783;
 }
 
-span {
+.item span {
   color: #333333;
 }
 .edit {

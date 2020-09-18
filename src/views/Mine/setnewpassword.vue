@@ -7,7 +7,7 @@
       <van-field v-model="confirmPassword" label="确认新密码" placeholder="请输入新密码" />
     </van-cell-group>
     <div style="padding:30px">
-      <van-button type="primary" size="large" color="#ff9900" @click="update">确认</van-button>
+      <van-button type="primary" size="large" color="#385783" @click="update">确认</van-button>
     </div>
   </div>
 </template>

@@ -9,7 +9,7 @@
             @click="addMainUser()"
             v-show="(loanStatus >= 0 && loanStatus < 60)"
           >
-            <van-icon color="#ff9900" size="20px" name="add-o" />
+            <van-icon color="#385783" size="20px" name="add-o" />
           </div>
         </div>
         <div v-for="(item,index) in mainListData" :key="index" @click="toDetail(item)">
@@ -24,7 +24,7 @@
                 <div>{{item.customerType == "1" ? "自然人" : "企业"}}</div>
                 <van-icon
                   v-if="item.saveFlag == 1"
-                  color="#0066FF"
+                  color="#385783"
                   style="margin-left:4px"
                   name="checked"
                   size="18"
@@ -46,7 +46,7 @@
             @click="addDanBaoUser()"
             v-show="(loanStatus >= 0 && loanStatus < 60)"
           >
-            <van-icon color="#ff9900" size="20px" name="add-o" />
+            <van-icon color="#385783" size="20px" name="add-o" />
           </div>
         </div>
         <div v-for="(item,index) in danbaoListData" :key="index" @click="toDetail(item)">
@@ -57,16 +57,17 @@
                 <div style="margin-left:4px">{{item.customerName}}</div>
                 <div style="margin-left:20px">{{item.relationValue}}</div>
               </div>
+              
               <div class="itemR">
                 <div>{{item.customerType == "1" ? "自然人" : "企业"}}</div>
                 <van-icon
                   v-if="item.saveFlag == 1"
-                  color="#0066FF"
+                  color="#385783"
                   style="margin-left:4px"
                   name="checked"
                   size="18"
                 />
-                <van-icon v-else style="margin-left:4px" name="info-o" size="18" />
+                <van-icon v-else  style="margin-left:4px" name="info-o" size="18" />
               </div>
             </div>
             <template #right v-if="(loanStatus >= 0 && loanStatus < 60)">
@@ -141,7 +142,7 @@
             />
           </div>
           <div class="showAddCost_btn van-hairline--top">
-            <van-button style="width:50%" @click="showAddUser = false">取消</van-button>
+            <van-button style="width:50%"  color= "#385783" @click="showAddUser = false">取消</van-button>
             <van-button style="width:50%" type="info" @click="addUserAction">保存</van-button>
           </div>
         </div>
