@@ -4,7 +4,6 @@ Vue.use(Vuex)
 
 const store = new Vuex.Store({
     state:{
-        // screenHeight:200,
         userInfo: {
             loginSysUserVo: {
               id: 0, //iOS传id

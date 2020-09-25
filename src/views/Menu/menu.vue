@@ -105,6 +105,7 @@ export default {
     };
   },
   mounted() {
+    
     console.log("ppppppppppppploanNumber:", this.$store.state.loanNumber);
     if (this.$store.state.loanNumber) {
       CarInfo({ loanNumber: this.$store.state.loanNumber }).then((res) => {

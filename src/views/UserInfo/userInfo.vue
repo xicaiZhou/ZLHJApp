@@ -109,6 +109,7 @@
               @click="showCustomerTypeAction"
             />
             <van-field
+            required
               v-model="addUserInfo.customerName"
               style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
               label="客户名称:"
@@ -116,6 +117,7 @@
             />
             <van-field
               readonly
+              required
               clickable
               is-link
               style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
@@ -127,6 +129,7 @@
             <van-field
               readonly
               clickable
+              required
               is-link
               style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
               label="证件类型:"
@@ -135,6 +138,7 @@
               @click="popIdType"
             />
             <van-field
+            required
               v-model="addUserInfo.idNum"
               style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
               label="证件号码:"
@@ -142,8 +146,8 @@
             />
           </div>
           <div class="showAddCost_btn van-hairline--top">
-            <van-button style="width:50%"  color= "#385783" @click="showAddUser = false">取消</van-button>
-            <van-button style="width:50%" type="info" @click="addUserAction">保存</van-button>
+            <van-button style="width:50%" @click="showAddUser = false">取 消</van-button>
+            <van-button style="width:50%"  color= "#385783" type="info" @click="addUserAction">保 存</van-button>
           </div>
         </div>
       </van-popup>
@@ -409,7 +413,6 @@ export default {
       }
       this.showRole = false;
     },
-
     selectRelation(val) {
       console.log(val);
       if (this.addUserInfo.customerType == "1") {
@@ -481,8 +484,12 @@ export default {
     },
     addUserAction() {
       if (
+        this.addUserInfo.customerName == "" ||
         this.addUserInfo.customerRole == "" ||
-        this.addUserInfo.customerType == ""
+        this.addUserInfo.customerType == "" ||
+        this.addUserInfo.relation == "" ||
+        this.addUserInfo.idType == "" ||
+        this.addUserInfo.idNum == ""
       ) {
         this.$toast.fail("请将必填项填写完整");
         return;

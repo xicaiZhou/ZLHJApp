@@ -10,6 +10,17 @@
 <script>
 export default {
   name: "App",
+  mounted(){
+        //js与原生app交互  //原生掉JS
+    window.hideHUD = res => {
+      this.hideHUD();
+    };
+  },
+  methods:{
+    hideHUD(){
+      this.$toast.clear()
+    }
+  },
   created() {
     // //在页面加载时读取sessionStorage里的状态信息
     // if (sessionStorage.getItem("store")) {

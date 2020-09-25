@@ -5,7 +5,8 @@
         <div class="header">人员列表</div>
         <div class="userlist">
           <div
-            style="margin-top:10px;margin-left:10px;" class="van-hairline--surround"
+            style="margin-top:10px;margin-left:10px;"
+            class="van-hairline--surround"
             v-for="(item,index) in this.dataList"
             :key="index"
             @click="changeUser(index)"
@@ -69,7 +70,7 @@ import {
   fileDetail,
   deleteAllFile,
   deleteFile,
-  updateStatus
+  updateStatus,
 } from "../../request/api";
 import { updataInfo } from "../../utils/bridge";
 
@@ -82,7 +83,7 @@ export default {
       loanFileVoList: [],
       activeName: -1,
       currentIndex: 0,
-      width: 300
+      width: 300,
     };
   },
   methods: {
@@ -103,13 +104,16 @@ export default {
         }
       }
 
-       const toast = this.$toast.loading({
+      const toast = this.$toast.loading({
         duration: 0,
         message: "保存中...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
-      updateStatus({ loanNumber: this.$store.state.loanNumber, loanStatus: "50" }).then(res => {
+      updateStatus({
+        loanNumber: this.$store.state.loanNumber,
+        loanStatus: "50",
+      }).then((res) => {
         toast.clear();
         this.$router.back();
       });
@@ -126,7 +130,7 @@ export default {
     },
     delAll(item) {
       console.log(item);
-      deleteAllFile({ fileId: item.id }).then(res => {
+      deleteAllFile({ fileId: item.id }).then((res) => {
         this.getAllFileList();
       });
     },
@@ -134,8 +138,8 @@ export default {
       if (this.loanStatus >= 0 && this.loanStatus < 60) {
         deleteFile({
           loanNumber: this.$store.state.loanNumber,
-          id: val.id
-        }).then(res => {
+          id: val.id,
+        }).then((res) => {
           console.log(res);
           this.getAllFileList();
         });
@@ -143,7 +147,7 @@ export default {
     },
     updataimage(item) {
       item.loanNumber = this.$store.state.loanNumber;
-      console.log("item:",item);
+      console.log("item:", item);
 
       updataInfo(item);
     },
@@ -152,14 +156,20 @@ export default {
         duration: 0,
         message: "加载...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
       console.log(this.$store.state.loanNumber);
-      allFileList({ loanNumber: this.$store.state.loanNumber }).then(res => {
-        console.log(res);
-        this.dataList = res.data.data;
-        this.dealData(this.currentIndex);
-        toast.clear();
+      allFileList({ loanNumber: this.$store.state.loanNumber }).then((res) => {
+        console.log("AllFileList:", res);
+
+        if (res.data.data.length > 0) {
+          this.dataList = res.data.data;
+          this.dealData(this.currentIndex);
+          toast.clear();
+        } else {
+          toast.clear();
+          this.$toast.fail("暂无人员列表！")
+        }
       });
     },
     dealData(index) {
@@ -170,7 +180,7 @@ export default {
       }
     },
     getFileDetail(item) {
-      fileDetail({ fileId: item.id }).then(res => {
+      fileDetail({ fileId: item.id }).then((res) => {
         console.log(res);
         // item.fileList = [];
         let list = res.data.data;
@@ -180,22 +190,22 @@ export default {
           item.fileList.push({
             url: list[index].fileUrl,
             deletable: true,
-            id: list[index].id
+            id: list[index].id,
           });
         }
         this.activeName = this.activeName + 1;
         this.activeName = this.activeName - 1;
       });
-    }
+    },
   },
   created() {
-    window.uploadData = res => {
+    window.uploadData = (res) => {
       this.uploadData1();
     };
   },
   mounted() {
     this.getAllFileList();
-  }
+  },
 };
 </script>
 <style>
@@ -232,6 +242,7 @@ export default {
 
 .user-item {
   height: 40px;
+  padding: 10px;
   margin-top: 10px;
   line-height: 40px;
   text-align: center;
@@ -240,7 +251,7 @@ export default {
   background: #fff;
   color: #385783;
   font-weight: bold;
-  padding: 10px;
+  
 }
 .user-item-selected {
   height: 40px;
@@ -251,7 +262,7 @@ export default {
   border: 1px solid #385783;
   box-shadow: 0px 5px 5px #ebedf0;
   background: #385783;
-  color: #333333;
+  color: #fff;
   font-weight: bold;
 }
 .file-item {
