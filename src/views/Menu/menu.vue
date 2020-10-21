@@ -52,7 +52,7 @@
       </div>
     </div>
     <div class="tips">提交审核后，审核人员会根据您提交的材料反馈审核结果，请耐心等待！</div>
-    <div v-show="loanStatus <= 50" class="subBtn1" ref="subBtn">
+    <div v-show="(loanStatus >= 0 && loanStatus < 60)" class="subBtn1" ref="subBtn">
       <van-button
         style="width:100%;background:#385783;border:none"
         block
@@ -70,6 +70,7 @@ import {
   BusinessInfo,
   updateFinancingChannel,
 } from "../../request/api";
+
 export default {
   data() {
     return {
@@ -105,7 +106,7 @@ export default {
     };
   },
   mounted() {
-    
+   
     console.log("ppppppppppppploanNumber:", this.$store.state.loanNumber);
     if (this.$store.state.loanNumber) {
       CarInfo({ loanNumber: this.$store.state.loanNumber }).then((res) => {

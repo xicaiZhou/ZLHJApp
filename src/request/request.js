@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {Toast} from 'vant';
+import { Dialog } from 'vant';
 import store from '../store/index'
 import { bridge } from "../utils/bridge";
 /** 创建axios实例*/
@@ -34,11 +35,13 @@ request.interceptors.response.use(
       if(response.data.code == 200){
         return response;
       }else{
-        Toast({
-          message: response.data.message,
-          type: 'error',
-          duration: 2* 1000
-        })
+		Dialog({ message: response.data.message });
+		Toast.clear();
+        // Toast({
+        //   message: response.data.message,
+        //   type: 'error',
+        //   duration: 2* 1000
+        // })
         return Promise.reject()
       }
 

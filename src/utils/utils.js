@@ -361,6 +361,17 @@ export function isEmpty(value){
   return false
 
 }
+// 判断数组是否有相同元素 eg：['11','22','11'] 则返回true
+export function isRepeat(arr) {
+  var hash = {};
+  for (var i in arr) {
+      if (hash[arr[i]]){
+          return true; 
+      }
+      hash[arr[i]] = true;
+  }
+  return false;
+}
 
 // 根据code码获取省市区
 // param : {province:'',city:'',area:''}

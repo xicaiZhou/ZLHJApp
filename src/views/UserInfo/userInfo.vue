@@ -1,77 +1,111 @@
 <template>
-  <div style="height:100%; margin-bottom: 60px;">
+  <div style="height: 100%; margin-bottom: 60px">
     <div>
-      <div style="margin-top:20px">
+      <div style="margin-top: 20px">
         <div class="headerAndBtn">
           <div class="header">承租人信息</div>
           <div
-            style="width:40px;margin-top:18px;"
+            style="width: 40px; margin-top: 18px"
             @click="addMainUser()"
-            v-show="(loanStatus >= 0 && loanStatus < 60)"
+            v-show="loanStatus >= 0 && loanStatus < 60"
           >
             <van-icon color="#385783" size="20px" name="add-o" />
           </div>
         </div>
-        <div v-for="(item,index) in mainListData" :key="index" @click="toDetail(item)">
+        <div
+          v-for="(item, index) in mainListData"
+          :key="index"
+          @click="toDetail(item)"
+        >
           <van-swipe-cell>
             <div class="listItem">
               <div class="itemL">
-                <van-icon name="https://b.yzcdn.cn/vant/icon-demo-1126.png" size="20" />
-                <div style="margin-left:4px">{{item.customerName}}</div>
-                <div style="margin-left:20px">{{item.relationValue}}</div>
+                <van-icon
+                  name="https://b.yzcdn.cn/vant/icon-demo-1126.png"
+                  size="20"
+                />
+                <div style="margin-left: 4px">{{ item.customerName }}</div>
+                <div style="margin-left: 20px">{{ item.relationValue }}</div>
               </div>
               <div class="itemR">
-                <div>{{item.customerType == "1" ? "自然人" : "企业"}}</div>
+                <div>{{ item.customerType == "1" ? "自然人" : "企业" }}</div>
                 <van-icon
                   v-if="item.saveFlag == 1"
                   color="#385783"
-                  style="margin-left:4px"
+                  style="margin-left: 4px"
                   name="checked"
                   size="18"
                 />
-                <van-icon v-else style="margin-left:4px" name="info-o" size="18" />
+                <van-icon
+                  v-else
+                  style="margin-left: 4px"
+                  name="info-o"
+                  size="18"
+                />
               </div>
             </div>
-            <template #right v-if="(loanStatus >= 0 && loanStatus < 60)">
-              <van-button square type="danger" text="删除" @click="delectClick(item)" />
+            <template #right v-if="loanStatus >= 0 && loanStatus < 60">
+              <van-button
+                square
+                type="danger"
+                text="删除"
+                @click="delectClick(item)"
+              />
             </template>
           </van-swipe-cell>
         </div>
       </div>
-      <div style="margin-top:20px">
+      <div style="margin-top: 20px">
         <div class="headerAndBtn">
           <div class="header">担保人信息</div>
           <div
-            style="width:40px;margin-top:18px;"
+            style="width: 40px; margin-top: 18px"
             @click="addDanBaoUser()"
-            v-show="(loanStatus >= 0 && loanStatus < 60)"
+            v-show="loanStatus >= 0 && loanStatus < 60"
           >
             <van-icon color="#385783" size="20px" name="add-o" />
           </div>
         </div>
-        <div v-for="(item,index) in danbaoListData" :key="index" @click="toDetail(item)">
+        <div
+          v-for="(item, index) in danbaoListData"
+          :key="index"
+          @click="toDetail(item)"
+        >
           <van-swipe-cell>
             <div class="listItem">
               <div class="itemL">
-                <van-icon name="https://b.yzcdn.cn/vant/icon-demo-1126.png" size="20" />
-                <div style="margin-left:4px">{{item.customerName}}</div>
-                <div style="margin-left:20px">{{item.relationValue}}</div>
+                <van-icon
+                  name="https://b.yzcdn.cn/vant/icon-demo-1126.png"
+                  size="20"
+                />
+                <div style="margin-left: 4px">{{ item.customerName }}</div>
+                <div style="margin-left: 20px">{{ item.relationValue }}</div>
               </div>
-              
+
               <div class="itemR">
-                <div>{{item.customerType == "1" ? "自然人" : "企业"}}</div>
+                <div>{{ item.customerType == "1" ? "自然人" : "企业" }}</div>
                 <van-icon
                   v-if="item.saveFlag == 1"
                   color="#385783"
-                  style="margin-left:4px"
+                  style="margin-left: 4px"
                   name="checked"
                   size="18"
                 />
-                <van-icon v-else  style="margin-left:4px" name="info-o" size="18" />
+                <van-icon
+                  v-else
+                  style="margin-left: 4px"
+                  name="info-o"
+                  size="18"
+                />
               </div>
             </div>
-            <template #right v-if="(loanStatus >= 0 && loanStatus < 60)">
-              <van-button square type="danger" text="删除" @click="delectClick(item)" />
+            <template #right v-if="loanStatus >= 0 && loanStatus < 60">
+              <van-button
+                square
+                type="danger"
+                text="删除"
+                @click="delectClick(item)"
+              />
             </template>
           </van-swipe-cell>
         </div>
@@ -80,18 +114,23 @@
     <div>
       <van-popup
         v-model="showAddUser"
-        :style="{ height: '452px', width: '93%'}"
+        :style="{ height: '452px', width: '93%' }"
         get-container="body"
       >
         <div>
           <div class="showAddCost_title van-hairline--bottom">添加人员信息</div>
-          <div class="showAddCost_body" style="font-size:10px">
+          <div class="showAddCost_body" style="font-size: 10px">
             <van-field
               readonly
               clickable
               is-link
               required
-              style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+              style="
+                border-style: solid;
+                border-color: #d5d5d5;
+                border-width: 1px;
+                margin-top: 10px;
+              "
               label="客户角色:"
               placeholder="请选择"
               v-model="addUserInfo.customerRoleValue"
@@ -102,16 +141,26 @@
               clickable
               is-link
               required
-              style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+              style="
+                border-style: solid;
+                border-color: #d5d5d5;
+                border-width: 1px;
+                margin-top: 10px;
+              "
               label="客户类型:"
               placeholder="请选择"
               v-model="addUserInfo.customerTypeValue"
               @click="showCustomerTypeAction"
             />
             <van-field
-            required
+              required
               v-model="addUserInfo.customerName"
-              style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+              style="
+                border-style: solid;
+                border-color: #d5d5d5;
+                border-width: 1px;
+                margin-top: 10px;
+              "
               label="客户名称:"
               placeholder="请填写"
             />
@@ -120,7 +169,12 @@
               required
               clickable
               is-link
-              style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+              style="
+                border-style: solid;
+                border-color: #d5d5d5;
+                border-width: 1px;
+                margin-top: 10px;
+              "
               label="与承租人关系:"
               placeholder="请选择"
               v-model="addUserInfo.relationValue"
@@ -131,44 +185,62 @@
               clickable
               required
               is-link
-              style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+              style="
+                border-style: solid;
+                border-color: #d5d5d5;
+                border-width: 1px;
+                margin-top: 10px;
+              "
               label="证件类型:"
               placeholder="请选择"
               v-model="addUserInfo.idTypeValue"
               @click="popIdType"
             />
             <van-field
-            required
+              required
               v-model="addUserInfo.idNum"
-              style="border-style: solid;border-color:#D5D5D5;border-width:1px; margin-top:10px"
+              style="
+                border-style: solid;
+                border-color: #d5d5d5;
+                border-width: 1px;
+                margin-top: 10px;
+              "
               label="证件号码:"
               placeholder="请填写"
             />
           </div>
           <div class="showAddCost_btn van-hairline--top">
-            <van-button style="width:50%" @click="showAddUser = false">取 消</van-button>
-            <van-button style="width:50%"  color= "#385783" type="info" @click="addUserAction">保 存</van-button>
+            <van-button style="width: 50%" @click="showAddUser = false"
+              >取 消</van-button
+            >
+            <van-button
+              style="width: 50%"
+              color="#385783"
+              type="info"
+              @click="addUserAction"
+              >保 存</van-button
+            >
           </div>
         </div>
       </van-popup>
       <van-popup
         v-model="showRole"
         position="bottom"
-        :style="{ height: '300px', width: '100%'}"
+        :style="{ height: '300px', width: '100%' }"
         get-container="body"
       >
         <van-picker
           title
           show-toolbar
-          :columns="isMainUser? ['承租人'] : ['担保人']"
+          :columns="isMainUser ? ['承租人'] : ['担保人']"
           @confirm="selectRole"
-          @cancel="showRole=false"
+          @cancel="showRole = false"
         />
       </van-popup>
       <van-popup
         v-model="showCustomerType"
         position="bottom"
-        :style="{ height: '300px', width: '100%'}"
+        :style="{ height: '300px', width: '100%' }"
         get-container="body"
       >
         <van-picker
@@ -182,7 +254,7 @@
       <van-popup
         v-model="showRelation"
         position="bottom"
-        :style="{ height: '300px', width: '100%'}"
+        :style="{ height: '300px', width: '100%' }"
         get-container="body"
       >
         <van-picker
@@ -190,14 +262,14 @@
           show-toolbar
           :columns="relationList"
           @confirm="selectRelation"
-          @cancel="showRelation=false"
+          @cancel="showRelation = false"
         />
       </van-popup>
 
       <van-popup
         v-model="showIdType"
         position="bottom"
-        :style="{ height: '300px', width: '100%'}"
+        :style="{ height: '300px', width: '100%' }"
         get-container="body"
       >
         <van-picker
@@ -205,12 +277,14 @@
           show-toolbar
           :columns="idTypeList"
           @confirm="selectIdType"
-          @cancel="showIdType=false"
+          @cancel="showIdType = false"
         />
       </van-popup>
     </div>
-    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
-      <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
+    <div class="subBtn" v-show="loanStatus >= 0 && loanStatus < 60">
+      <van-button class="subBtn_body" block type="info" @click="toSub"
+        >保 存</van-button
+      >
     </div>
   </div>
 </template>
@@ -235,7 +309,7 @@ export default {
         idTypeValue: "", // 自己添加的
         idNum: "", //证件号码
         createdBy: "APP", //创建人
-        createdTime: new Date() // 创建时间
+        createdTime: new Date(), // 创建时间
       },
       isMainUser: false,
       licenseType: "", //1-私牌 2-公牌
@@ -249,13 +323,13 @@ export default {
       showIdType: false,
       idTypeList: [],
       mainListData: [],
-      danbaoListData: []
+      danbaoListData: [],
     };
   },
   watch: {
     showAddUser: {
       deep: true,
-      handler: function(newValue, oldValue) {
+      handler: function (newValue, oldValue) {
         if (!newValue) {
           console.log("来了");
           this.addUserInfo = {
@@ -271,11 +345,11 @@ export default {
             idTypeValue: "", // 自己添加的
             idNum: "", //证件号码
             createdBy: "APP", //创建人
-            createdTime: new Date() // 创建时间
+            createdTime: new Date(), // 创建时间
           };
         }
-      }
-    }
+      },
+    },
   },
   methods: {
     addMainUser() {
@@ -325,7 +399,7 @@ export default {
             "子女",
             "兄弟姐妹",
             "同事",
-            "其他"
+            "其他",
           ];
         } else {
           this.relationList = ["法人", "实际使用人", "股东", "高管", "其他"];
@@ -339,35 +413,65 @@ export default {
         this.$router.push({
           name: "userInfoDetail",
           params: {
-            customerId: item.customerId
-          }
+            customerId: item.customerId,
+          },
         });
       } else {
         this.$router.push({
           name: "maleBrandInfoDetail",
           params: {
-            customerId: item.customerId
-          }
+            customerId: item.customerId,
+          },
         });
       }
     },
     toSub() {
-      if (this.mainListData.length == 0) {
-        this.$toast.fail("请添加承接人");
-        return;
-      }
       const toast = this.$toast.loading({
         duration: 0,
         message: "保存中...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
-      updateStatus({
-        loanNumber: this.$store.state.loanNumber,
-        loanStatus: "30"
-      }).then(res => {
-        toast.clear();
-        this.$router.back();
+
+      var params = Object.assign({ loanId: this.$store.state.loanNumber });
+      userList(params).then((res) => {
+        let users = res.data.data.customerInfoList;
+        var isHaveMainUser = false;
+        var hash = {};
+        for (let i in users) {
+          console.log("人员",users[i])
+          if (users[i].customerRole == "1") {
+            isHaveMainUser = true;
+            console.log("isHaveMainUser",isHaveMainUser)
+          }
+          for (let j in users) {
+            if (i != j && users[i].idType == "1" && users[j].idType == "1") {
+              if (users[i].idNum == users[j].idNum) {
+                toast.clear();
+                this.$toast.fail(
+                  users[i].customerName +
+                    "和" +
+                    users[j].customerName +
+                    "证件号重复！"
+                );
+                return;
+              }
+            }
+          }
+        }
+        console.log("isHaveMainUser:",isHaveMainUser);
+        if (!isHaveMainUser) {
+          toast.clear();
+          this.$toast.fail("请添加承租人信息！");
+          return;
+        }
+        updateStatus({
+          loanNumber: this.$store.state.loanNumber,
+          loanStatus: "30"
+        }).then(res => {
+          toast.clear();
+          this.$router.back();
+        });
       });
     },
     showCustomerTypeAction() {
@@ -504,7 +608,7 @@ export default {
         }
       }
       console.log(this.addUserInfo);
-      addUser(this.addUserInfo).then(res => {
+      addUser(this.addUserInfo).then((res) => {
         console.log(res);
         this.getUserList();
         this.showAddUser = false;
@@ -512,14 +616,14 @@ export default {
     },
     delectClick(item) {
       console.log(item);
-      delUser({ customerId: item.customerId }).then(res => {
+      delUser({ customerId: item.customerId }).then((res) => {
         this.getUserList();
       });
     },
 
     getUserList() {
       var params = Object.assign({ loanId: this.$store.state.loanNumber });
-      userList(params).then(res => {
+      userList(params).then((res) => {
         console.log(res.data);
         this.licenseType = res.data.data.licenseType;
         console.log(this.licenseType);
@@ -601,11 +705,11 @@ export default {
           }
         }
       });
-    }
+    },
   },
   mounted() {
     this.getUserList();
-  }
+  },
 };
 </script>
 <style scoped>

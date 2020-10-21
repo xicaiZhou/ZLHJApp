@@ -1,6 +1,6 @@
 <template>
-  <div :class="(loanStatus >= 0 && loanStatus < 60) ? '' : 'readOnly'">
-    <div style="height:100%; margin-bottom: 20px;">
+  <div :class="loanStatus >= 0 && loanStatus < 60 ? '' : 'readOnly'">
+    <div style="height: 100%; margin-bottom: 20px">
       <div>
         <div>
           <div class="header">基本信息</div>
@@ -10,7 +10,11 @@
             v-model="customerInfo.customerName"
             placeholder="请填写客户姓名"
           />
-          <van-field label="曾用名:" v-model="customerInfo.beforeName" placeholder="请填写曾用名" />
+          <van-field
+            label="曾用名:"
+            v-model="customerInfo.beforeName"
+            placeholder="请填写曾用名"
+          />
           <van-field
             required
             is-link
@@ -39,20 +43,32 @@
             @blur="getIdNumInfo"
           />
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title">客户性别：</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="customerInfo.sex = '1'"
-                  :class="customerInfo.sex == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >男</div>
+                  :class="
+                    customerInfo.sex == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  男
+                </div>
                 <div
                   @click="customerInfo.sex = '2'"
-                  :class="customerInfo.sex == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >女</div>
+                  :class="
+                    customerInfo.sex == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  女
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
@@ -76,7 +92,12 @@
             placeholder="请选择出生日期"
             @click="showSelectDatePop(2)"
           />
-          <van-field required label="年龄:" v-model="customerInfo.age" placeholder="请填写年龄" />
+          <van-field
+            required
+            label="年龄:"
+            v-model="customerInfo.age"
+            placeholder="请填写年龄"
+          />
           <van-field
             required
             is-link
@@ -98,20 +119,32 @@
             @click="showSelectPop(5)"
           />
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title">身份证是否长期有效：</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="customerInfo.isLongTerm = '1'"
-                  :class="customerInfo.isLongTerm == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >是</div>
+                  :class="
+                    customerInfo.isLongTerm == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  是
+                </div>
                 <div
                   @click="selectIsLongTerm"
-                  :class="customerInfo.isLongTerm == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >否</div>
+                  :class="
+                    customerInfo.isLongTerm == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  否
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
@@ -148,22 +181,39 @@
             v-model="customerInfo.idCardAddress"
             placeholder="请填写详细地址"
           />
-          <van-field required label="手机号码:" v-model="customerInfo.phone" placeholder="请填写手机号码" />
+          <van-field
+            required
+            label="手机号码:"
+            v-model="customerInfo.phone"
+            placeholder="请填写手机号码"
+          />
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title">是否本地户籍：</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="customerInfo.isLocal = '1'"
-                  :class="customerInfo.isLocal == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >是</div>
+                  :class="
+                    customerInfo.isLocal == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  是
+                </div>
                 <div
                   @click="customerInfo.isLocal = '2'"
-                  :class="customerInfo.isLocal == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >否</div>
+                  :class="
+                    customerInfo.isLocal == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  否
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
@@ -208,20 +258,32 @@
             @click="showSelectPop(8)"
           />
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title">现居地与身份证地址相同：</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="selectWhetherIdAddr('1')"
-                  :class="customerHouseProperty.whetherIdAddr == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >是</div>
+                  :class="
+                    customerHouseProperty.whetherIdAddr == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  是
+                </div>
                 <div
                   @click="selectWhetherIdAddr('2')"
-                  :class="customerHouseProperty.whetherIdAddr == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >否</div>
+                  :class="
+                    customerHouseProperty.whetherIdAddr == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  否
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
@@ -267,38 +329,62 @@
             placeholder="请填写月平均支出"
           />
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title">家庭首次购车：</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="customerAssets.firstBuyCar = '1'"
-                  :class="customerAssets.firstBuyCar == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >是</div>
+                  :class="
+                    customerAssets.firstBuyCar == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  是
+                </div>
                 <div
                   @click="customerAssets.firstBuyCar = '2'"
-                  :class="customerAssets.firstBuyCar == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >否</div>
+                  :class="
+                    customerAssets.firstBuyCar == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  否
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title">购车目的:</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="customerAssets.buyCarPurpose = '1'"
-                  :class="customerAssets.buyCarPurpose == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >自用</div>
+                  :class="
+                    customerAssets.buyCarPurpose == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  自用
+                </div>
                 <div
                   @click="customerAssets.buyCarPurpose = '2'"
-                  :class="customerAssets.buyCarPurpose == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >出租</div>
+                  :class="
+                    customerAssets.buyCarPurpose == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  出租
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
@@ -312,20 +398,32 @@
         <div>
           <div class="header">房产信息</div>
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title_norequired">房产类别:</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="customerHouseProperty.roomType = '1'"
-                  :class="customerHouseProperty.roomType == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >住房</div>
+                  :class="
+                    customerHouseProperty.roomType == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  住房
+                </div>
                 <div
                   @click="customerHouseProperty.roomType = '2'"
-                  :class="customerHouseProperty.roomType == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >商用房</div>
+                  :class="
+                    customerHouseProperty.roomType == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  商用房
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
@@ -357,37 +455,62 @@
             v-model="customerHouseProperty.roomAreas"
             placeholder="请填写房产面积"
           />
-          <van-field label="房产编号:" v-model="customerHouseProperty.roomNum" placeholder="请填写房产编号" />
+          <van-field
+            label="房产编号:"
+            v-model="customerHouseProperty.roomNum"
+            placeholder="请填写房产编号"
+          />
         </div>
         <div>
           <div class="header">工作信息</div>
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title">是否有工作：</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="customerJob.isWork = '1'"
-                  :class="customerJob.isWork == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >有</div>
+                  :class="
+                    customerJob.isWork == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  有
+                </div>
                 <div
                   @click="customerJob.isWork = '2'"
-                  :class="customerJob.isWork == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >无</div>
+                  :class="
+                    customerJob.isWork == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  无
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
           <div v-show="customerJob.isWork == 1">
-            <van-field required label="工作单位:" v-model="customerJob.company" placeholder="请填写工作单位" />
+            <van-field
+              required
+              label="工作单位:"
+              v-model="customerJob.company"
+              placeholder="请填写工作单位"
+            />
             <van-field
               required
               label="单位电话:"
               v-model="customerJob.companyPhone"
               placeholder="请填写单位电话"
             />
-            <van-field label="分机号:" v-model="customerJob.companyExtension" placeholder="请填写分机号" />
+            <van-field
+              label="分机号:"
+              v-model="customerJob.companyExtension"
+              placeholder="请填写分机号"
+            />
             <van-field
               required
               is-link
@@ -398,7 +521,11 @@
               placeholder="请选择单位地址"
               @click="showSelectAddressPop(4)"
             />
-            <van-field label="详细地址:" v-model="customerJob.companyAddress" placeholder="请填写详细地址" />
+            <van-field
+              label="详细地址:"
+              v-model="customerJob.companyAddress"
+              placeholder="请填写详细地址"
+            />
             <van-field
               required
               is-link
@@ -463,32 +590,60 @@
             placeholder="请填写邮箱"
           />
           <div>
-            <div class="zlhjRadio" style="display:flex">
+            <div class="zlhjRadio" style="display: flex">
               <span class="zlhjRadio_title_norequired">是否需要对账单：</span>
               <div class="zlhjRadio_body">
                 <div
                   @click="customerContact.isNeedStatement = '1'"
-                  :class="customerContact.isNeedStatement == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >是</div>
+                  :class="
+                    customerContact.isNeedStatement == '1'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  是
+                </div>
                 <div
                   @click="customerContact.isNeedStatement = '2'"
-                  :class="customerContact.isNeedStatement == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                >否</div>
+                  :class="
+                    customerContact.isNeedStatement == '2'
+                      ? 'zlhjRadio_body_item_selected'
+                      : 'zlhjRadio_body_item'
+                  "
+                >
+                  否
+                </div>
               </div>
             </div>
-            <div style="padding-left:10px">
+            <div style="padding-left: 10px">
               <div class="zlhjRadioLine"></div>
             </div>
           </div>
 
-          <van-field label="手机一:" v-model="customerContact.firstMobilePhone" placeholder="请填写手机号" />
-          <van-field label="手机二:" v-model="customerContact.secMobilePhone" placeholder="请填写手机号" />
-          <van-field label="固话一:" v-model="customerContact.tel1" placeholder="请填写固话" />
-          <van-field label="固话二:" v-model="customerContact.tel2" placeholder="请填写固话" />
+          <van-field
+            label="手机一:"
+            v-model="customerContact.firstMobilePhone"
+            placeholder="请填写手机号"
+          />
+          <van-field
+            label="手机二:"
+            v-model="customerContact.secMobilePhone"
+            placeholder="请填写手机号"
+          />
+          <van-field
+            label="固话一:"
+            v-model="customerContact.tel1"
+            placeholder="请填写固话"
+          />
+          <van-field
+            label="固话二:"
+            v-model="customerContact.tel2"
+            placeholder="请填写固话"
+          />
         </div>
         <div>
           <div class="header">联系人信息</div>
-          <div v-for="(item,index) in customerContactPersonList" :key="index">
+          <div v-for="(item, index) in customerContactPersonList" :key="index">
             <van-field
               required
               label="联系人姓名:"
@@ -503,20 +658,32 @@
               placeholder="请填写联系人手机号"
             />
             <div>
-              <div class="zlhjRadio" style="display:flex">
+              <div class="zlhjRadio" style="display: flex">
                 <span class="zlhjRadio_title">与承租人关系：</span>
                 <div class="zlhjRadio_body">
                   <div
                     @click="item.relation = '1'"
-                    :class="item.relation == '1' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                  >亲属</div>
+                    :class="
+                      item.relation == '1'
+                        ? 'zlhjRadio_body_item_selected'
+                        : 'zlhjRadio_body_item'
+                    "
+                  >
+                    亲属
+                  </div>
                   <div
                     @click="item.relation = '2'"
-                    :class="item.relation == '2' ? 'zlhjRadio_body_item_selected' : 'zlhjRadio_body_item'"
-                  >朋友</div>
+                    :class="
+                      item.relation == '2'
+                        ? 'zlhjRadio_body_item_selected'
+                        : 'zlhjRadio_body_item'
+                    "
+                  >
+                    朋友
+                  </div>
                 </div>
               </div>
-              <div style="padding-left:10px">
+              <div style="padding-left: 10px">
                 <div class="zlhjRadioLine"></div>
               </div>
             </div>
@@ -524,15 +691,17 @@
         </div>
       </div>
     </div>
-    <div class="subBtn" v-show="(loanStatus >= 0 && loanStatus < 60)">
-      <van-button class="subBtn_body" block type="info" @click="toSub">保 存</van-button>
+    <div class="subBtn" v-show="loanStatus >= 0 && loanStatus < 60">
+      <van-button class="subBtn_body" block type="info" @click="toSub"
+        >保 存</van-button
+      >
     </div>
     <!-- pop -->
     <div>
       <van-popup
         v-model="showPop"
         position="bottom"
-        :style="{ height: '300px', width: '100%'}"
+        :style="{ height: '300px', width: '100%' }"
         get-container="body"
       >
         <van-picker
@@ -540,13 +709,13 @@
           show-toolbar
           :columns="popList"
           @confirm="selected"
-          @cancel="showPop=false"
+          @cancel="showPop = false"
         />
       </van-popup>
       <van-popup
         v-model="showDatePop"
         position="bottom"
-        :style="{ height: '300px', width: '100%'}"
+        :style="{ height: '300px', width: '100%' }"
         get-container="body"
       >
         <van-datetime-picker
@@ -559,7 +728,7 @@
       <van-popup
         v-model="showAddressPop"
         position="bottom"
-        :style="{ height: '300px', width: '100%'}"
+        :style="{ height: '300px', width: '100%' }"
         get-container="body"
       >
         <van-area
@@ -580,7 +749,7 @@ import {
   idNumInfo,
   idNumValidator,
   isPhoneNum,
-  isEmail
+  isEmail,
 } from "../../utils/common";
 import { dateFormat, selectDateFormat } from "../../utils/formatter";
 export default {
@@ -634,7 +803,7 @@ export default {
         createdBy: "", // 创建人
         createdTime: "", //创建时间
         updateBy: "", // 更新人
-        updateTime: "" // 更新时间
+        updateTime: "", // 更新时间
       },
       customerHouseProperty: {
         id: "", //逻辑主键
@@ -657,7 +826,7 @@ export default {
         createdBy: "", //创建人
         createdTime: "", //创建时间
         updateBy: "", //更新人
-        updateTime: "" //更新时间
+        updateTime: "", //更新时间
       },
       customerAssets: {
         id: "", //逻辑主键
@@ -670,7 +839,7 @@ export default {
         createdBy: "", //创建人
         createdTime: "", //创建时间
         updateBy: "", //更新人
-        updateTime: "" //更新时间
+        updateTime: "", //更新时间
       },
       customerJob: {
         id: "", //逻辑主键
@@ -689,7 +858,7 @@ export default {
         createdBy: "", //创建人
         createdTime: "", //创建时间
         updateBy: "", //更新人
-        updateTime: "" //更新时间
+        updateTime: "", //更新时间
       },
       customerContact: {
         id: "", //逻辑主键
@@ -712,7 +881,7 @@ export default {
         createdBy: "", //创建人
         createdTime: "", //创建时间
         updateBy: "", //更新人
-        updateTime: "" //更新时间
+        updateTime: "", //更新时间
       },
       customerCompany: {
         id: 0, //逻辑主键
@@ -728,7 +897,7 @@ export default {
         createdBy: "", //创建人
         createdTime: "", //创建时间
         updateBy: "", //更新人
-        updateTime: "" //更新时间
+        updateTime: "", //更新时间
       },
       customerSpouseInfo: {
         id: 0, //逻辑主键
@@ -741,7 +910,7 @@ export default {
         createdBy: "", //创建人
         createdTime: "", //创建时间
         updateBy: "", //更新人
-        updateTime: "" //更新时间
+        updateTime: "", //更新时间
       },
       customerContactPersonList: [
         {
@@ -750,7 +919,7 @@ export default {
           contactPersonPhone: "", //联系人手机号
           relation: "", //与承租人关系（1、亲属；2、朋友）
           updateBy: "", //更新人
-          updateTime: "" //更新时间
+          updateTime: "", //更新时间
         },
         {
           id: 0, //     id: "", //逻辑主键
@@ -758,111 +927,116 @@ export default {
           contactPersonPhone: "", //联系人手机号
           relation: "", //与承租人关系（1、亲属；2、朋友）
           updateBy: "", //更新人
-          updateTime: "" //更新时间
-        }
+          updateTime: "", //更新时间
+        },
       ],
       idCardAddress: "",
       liveAddress: "",
       roomAddress: "",
-      companyAddress: ""
+      companyAddress: "",
     };
   },
   mounted() {
     console.log(this.$route.params.customerId);
-    userDetailInfo({ customerId: this.$route.params.customerId }).then(res => {
-      console.log(res);
-      if (res.data.data.customerInfo != null) {
-        this.customerInfo = res.data.data.customerInfo;
-        this.customerInfo.relationValue = getValue(
-          "1",
-          this.customerInfo.relation
-        );
-        if (
-          this.customerInfo.idType == "1" &&
-          idNumValidator(this.customerInfo.idNum)
-        ) {
-          this.customerInfo.sex = idNumInfo(this.customerInfo.idNum).sex;
-          this.customerInfo.age = idNumInfo(this.customerInfo.idNum).age;
-          this.customerInfo.birthday = idNumInfo(
-            this.customerInfo.idNum
-          ).birthday;
-        }
-        this.customerInfo.idTypeValue = getValue("2", this.customerInfo.idType);
-        this.customerInfo.isMarryValue = getValue(
-          "3",
-          this.customerInfo.isMarry
-        );
-        this.customerInfo.occupationTypeValue = getValue(
-          "4",
-          this.customerInfo.occupationType
-        );
-        if (this.customerInfo.nationality) {
-          this.customerInfo.nationalityValue = getValue(
-            "5",
-            this.customerInfo.nationality
+    userDetailInfo({ customerId: this.$route.params.customerId }).then(
+      (res) => {
+        console.log(res);
+        if (res.data.data.customerInfo != null) {
+          this.customerInfo = res.data.data.customerInfo;
+          this.customerInfo.relationValue = getValue(
+            "1",
+            this.customerInfo.relation
           );
-        } else {
-          this.customerInfo.nationalityValue = "中华人民共和国";
-          this.customerInfo.nationality = "1";
-        }
+          if (
+            this.customerInfo.idType == "1" &&
+            idNumValidator(this.customerInfo.idNum)
+          ) {
+            this.customerInfo.sex = idNumInfo(this.customerInfo.idNum).sex;
+            this.customerInfo.age = idNumInfo(this.customerInfo.idNum).age;
+            this.customerInfo.birthday = idNumInfo(
+              this.customerInfo.idNum
+            ).birthday;
+          }
+          this.customerInfo.idTypeValue = getValue(
+            "2",
+            this.customerInfo.idType
+          );
+          this.customerInfo.isMarryValue = getValue(
+            "3",
+            this.customerInfo.isMarry
+          );
+          this.customerInfo.occupationTypeValue = getValue(
+            "4",
+            this.customerInfo.occupationType
+          );
+          if (this.customerInfo.nationality) {
+            this.customerInfo.nationalityValue = getValue(
+              "5",
+              this.customerInfo.nationality
+            );
+          } else {
+            this.customerInfo.nationalityValue = "中华人民共和国";
+            this.customerInfo.nationality = "1";
+          }
 
-        this.customerInfo.customerNatureValue = getValue(
-          "14",
-          this.customerInfo.customerNature
-        );
-        this.customerInfo.educationLevelValue = getValue(
-          "7",
-          this.customerInfo.educationLevel
-        );
+          this.customerInfo.customerNatureValue = getValue(
+            "14",
+            this.customerInfo.customerNature
+          );
+          this.customerInfo.educationLevelValue = getValue(
+            "7",
+            this.customerInfo.educationLevel
+          );
+        }
+        if (res.data.data.customerHouseProperty != null) {
+          this.customerHouseProperty = res.data.data.customerHouseProperty;
+          this.customerHouseProperty.liveTypeValue = getValue(
+            "8",
+            this.customerHouseProperty.liveType
+          );
+          this.customerHouseProperty.roomNatureValue = getValue(
+            "9",
+            this.customerHouseProperty.roomNature
+          );
+        }
+        if (res.data.data.customerAssets != null) {
+          this.customerAssets = res.data.data.customerAssets;
+        }
+        if (res.data.data.customerJob != null) {
+          this.customerJob = res.data.data.customerJob;
+          this.customerJob.companyTypeValue = getValue(
+            "10",
+            this.customerJob.companyType
+          );
+          this.customerJob.positionValue = getValue(
+            "11",
+            this.customerJob.position
+          );
+        }
+        if (res.data.data.customerContact != null) {
+          this.customerContact = res.data.data.customerContact;
+        }
+        if (res.data.data.customerCompany != null) {
+          this.customerCompany = res.data.data.customerCompany;
+        }
+        if (res.data.data.customerSpouseInfo != null) {
+          this.customerSpouseInfo = res.data.data.customerSpouseInfo;
+          this.customerSpouseInfo.spouseIdTypeValue = getValue(
+            "2",
+            this.customerSpouseInfo.spouseIdType
+          );
+        }
+        if (
+          res.data.data.customerContactPersonList != null &&
+          res.data.data.customerContactPersonList.length > 0
+        ) {
+          this.customerContactPersonList =
+            res.data.data.customerContactPersonList;
+        }
+        console.log(this.customerContactPersonList);
+        this.setAddress();
       }
-      if (res.data.data.customerHouseProperty != null) {
-        this.customerHouseProperty = res.data.data.customerHouseProperty;
-        this.customerHouseProperty.liveTypeValue = getValue(
-          "8",
-          this.customerHouseProperty.liveType
-        );
-        this.customerHouseProperty.roomNatureValue = getValue(
-          "9",
-          this.customerHouseProperty.roomNature
-        );
-      }
-      if (res.data.data.customerAssets != null) {
-        this.customerAssets = res.data.data.customerAssets;
-      }
-      if (res.data.data.customerJob != null) {
-        this.customerJob = res.data.data.customerJob;
-        this.customerJob.companyTypeValue = getValue(
-          "10",
-          this.customerJob.companyType
-        );
-        this.customerJob.positionValue = getValue(
-          "11",
-          this.customerJob.position
-        );
-      }
-      if (res.data.data.customerContact != null) {
-        this.customerContact = res.data.data.customerContact;
-      }
-      if (res.data.data.customerCompany != null) {
-        this.customerCompany = res.data.data.customerCompany;
-      }
-      if (res.data.data.customerSpouseInfo != null) {
-        this.customerSpouseInfo = res.data.data.customerSpouseInfo;
-        this.customerSpouseInfo.spouseIdTypeValue = getValue(
-          "2",
-          this.customerSpouseInfo.spouseIdType
-        );
-      }
-      if (
-        res.data.data.customerContactPersonList != null &&
-        res.data.data.customerContactPersonList.length > 0
-      ) {
-        this.customerContactPersonList =
-          res.data.data.customerContactPersonList;
-      }
-      console.log(this.customerContactPersonList);
-      this.setAddress();
-    });
+    );
   },
   methods: {
     // 监听输入身份证获取性别出生日期年龄
@@ -917,6 +1091,9 @@ export default {
         case 4: {
           // label="职业类型:"
           this.customerInfo.occupationType = getKey(value, this.popList);
+          if (this.customerInfo.occupationType == "1") {
+            this.customerJob.isWork = "1";
+          }
           this.customerInfo.occupationTypeValue = value;
           break;
         }
@@ -1087,7 +1264,7 @@ export default {
             "行内员工",
             "优良职业",
             "低风险客户",
-            "其他客户"
+            "其他客户",
           ];
           break;
         }
@@ -1099,7 +1276,7 @@ export default {
             "本科",
             "大专",
             "高中/中专",
-            "初中及以下"
+            "初中及以下",
           ];
           break;
         }
@@ -1124,7 +1301,7 @@ export default {
             "外资/合资",
             "民营",
             "个体",
-            "其他"
+            "其他",
           ];
           break;
         }
@@ -1140,7 +1317,7 @@ export default {
             "操作类员工",
             "非正式员工",
             "其他",
-            "无"
+            "无",
           ];
           break;
         }
@@ -1324,7 +1501,7 @@ export default {
         duration: 0,
         message: "保存中...",
         forbidClick: true,
-        loadingType: "spinner"
+        loadingType: "spinner",
       });
       let param = Object.assign({
         customerId: this.$route.params.customerId,
@@ -1334,12 +1511,12 @@ export default {
         customerJobParam: this.customerJob,
         customerSpouseInfoParam: this.customerSpouseInfoParam,
         customerContactParam: this.customerContact,
-        customerContactPersonParamList: this.customerContactPersonList
+        customerContactPersonParamList: this.customerContactPersonList,
       });
       if (this.customerInfo.isMarry == "2") {
         param.customerSpouseInfoParam = this.customerSpouseInfo;
       }
-      updateUser(param).then(res => {
+      updateUser(param).then((res) => {
         toast.clear();
         this.$router.back();
       });
@@ -1349,32 +1526,32 @@ export default {
         this.idCardAddress = getAddress({
           province: this.customerInfo.idCardProvince,
           city: this.customerInfo.idCardCity,
-          area: this.customerInfo.idCardArea
+          area: this.customerInfo.idCardArea,
         });
       }
       if (this.customerHouseProperty.liveProvince != null) {
         this.liveAddress = getAddress({
           province: this.customerHouseProperty.liveProvince,
           city: this.customerHouseProperty.liveCity,
-          area: this.customerHouseProperty.liveArea
+          area: this.customerHouseProperty.liveArea,
         });
       }
       if (this.customerHouseProperty.roomProvince != null) {
         this.roomAddress = getAddress({
           province: this.customerHouseProperty.roomProvince,
           city: this.customerHouseProperty.roomCity,
-          area: this.customerHouseProperty.roomArea
+          area: this.customerHouseProperty.roomArea,
         });
       }
       if (this.customerJob.companyProvince != null) {
         this.companyAddress = getAddress({
           province: this.customerJob.companyProvince,
           city: this.customerJob.companyCity,
-          area: this.customerJob.companyArea
+          area: this.customerJob.companyArea,
         });
       }
-    }
-  }
+    },
+  },
 };
 </script>
 

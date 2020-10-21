@@ -37,8 +37,9 @@
           placeholder="请填写年份"
         />
         <div class="searchBtn">
-          <van-button style="width:40%" block type="info" @click="toSearch">查询</van-button>
           <van-button style="width:40%" type="info" @click="toClear">重置</van-button>
+          <van-button style="width:40%" block type="info" @click="toSearch">查询</van-button>
+
         </div>
       </div>
     </van-popup>

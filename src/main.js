@@ -8,11 +8,13 @@ import 'vant/lib/index.css'
 import store from './store'
 import VueWechatTitle from 'vue-wechat-title'
 import "./style/icon/iconfont.css";
+
 Vue.use(VueWechatTitle)
 
 Vue.config.productionTip = false
 Vue.use(router)
 Vue.use(Vant)
+
 
 router.beforeEach((to, from, next) => {
   if(to.meta.title){

@@ -52,7 +52,7 @@
           <van-field
             required
             readonly
-            label="车辆指导价(万元):"
+            label="车辆指导价(元):"
             v-model="loginSysUserVo.guidancePrice"
             name
             placeholder="请填写车辆指导价"
@@ -172,7 +172,7 @@
           <van-field
             readonly
             required
-            label="车辆指导价(万元):"
+            label="车辆指导价(元):"
             v-model="this.loginSysUserVo.guidancePrice"
             name
             placeholder="请填写车辆指导价"
@@ -345,7 +345,7 @@
           <van-field
             readonly
             required
-            label="车辆指导价(万元):"
+            label="车辆指导价(元):"
             v-model="this.loginSysUserVo.guidancePrice"
             placeholder="请填写车辆指导价"
           />
